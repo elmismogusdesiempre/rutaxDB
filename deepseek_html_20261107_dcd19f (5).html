@@ -1,0 +1,2367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0A1F44">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Ruta X · Mensajero</title>
+<style>
+  :root {
+    --navy-deep: #0A1F44;
+    --navy: #0E3A6C;
+    --navy-light: #1E5BB8;
+    --accent: #FF6B35;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --bg: #f4f6fa;
+    --green: #22c55e;
+    --green-dark: #16a34a;
+    --wa: #25D366;
+    --purple: #8b5cf6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  #app { max-width: 480px; margin: 0 auto; min-height: 100vh; background: var(--bg); padding-bottom: 100px; position: relative; }
+  .hidden { display: none !important; }
+
+  .app-header { background: linear-gradient(135deg, #0A1F44 0%, #0E3A6C 55%, #1E5BB8 100%); color: white; padding: 16px 18px 14px; }
+  .brand-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .logo-mark { display: block; width: 38px; height: 38px; flex-shrink: 0; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+  .logo-mark svg { width: 100%; height: 100%; display: block; }
+  .wordmark { display: flex; align-items: baseline; gap: 3px; line-height: 1; letter-spacing: -0.3px; }
+  .wm-ruta { color: #fff; font-weight: 600; font-size: 19px; }
+  .wm-x { color: var(--accent); font-weight: 800; font-size: 22px; }
+  .icon-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); width: 38px; height: 38px; border-radius: 10px; font-size: 18px; cursor: pointer; transition: background 0.15s; display: flex; align-items: center; justify-content: center; }
+  .icon-btn:active { background: rgba(255,255,255,0.2); }
+  .messenger-bar { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 12px; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,107,53,0.16); border: 1.5px solid var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+  .messenger-info { flex: 1; min-width: 0; }
+  .messenger-name { font-weight: 700; font-size: 15px; }
+  .messenger-code { font-size: 12px; opacity: 0.8; margin-top: 2px; }
+
+  .search-trigger { background: rgba(255,255,255,0.97); border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(10,31,68,0.2); transition: transform 0.15s; }
+  .search-trigger:active { transform: scale(0.99); }
+  .search-trigger-icon { display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: var(--accent); border-radius: 8px; flex-shrink: 0; }
+  .search-trigger-icon svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2.5; }
+  .search-trigger-text { font-size: 14px; color: #64748b; font-weight: 500; flex: 1; }
+
+  .sticky-top { position: sticky; top: 0; z-index: 9; background: white; box-shadow: 0 2px 8px rgba(15,23,42,0.04); }
+  .progress-wrap { padding: 12px 0 8px; }
+  .progress-bar { height: 6px; background: #eef2f7; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--green-dark)); width: 0%; transition: width 0.4s ease; }
+  .progress-text { padding: 6px 20px 0; font-size: 12px; color: var(--muted); font-weight: 600; text-align: center; }
+  .tabs { display: flex; padding: 0 8px; border-top: 1px solid #f3f4f6; }
+  .tab { flex: 1; padding: 13px; border: none; background: none; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .tab.active { color: var(--navy); border-bottom-color: var(--accent); }
+
+  .view { display: none; padding: 16px; }
+  .view.active { display: block; }
+
+  .route-list { display: flex; flex-direction: column; gap: 12px; }
+  .package-card { background: white; border-radius: 14px; padding: 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 1px 3px rgba(15,23,42,0.06); cursor: pointer; transition: transform 0.1s; border-left: 4px solid #d1d5db; }
+  .package-card:active { transform: scale(0.98); }
+  .package-card.issue { border-left-color: #f59e0b; background: #fffbeb; }
+  .package-card.pickup { border-left-color: var(--purple); }
+  .order-badge { width: 36px; height: 36px; border-radius: 10px; background: #eff6ff; color: var(--navy); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0; }
+  .package-card.issue .order-badge { background: #fef3c7; color: #b45309; }
+  .package-card.pickup .order-badge { background: #ede9fe; color: var(--purple); }
+  .package-info { flex: 1; min-width: 0; }
+  .package-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 8px; flex-wrap: wrap; }
+  .guide { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.3px; }
+  .badges-wrap { display: flex; gap: 4px; align-items: center; }
+  .status-badge { font-size: 10px; padding: 3px 8px; border-radius: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap; }
+  .status-badge.pending { background: #f3f4f6; color: var(--muted); }
+  .status-badge.delivered { background: #dcfce7; color: var(--green-dark); }
+  .status-badge.issue { background: #fef3c7; color: #b45309; }
+  .status-badge.pickup-badge { background: #ede9fe; color: var(--purple); }
+  .client { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .address { font-size: 13px; color: var(--muted); line-height: 1.3; }
+  .issue-count { font-size: 11px; color: #b45309; font-weight: 600; margin-top: 4px; }
+  .chevron { font-size: 24px; color: #d1d5db; }
+
+  .empty { text-align: center; padding: 60px 20px; color: #9ca3af; font-size: 14px; line-height: 1.6; }
+  .empty-icon { font-size: 44px; margin-bottom: 14px; opacity: 0.55; filter: grayscale(0.3); }
+  .empty-title { color: var(--ink); font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .empty.celebrate .empty-icon { opacity: 1; filter: none; }
+
+  .overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100; display: none; overflow-y: auto; }
+  .overlay.active { display: block; }
+
+  .detail-screen { min-height: 100vh; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; }
+  .detail-header { background: linear-gradient(135deg, #0A1F44 0%, #0E3A6C 55%, #1E5BB8 100%); color: white; padding: 16px 20px; display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 2; }
+  .back-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; width: 40px; height: 40px; border-radius: 12px; font-size: 20px; cursor: pointer; flex-shrink: 0; }
+  .detail-title { font-weight: 700; font-size: 16px; }
+  .detail-sub { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+  .detail-body { flex: 1; padding: 16px; }
+
+  .splash-screen { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 32px 24px; background: linear-gradient(160deg, #0A1F44 0%, #0E3A6C 55%, #1E5BB8 100%); color: white; max-width: 480px; margin: 0 auto; }
+  .splash-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+  .splash-brand .logo-mark { width: 52px; height: 52px; }
+  .splash-brand .wm-ruta { font-size: 26px; }
+  .splash-brand .wm-x { font-size: 30px; }
+  .splash-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; line-height: 1.2; }
+  .splash-subtitle { font-size: 14px; opacity: 0.75; margin-bottom: 28px; line-height: 1.4; }
+  .messenger-options { display: flex; flex-direction: column; gap: 10px; }
+  .messenger-option { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px; padding: 14px; display: flex; align-items: center; gap: 14px; cursor: pointer; color: white; text-align: left; transition: all 0.15s; width: 100%; font-family: inherit; }
+  .messenger-option:active { transform: scale(0.98); background: rgba(255,255,255,0.15); }
+  .messenger-option-avatar { width: 48px; height: 48px; border-radius: 50%; background: rgba(255,107,53,0.2); border: 1.5px solid var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .messenger-option-info { flex: 1; min-width: 0; }
+  .messenger-option-name { font-weight: 700; font-size: 15px; }
+  .messenger-option-zone { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+  .messenger-option-arrow { font-size: 22px; opacity: 0.5; }
+
+  .info-card { background: white; border-radius: 14px; padding: 14px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(15,23,42,0.05); }
+  .info-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px solid #f3f4f6; gap: 12px; }
+  .info-row:last-child { border-bottom: none; }
+  .info-row .label { color: var(--muted); font-weight: 500; flex-shrink: 0; }
+  .info-row span:last-child { text-align: right; font-weight: 600; color: var(--ink); }
+
+  .section-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; margin-top: 4px; display: flex; justify-content: space-between; align-items: baseline; }
+  .photo-count-label { font-size: 11px; color: var(--navy); text-transform: none; letter-spacing: 0; font-weight: 700; }
+  .text-input { width: 100%; border: 1px solid #d1d5db; border-radius: 12px; padding: 12px 14px; font-family: inherit; font-size: 15px; outline: none; background: white; margin-bottom: 16px; }
+  .text-input:focus { border-color: var(--navy); }
+
+  .photo-area { background: white; border: 2px dashed #d1d5db; border-radius: 14px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; margin-bottom: 8px; transition: border-color 0.15s; position: relative; }
+  .photo-area:active { border-color: var(--accent); }
+  .photo-area.no-photo-mode { border-style: solid; border-color: #cbd5e1; background: #f8fafc; }
+  .photo-placeholder { text-align: center; color: #9ca3af; padding: 20px; }
+  .camera-icon { font-size: 42px; margin-bottom: 8px; }
+  .photo-placeholder .hint { font-size: 11px; margin-top: 4px; color: #d1d5db; }
+  .photo-preview { width: 100%; height: 100%; object-fit: cover; }
+  .no-photo-mode-content { text-align: center; color: #64748b; padding: 20px; }
+  .no-photo-mode-content .no-photo-icon { font-size: 40px; margin-bottom: 8px; opacity: 0.5; }
+  .no-photo-mode-content .label { font-weight: 700; font-size: 14px; }
+  .no-photo-mode-content .hint { font-size: 11px; margin-top: 4px; }
+  .photo-pos-indicator { position: absolute; top: 8px; right: 8px; background: rgba(10,31,68,0.8); color: white; padding: 3px 9px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+
+  .photo-thumbs { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 10px; margin-bottom: 4px; -webkit-overflow-scrolling: touch; }
+  .photo-thumb { position: relative; width: 70px; height: 70px; flex-shrink: 0; border-radius: 10px; overflow: hidden; border: 2px solid transparent; cursor: pointer; background: #f3f4f6; }
+  .photo-thumb.active { border-color: var(--accent); }
+  .photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .photo-thumb-remove { position: absolute; top: 2px; right: 2px; width: 20px; height: 20px; background: rgba(0,0,0,0.75); color: white; border: none; border-radius: 50%; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: inherit; line-height: 1; padding: 0; }
+
+  .add-photo-btn { background: white; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 11px; width: 100%; font-size: 13px; font-weight: 600; color: var(--navy); cursor: pointer; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; transition: background 0.15s; }
+  .add-photo-btn:active { background: #f1f5f9; }
+
+  .no-photo-btn { background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 12px; width: 100%; font-size: 13px; font-weight: 600; color: #64748b; cursor: pointer; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s; font-family: inherit; }
+  .no-photo-btn.active { background: #f0f9ff; border-color: #3b82f6; color: #1e40af; border-style: solid; }
+
+  .signature-wrap { position: relative; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); border: 1.5px solid #d1d5db; border-radius: 14px; margin-bottom: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(15,23,42,0.05); }
+  .signature-wrap.signed { border-color: var(--green); background: #f0fdf4; }
+  .signature-canvas { display: block; width: 100%; height: 180px; touch-action: none; cursor: crosshair; position: relative; z-index: 2; }
+  .signature-hint { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; font-size: 14px; font-weight: 600; pointer-events: none; z-index: 1; transition: opacity 0.25s; gap: 4px; }
+  .signature-hint .hint-icon { font-size: 28px; opacity: 0.6; }
+  .signature-hint.hidden { opacity: 0; }
+  .signature-baseline { position: absolute; left: 20px; right: 20px; bottom: 40px; height: 1px; background: #cbd5e1; pointer-events: none; z-index: 1; }
+  .signature-actions { display: flex; gap: 8px; margin-bottom: 16px; }
+  .sig-btn { flex: 1; padding: 11px; border-radius: 10px; border: 1px solid var(--line); background: white; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; color: var(--ink); transition: background 0.15s, transform 0.1s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .sig-btn:active { transform: scale(0.97); background: #f3f4f6; }
+  .sig-btn.sig-reuse { background: #eff6ff; color: var(--navy); border-color: #bfdbfe; }
+  .sig-btn.sig-reuse:active { background: #dbeafe; }
+  .sig-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .color-picker { display: flex; gap: 10px; flex-wrap: wrap; padding: 4px 0; }
+  .color-chip { width: 38px; height: 38px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; position: relative; transition: transform 0.15s; }
+  .color-chip:active { transform: scale(0.92); }
+  .color-chip.active { box-shadow: 0 0 0 2px white, 0 0 0 4px var(--ink); }
+  .color-chip.active::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 16px; color: rgba(0,0,0,0.55); text-shadow: 0 0 3px rgba(255,255,255,0.8); }
+
+  .processing-overlay { position: fixed; inset: 0; background: rgba(10,31,68,0.72); z-index: 300; display: none; align-items: center; justify-content: center; }
+  .processing-overlay.active { display: flex; }
+  .processing-box { background: white; border-radius: 18px; padding: 28px 34px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); min-width: 220px; }
+  .processing-spinner { width: 42px; height: 42px; border: 4px solid #e5e7eb; border-top-color: var(--accent); border-radius: 50%; margin: 0 auto 16px; animation: spin 0.9s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .processing-text { font-size: 14px; font-weight: 600; color: var(--ink); }
+
+  .gps-box { background: white; border-radius: 14px; padding: 14px; display: flex; align-items: center; gap: 12px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(15,23,42,0.05); border-left: 4px solid #d1d5db; }
+  .gps-box.ok { border-left-color: var(--green); }
+  .gps-box.error { border-left-color: #ef4444; }
+  .gps-icon { font-size: 24px; }
+  .gps-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .gps-text strong { color: var(--ink); font-size: 14px; }
+
+  .note-input { width: 100%; border: 1px solid #d1d5db; border-radius: 12px; padding: 12px; font-family: inherit; font-size: 14px; resize: none; min-height: 80px; outline: none; background: white; }
+  .note-input:focus { border-color: var(--navy); }
+
+  .detail-actions { padding: 16px; display: grid; grid-template-columns: 1fr 1.5fr; gap: 10px; background: white; border-top: 1px solid var(--line); position: sticky; bottom: 0; }
+  .action-btn { padding: 16px; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform 0.1s; font-family: inherit; }
+  .action-btn:active { transform: scale(0.97); }
+  .action-btn.novedad { background: #fef3c7; color: #b45309; }
+  .action-btn.entregado { background: var(--green); color: white; box-shadow: 0 2px 8px rgba(34,197,94,0.25); }
+  .action-btn.pickup { background: var(--purple); box-shadow: 0 2px 8px rgba(139,92,246,0.25); }
+
+  .events-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+  .events-header h3 { font-size: 17px; color: var(--ink); }
+  .events-count { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .event-card { background: white; border-radius: 14px; padding: 12px; margin-bottom: 10px; display: flex; gap: 12px; box-shadow: 0 1px 3px rgba(15,23,42,0.05); cursor: pointer; transition: transform 0.1s; }
+  .event-card:active { transform: scale(0.99); }
+  .event-photo { width: 70px; height: 70px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #f3f4f6; display: flex; align-items: center; justify-content: center; position: relative; }
+  .event-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .no-photo { font-size: 10px; color: #9ca3af; text-align: center; padding: 4px; }
+  .photo-count-badge { position: absolute; bottom: 3px; right: 3px; background: rgba(10,31,68,0.9); color: white; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 8px; }
+  .sig-badge { position: absolute; top: 3px; left: 3px; background: rgba(34,197,94,0.95); color: white; font-size: 10px; padding: 1px 5px; border-radius: 6px; }
+  .event-info { flex: 1; min-width: 0; }
+  .event-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+  .event-guide { font-size: 12px; font-weight: 700; color: var(--muted); }
+  .event-address { font-size: 13px; color: #374151; margin-bottom: 2px; }
+  .event-note { font-size: 12px; color: var(--muted); font-style: italic; margin: 4px 0; }
+  .event-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; color: #9ca3af; margin-top: 4px; }
+
+  .event-detail-screen { min-height: 100vh; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; background: var(--bg); }
+  .carousel-wrap { background: #0A1F44; }
+  .carousel-main { position: relative; display: flex; align-items: center; justify-content: center; max-height: 340px; min-height: 200px; overflow: hidden; }
+  .carousel-main img { max-width: 100%; max-height: 340px; object-fit: contain; display: block; }
+  .carousel-main .empty-photo { color: rgba(255,255,255,0.55); padding: 60px 20px; font-size: 13px; text-align: center; }
+  .car-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: inherit; }
+  .car-nav.prev { left: 10px; }
+  .car-nav.next { right: 10px; }
+  .car-counter { position: absolute; bottom: 10px; right: 10px; background: rgba(10,31,68,0.75); color: white; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .carousel-thumbs { display: flex; gap: 6px; overflow-x: auto; padding: 8px 12px; background: #0A1F44; }
+  .carousel-thumb { width: 52px; height: 52px; flex-shrink: 0; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; }
+  .carousel-thumb.active { border-color: var(--accent); }
+
+  .event-detail-body { padding: 16px; flex: 1; }
+  .ev-block { background: white; border-radius: 14px; padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(15,23,42,0.05); }
+  .ev-block .ev-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); font-weight: 700; margin-bottom: 4px; }
+  .ev-block .ev-value { font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.45; word-break: break-word; }
+  .ev-block.note .ev-value { font-weight: 500; font-style: italic; color: #374151; }
+  .ev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .ev-grid .ev-block { margin-bottom: 0; }
+  .ev-status-row { display: flex; align-items: center; justify-content: space-between; padding: 14px; background: white; border-radius: 14px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(15,23,42,0.05); }
+  .ev-status-row .status-badge { font-size: 12px; padding: 5px 12px; }
+  .ev-status-row .ev-time { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .ev-signature-img { background: white; border-radius: 14px; padding: 10px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(15,23,42,0.05); }
+  .ev-signature-img .ev-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); font-weight: 700; margin-bottom: 6px; padding: 0 4px; }
+  .ev-signature-img img { max-width: 100%; height: auto; display: block; max-height: 100px; margin: 0 auto; }
+
+  .wa-actions-wrap { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+  .wa-share-btn { width: 100%; background: var(--wa); color: white; border: none; border-radius: 14px; padding: 15px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 8px rgba(37,211,102,0.3); font-family: inherit; transition: transform 0.1s; }
+  .wa-share-btn:active { transform: scale(0.98); }
+  .wa-share-btn svg { width: 20px; height: 20px; fill: currentColor; }
+  .wa-share-btn.secondary { background: white; color: var(--wa); border: 1.5px solid var(--wa); box-shadow: none; }
+
+  .settings-screen { min-height: 100vh; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; background: var(--bg); }
+  .settings-body { flex: 1; padding: 16px; }
+  .settings-section { background: white; border-radius: 14px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(15,23,42,0.05); }
+  .settings-section h3 { font-size: 15px; margin-bottom: 6px; color: var(--ink); }
+  .settings-section > p { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+  .settings-btn { width: 100%; padding: 13px; border-radius: 10px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.15s; margin-bottom: 8px; font-family: inherit; }
+  .settings-btn:last-child { margin-bottom: 0; }
+  .settings-btn.primary { background: var(--navy); color: white; }
+  .settings-btn.secondary { background: #f3f4f6; color: var(--ink); border: 1px solid var(--line); }
+  .settings-btn.danger { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .csv-preview { background: #f9fafb; border: 1px solid var(--line); border-radius: 10px; padding: 10px; margin-top: 10px; max-height: 220px; overflow-y: auto; font-size: 12px; }
+  .csv-preview-item { padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .csv-preview-item:last-child { border-bottom: none; }
+  .csv-preview-item .guide { font-weight: 700; color: var(--muted); }
+  .csv-preview-item .addr { color: var(--ink); margin-top: 2px; }
+  .csv-info-badge { display: inline-block; background: #eff6ff; color: var(--navy); padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; margin-bottom: 10px; }
+  .app-version { text-align: center; font-size: 11px; color: #9ca3af; padding: 20px 0; }
+
+  .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); gap: 12px; }
+  .toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .toggle-row:first-of-type { padding-top: 8px; }
+  .toggle-label { flex: 1; min-width: 0; }
+  .toggle-label strong { display: block; font-size: 14px; color: var(--ink); margin-bottom: 2px; }
+  .toggle-label span { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .toggle-switch { position: relative; width: 46px; height: 28px; background: #d1d5db; border-radius: 14px; cursor: pointer; transition: background 0.2s; flex-shrink: 0; border: none; }
+  .toggle-switch.on { background: var(--green); }
+  .toggle-switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; background: white; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+  .toggle-switch.on::after { transform: translateX(18px); }
+
+  .search-screen { min-height: 100vh; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; background: var(--bg); }
+  .search-header { background: linear-gradient(135deg, #0A1F44 0%, #0E3A6C 55%, #1E5BB8 100%); padding: 14px 16px; display: flex; gap: 10px; align-items: center; position: sticky; top: 0; z-index: 2; }
+  .search-input-wrap { flex: 1; background: white; border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(10,31,68,0.15); }
+  .search-input-icon { font-size: 16px; opacity: 0.5; }
+  .search-input-wrap input { flex: 1; border: none; outline: none; font-size: 15px; background: none; font-family: inherit; color: var(--ink); min-width: 0; }
+  .search-clear { background: #e5e7eb; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 11px; color: #64748b; cursor: pointer; display: none; align-items: center; justify-content: center; flex-shrink: 0; }
+  .search-clear.visible { display: flex; }
+  .search-cancel { background: none; border: none; color: white; font-size: 14px; font-weight: 600; cursor: pointer; padding: 8px 4px; font-family: inherit; }
+  .search-results { flex: 1; padding: 16px; }
+  .sr-section-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin: 4px 0 10px; padding-left: 2px; }
+  .sr-section-title:not(:first-child) { margin-top: 22px; }
+  .sr-card { background: white; border-radius: 14px; padding: 12px; margin-bottom: 10px; display: flex; gap: 12px; box-shadow: 0 1px 3px rgba(15,23,42,0.05); cursor: pointer; align-items: center; transition: transform 0.1s; }
+  .sr-card:active { transform: scale(0.99); }
+  .sr-photo { width: 56px; height: 56px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #f3f4f6; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #9ca3af; position: relative; }
+  .sr-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .sr-body { flex: 1; min-width: 0; }
+  .sr-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+  .sr-guide { font-size: 11px; font-weight: 700; color: var(--muted); }
+  .sr-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .sr-sub { font-size: 12px; color: var(--muted); line-height: 1.3; }
+  .sr-date { font-size: 11px; color: #9ca3af; margin-top: 3px; }
+
+  .whatsapp-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.55); z-index: 150; display: none; align-items: flex-end; justify-content: center; }
+  .whatsapp-overlay.active { display: flex; }
+  .whatsapp-sheet { background: white; border-radius: 22px 22px 0 0; width: 100%; max-width: 480px; padding: 26px 22px 32px; animation: slideUpSheet 0.28s ease-out; }
+  @keyframes slideUpSheet { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .wa-icon-circle { width: 64px; height: 64px; border-radius: 50%; background: #dcfce7; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 32px; }
+  .wa-sheet-title { text-align: center; font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .wa-sheet-sub { text-align: center; font-size: 14px; color: var(--muted); line-height: 1.5; margin-bottom: 6px; }
+  .wa-sheet-client { text-align: center; font-weight: 700; color: var(--ink); font-size: 15px; margin-bottom: 2px; }
+  .wa-sheet-phone { text-align: center; font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+  .wa-sheet-actions-vertical { display: flex; flex-direction: column; gap: 10px; }
+  .wa-action-primary { background: var(--wa); color: white; padding: 16px; border-radius: 12px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: 0 3px 10px rgba(37,211,102,0.3); display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .wa-action-primary:active { transform: scale(0.98); }
+  .wa-action-primary svg { width: 20px; height: 20px; fill: currentColor; }
+  .wa-action-secondary { background: white; color: var(--wa); border: 1.5px solid var(--wa); padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .wa-action-secondary:active { background: #f0fdf4; }
+  .wa-action-link { background: none; border: none; color: var(--muted); font-size: 14px; font-weight: 600; cursor: pointer; padding: 10px; font-family: inherit; }
+
+  .add-package-sheet { max-height: 88vh; overflow-y: auto; }
+  .add-package-title { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 4px; text-align: center; }
+  .add-package-sub { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 20px; }
+  .add-form-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; margin-top: 14px; }
+  .add-form-label:first-of-type { margin-top: 0; }
+  .type-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .type-option { background: #f8fafc; border: 1.5px solid var(--line); border-radius: 10px; padding: 12px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; font-family: inherit; transition: all 0.15s; }
+  .type-option.active { background: #eff6ff; border-color: var(--navy); color: var(--navy); }
+  .type-option.active.pickup-active { background: #f5f3ff; border-color: var(--purple); color: var(--purple); }
+  .add-text-input { width: 100%; border: 1px solid #d1d5db; border-radius: 10px; padding: 12px 14px; font-family: inherit; font-size: 14px; outline: none; background: white; margin-bottom: 10px; }
+  .add-text-input:focus { border-color: var(--navy); }
+  .add-form-actions { display: grid; grid-template-columns: 1fr 1.5fr; gap: 10px; margin-top: 16px; }
+  .add-form-btn { padding: 14px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; transition: transform 0.1s; }
+  .add-form-btn:active { transform: scale(0.97); }
+  .add-form-btn.cancel { background: #f3f4f6; color: var(--ink); border: 1px solid var(--line); }
+  .add-form-btn.confirm { background: var(--accent); color: white; box-shadow: 0 3px 10px rgba(255,107,53,0.35); }
+
+  .fab { position: fixed; bottom: 24px; right: 24px; width: 58px; height: 58px; border-radius: 50%; background: var(--accent); color: white; border: none; font-size: 30px; font-weight: 300; line-height: 1; cursor: pointer; box-shadow: 0 4px 16px rgba(255,107,53,0.45); z-index: 50; display: flex; align-items: center; justify-content: center; font-family: inherit; transition: transform 0.15s; padding-bottom: 3px; }
+  .fab:active { transform: scale(0.94); }
+  @media (min-width: 480px) {
+    .fab { right: calc(50% - 240px + 20px); }
+  }
+
+  .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy-deep); color: white; padding: 12px 20px; border-radius: 30px; font-size: 13px; font-weight: 600; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 200; max-width: 90%; text-align: center; box-shadow: 0 8px 20px rgba(10,31,68,0.3); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div id="splashOverlay" class="overlay active">
+  <div class="splash-screen">
+    <div class="splash-brand">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="rxLogoGradS" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#1E5BB8"/>
+              <stop offset="1" stop-color="#0A1F44"/>
+            </linearGradient>
+          </defs>
+          <rect width="40" height="40" rx="12" fill="url(#rxLogoGradS)"/>
+          <path d="M13 13 L27 27 M27 13 L13 27" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="13" cy="13" r="1.9" fill="#FF6B35"/>
+          <circle cx="27" cy="13" r="1.9" fill="#FF6B35"/>
+          <circle cx="13" cy="27" r="1.9" fill="#FF6B35"/>
+          <circle cx="27" cy="27" r="1.9" fill="#FF6B35"/>
+        </svg>
+      </span>
+      <span class="wordmark">
+        <span class="wm-ruta">Ruta</span><span class="wm-x">X</span>
+      </span>
+    </div>
+    <div class="splash-title">Bienvenido a tu ruta</div>
+    <div class="splash-subtitle">Elige quién eres para empezar. Tu ruta y tus registros quedan guardados por separado.</div>
+    <div class="messenger-options" id="messengerOptions"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header class="app-header">
+    <div class="brand-row">
+      <div class="brand">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="rxLogoGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#1E5BB8"/>
+                <stop offset="1" stop-color="#0A1F44"/>
+              </linearGradient>
+            </defs>
+            <rect width="40" height="40" rx="12" fill="url(#rxLogoGrad)"/>
+            <path d="M13 13 L27 27 M27 13 L13 27" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="13" cy="13" r="1.9" fill="#FF6B35"/>
+            <circle cx="27" cy="13" r="1.9" fill="#FF6B35"/>
+            <circle cx="13" cy="27" r="1.9" fill="#FF6B35"/>
+            <circle cx="27" cy="27" r="1.9" fill="#FF6B35"/>
+          </svg>
+        </span>
+        <span class="wordmark">
+          <span class="wm-ruta">Ruta</span><span class="wm-x">X</span>
+        </span>
+      </div>
+      <button class="icon-btn" id="settingsBtn" title="Ajustes" aria-label="Ajustes">⚙</button>
+    </div>
+    <div class="messenger-bar">
+      <div class="avatar" id="avatar">—</div>
+      <div class="messenger-info">
+        <div class="messenger-name" id="messengerName">—</div>
+        <div class="messenger-code" id="messengerCode">—</div>
+      </div>
+    </div>
+    <div class="search-trigger" id="searchTrigger">
+      <span class="search-trigger-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="M20 20 L16.5 16.5"/>
+        </svg>
+      </span>
+      <span class="search-trigger-text">Buscar cliente, guía o fecha...</span>
+    </div>
+  </header>
+
+  <div class="sticky-top">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">0 de 0 entregados</div>
+    </div>
+    <nav class="tabs">
+      <button class="tab active" data-tab="ruta">📦 Ruta</button>
+      <button class="tab" data-tab="registro">📋 Registro</button>
+    </nav>
+  </div>
+
+  <main id="viewRuta" class="view active"><div id="routeList" class="route-list"></div></main>
+  <main id="viewRegistro" class="view"><div id="eventsTable"></div></main>
+
+  <button class="fab" id="addManualFab" title="Agregar a la ruta">+</button>
+</div>
+
+<div id="detailOverlay" class="overlay">
+  <div class="detail-screen">
+    <div class="detail-header">
+      <button class="back-btn" id="backBtn">←</button>
+      <div>
+        <div class="detail-title" id="detailTitle">Registrar evidencia</div>
+        <div class="detail-sub" id="detailGuide">Guía —</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="info-card">
+        <div class="info-row"><span class="label">Cliente</span><span id="detailClient">—</span></div>
+        <div class="info-row"><span class="label">Dirección</span><span id="detailAddress">—</span></div>
+        <div class="info-row"><span class="label">Teléfono</span><span id="detailPhone">—</span></div>
+      </div>
+
+      <div id="recipientFieldWrap" class="hidden">
+        <div class="section-label">Nombre de quien recibe</div>
+        <input type="text" id="recipientInput" class="text-input" placeholder="Ej: María Fernández" autocomplete="off" />
+      </div>
+
+      <div class="section-label">
+        <span>Fotografías de evidencia</span>
+        <span class="photo-count-label hidden" id="photoCountLabel"></span>
+      </div>
+      <div class="photo-area" id="photoArea">
+        <div class="photo-placeholder" id="photoPlaceholder">
+          <div class="camera-icon">📷</div>
+          <div>Toca para tomar foto</div>
+          <div class="hint">Paquete entregado + fachada</div>
+        </div>
+        <div class="no-photo-mode-content hidden" id="noPhotoModeContent">
+          <div class="no-photo-icon">🚫📷</div>
+          <div class="label">Entrega sin foto</div>
+          <div class="hint">No se adjuntará imagen</div>
+        </div>
+        <img id="photoPreview" class="photo-preview hidden" alt="evidencia" />
+        <div class="photo-pos-indicator hidden" id="photoPosIndicator"></div>
+        <input type="file" accept="image/*" capture="environment" id="photoInput" class="hidden" />
+      </div>
+      <div class="photo-thumbs hidden" id="photoThumbs"></div>
+      <button class="add-photo-btn hidden" id="addPhotoBtn">➕ Agregar otra foto</button>
+      <button class="no-photo-btn hidden" id="noPhotoBtn">📷 Marcar entrega sin foto</button>
+
+      <div id="signatureSection" class="hidden">
+        <div class="section-label">
+          <span>Firma de quien recibe</span>
+        </div>
+        <div class="signature-wrap" id="signatureWrap">
+          <div class="signature-hint" id="signatureHint">
+            <div class="hint-icon">✍️</div>
+            <div>Firme aquí con el dedo</div>
+          </div>
+          <div class="signature-baseline"></div>
+          <canvas id="signatureCanvas" class="signature-canvas"></canvas>
+        </div>
+        <div class="signature-actions">
+          <button class="sig-btn sig-clear" id="sigClearBtn">🗑️ Limpiar</button>
+          <button class="sig-btn sig-reuse hidden" id="sigReuseBtn">↺ Usar firma anterior</button>
+        </div>
+      </div>
+
+      <div class="section-label">Ubicación GPS</div>
+      <div class="gps-box" id="gpsBox">
+        <div class="gps-icon">📍</div>
+        <div class="gps-text" id="gpsText">Buscando ubicación...</div>
+      </div>
+
+      <div class="section-label">Nota (opcional)</div>
+      <textarea id="noteInput" class="note-input" placeholder="Ej: entregado a la señora, recibido por el vecino..."></textarea>
+    </div>
+    <div class="detail-actions">
+      <button class="action-btn novedad" id="btnNovedad">⚠️ Novedad</button>
+      <button class="action-btn entregado" id="btnEntregado">✓ Entregado</button>
+    </div>
+  </div>
+</div>
+
+<div id="eventOverlay" class="overlay">
+  <div class="event-detail-screen">
+    <div class="detail-header">
+      <button class="back-btn" id="eventBackBtn">←</button>
+      <div>
+        <div class="detail-title">Detalle del registro</div>
+        <div class="detail-sub" id="eventDetailGuide">Guía —</div>
+      </div>
+    </div>
+    <div class="carousel-wrap" id="eventCarouselWrap"></div>
+    <div class="event-detail-body" id="eventDetailBody"></div>
+  </div>
+</div>
+
+<div id="searchOverlay" class="overlay">
+  <div class="search-screen">
+    <div class="search-header">
+      <div class="search-input-wrap">
+        <span class="search-input-icon">🔍</span>
+        <input id="searchInput" type="text" placeholder="Cliente, guía, fecha, recibió..." autocomplete="off" />
+        <button class="search-clear" id="searchClearBtn">✕</button>
+      </div>
+      <button class="search-cancel" id="searchCancelBtn">Cancelar</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<div id="settingsOverlay" class="overlay">
+  <div class="settings-screen">
+    <div class="detail-header">
+      <button class="back-btn" id="settingsBackBtn">←</button>
+      <div>
+        <div class="detail-title">Ajustes</div>
+        <div class="detail-sub">Configuración de Ruta X</div>
+      </div>
+    </div>
+    <div class="settings-body">
+
+      <div class="settings-section">
+        <h3>🎯 Preferencias de captura</h3>
+        <div class="toggle-row">
+          <div class="toggle-label">
+            <strong>Pedir nombre de quien recibe</strong>
+            <span>Si está activo, se pide el nombre al marcar Entregado</span>
+          </div>
+          <button class="toggle-switch" id="toggleRecipient" role="switch" aria-checked="false"></button>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-label">
+            <strong>Permitir entregas sin foto</strong>
+            <span>Muestra la opción "Sin foto" para casos que no ameritan</span>
+          </div>
+          <button class="toggle-switch" id="toggleNoPhoto" role="switch" aria-checked="false"></button>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-label">
+            <strong>Preguntar WhatsApp al entregar</strong>
+            <span>Después de entregar, ofrece avisar al cliente con la evidencia</span>
+          </div>
+          <button class="toggle-switch" id="toggleWhatsApp" role="switch" aria-checked="true"></button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>✍️ Firma del cliente</h3>
+        <div class="toggle-row">
+          <div class="toggle-label">
+            <strong>Pedir firma al entregar</strong>
+            <span>El cliente firma con el dedo y queda como marca de agua en las fotos</span>
+          </div>
+          <button class="toggle-switch on" id="toggleSignature" role="switch" aria-checked="true"></button>
+        </div>
+        <div id="signatureColorWrap">
+          <div style="margin-top: 16px; margin-bottom: 10px; font-size: 13px; font-weight: 700; color: var(--ink);">Color de la firma</div>
+          <div class="color-picker" id="colorPicker">
+            <button class="color-chip" data-color="#a3e635" style="background: #a3e635;" title="Lima"></button>
+            <button class="color-chip" data-color="#22d3ee" style="background: #22d3ee;" title="Cian"></button>
+            <button class="color-chip" data-color="#fb923c" style="background: #fb923c;" title="Naranja"></button>
+            <button class="color-chip" data-color="#f472b6" style="background: #f472b6;" title="Rosa"></button>
+            <button class="color-chip" data-color="#ffffff" style="background: #ffffff; border: 1px solid #d1d5db;" title="Blanco"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>📁 Cargar ruta desde archivo</h3>
+        <p>Si la oficina no cargó tu ruta o te entregan más paquetes en el camino, sube un archivo CSV. Los nuevos destinos se agregan al final de tu ruta actual.</p>
+        <span class="csv-info-badge">Formato: guia, cliente, direccion, telefono, tipo</span>
+        <button class="settings-btn primary" id="csvSelectBtn">Seleccionar archivo CSV</button>
+        <input type="file" id="csvInput" accept=".csv,text/csv,text/plain" class="hidden" />
+        <div id="csvPreviewBox" class="hidden">
+          <div class="csv-preview" id="csvPreview"></div>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button class="settings-btn secondary" id="csvCancelBtn" style="flex: 1; margin-bottom: 0;">Cancelar</button>
+            <button class="settings-btn primary" id="csvConfirmBtn" style="flex: 1; margin-bottom: 0;">Agregar a mi ruta</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>👤 Cuenta</h3>
+        <p id="settingsAccountText">Estás como: —</p>
+        <button class="settings-btn secondary" id="changeMessengerBtn">Cambiar de mensajero</button>
+      </div>
+
+      <div class="settings-section">
+        <h3>🗑️ Reiniciar mi ruta</h3>
+        <p>Borra tus registros y vuelve a la ruta inicial de demostración. Solo afecta a tu usuario.</p>
+        <button class="settings-btn danger" id="resetRouteBtn">Reiniciar mis datos</button>
+      </div>
+
+      <div class="app-version">Ruta X · Demo local v0.10 · Sin conexión a servidor</div>
+    </div>
+  </div>
+</div>
+
+<div id="whatsappOverlay" class="whatsapp-overlay">
+  <div class="whatsapp-sheet">
+    <div class="wa-icon-circle">💬</div>
+    <div class="wa-sheet-title">Entrega registrada</div>
+    <div class="wa-sheet-sub" id="waSheetSub">¿Avisar al cliente por WhatsApp?</div>
+    <div class="wa-sheet-client" id="waClientName">—</div>
+    <div class="wa-sheet-phone" id="waClientPhone">—</div>
+    <div class="wa-sheet-actions-vertical">
+      <button class="wa-action-primary" id="waDirectBtn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <span id="waDirectBtnLabel">Enviar mensaje al cliente</span>
+      </button>
+      <button class="wa-action-secondary hidden" id="waSharePhotoBtn">📷 Compartir con foto</button>
+      <button class="wa-action-link" id="waSkipBtn">Ahora no</button>
+    </div>
+  </div>
+</div>
+
+<div id="addPackageOverlay" class="whatsapp-overlay">
+  <div class="whatsapp-sheet add-package-sheet">
+    <div class="add-package-title">Agregar a la ruta</div>
+    <div class="add-package-sub">Registra un nuevo destino sobre la marcha</div>
+
+    <label class="add-form-label">Tipo</label>
+    <div class="type-selector">
+      <button class="type-option active" id="typeDelivery" data-type="delivery">📦 Entrega</button>
+      <button class="type-option" id="typePickup" data-type="pickup">📤 Recogida</button>
+    </div>
+
+    <label class="add-form-label">Cliente *</label>
+    <input type="text" id="addClient" class="add-text-input" placeholder="Nombre del cliente" autocomplete="off" />
+
+    <label class="add-form-label">Dirección *</label>
+    <input type="text" id="addAddress" class="add-text-input" placeholder="Dirección de la visita" autocomplete="off" />
+
+    <label class="add-form-label">Teléfono (opcional)</label>
+    <input type="tel" id="addPhone" class="add-text-input" placeholder="Ej: 310 555 0101" autocomplete="off" />
+
+    <label class="add-form-label">Guía (opcional)</label>
+    <input type="text" id="addGuide" class="add-text-input" placeholder="Número de guía" autocomplete="off" />
+
+    <label class="add-form-label">Nota (opcional)</label>
+    <input type="text" id="addNote" class="add-text-input" placeholder="Ej: recoger sobre firmado" autocomplete="off" />
+
+    <div class="add-form-actions">
+      <button class="add-form-btn cancel" id="addCancelBtn">Cancelar</button>
+      <button class="add-form-btn confirm" id="addConfirmBtn">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<div id="processingOverlay" class="processing-overlay">
+  <div class="processing-box">
+    <div class="processing-spinner"></div>
+    <div class="processing-text" id="processingText">Aplicando firma a las fotos...</div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var MESSENGERS = {
+    JPK: {
+      code: 'JPK', name: 'Julián Rodolfo Guevara', zone: 'Ruta Sur',
+      route: []
+    },
+    CMA: {
+      code: 'CMA', name: 'Carlos Mendoza', zone: 'Ruta Norte',
+      route: [
+        { id: 'cma-1',  order: 1,  guide: 'CLL-3501', client: 'Carolina Vélez',    address: 'Calle 70N # 5-25, La Flora',          phone: '320 555 0201' },
+        { id: 'cma-2',  order: 2,  guide: 'CLL-3502', client: 'Mauricio Gómez',    address: 'Avenida 2N # 24-50, Santa Mónica',    phone: '315 555 0202' },
+        { id: 'cma-3',  order: 3,  guide: 'CLL-3503', client: 'Valentina Ríos',    address: 'Calle 44N # 6A-30, La Merced Norte',  phone: '317 555 0203' },
+        { id: 'cma-4',  order: 4,  guide: 'CLL-3504', client: 'Sebastián Mejía',   address: 'Carrera 35 # 5A-15, El Peñón',        phone: '312 555 0204' },
+        { id: 'cma-5',  order: 5,  guide: 'CLL-3505', client: 'Tatiana Herrera',   address: 'Calle 34N # 8-22, San Vicente',       phone: '310 555 0205' },
+        { id: 'cma-6',  order: 6,  guide: 'CLL-3506', client: 'Diego Acosta',      address: 'Avenida 6N # 42-15, Centenario Norte', phone: '318 555 0206' },
+        { id: 'cma-7',  order: 7,  guide: 'CLL-3507', client: 'Lorena Jaramillo',  address: 'Calle 23N # 5-40, Granada Norte',     phone: '311 555 0207' },
+        { id: 'cma-8',  order: 8,  guide: 'CLL-3508', client: 'Cristian Ospina',   address: 'Carrera 25 # 12-33, Arboledas',       phone: '316 555 0208' },
+        { id: 'cma-9',  order: 9,  guide: 'CLL-3509', client: 'Natalia Arango',    address: 'Calle 51N # 3B-60, Vipasa',           phone: '313 555 0209' },
+        { id: 'cma-10', order: 10, guide: 'CLL-3510', client: 'Juan Esteban Ruiz', address: 'Carrera 5 # 65-15, San Antonio',      phone: '319 555 0210' }
+      ]
+    },
+    PRA: {
+      code: 'PRA', name: 'Pedro Ramírez', zone: 'Ruta Oriente',
+      route: [
+        { id: 'pra-1',  order: 1,  guide: 'CLL-4521', client: 'Isabella Castaño',     address: 'Calle 25 # 80-45, El Poblado',       phone: '312 555 0301' },
+        { id: 'pra-2',  order: 2,  guide: 'CLL-4522', client: 'Alejandro Narváez',    address: 'Carrera 80 # 13-30, Ciudad Córdoba', phone: '320 555 0302' },
+        { id: 'pra-3',  order: 3,  guide: 'CLL-4523', client: 'Manuela Zapata',       address: 'Calle 48 # 72-15, Salomia',          phone: '315 555 0303' },
+        { id: 'pra-4',  order: 4,  guide: 'CLL-4524', client: 'Nicolás Bedoya',       address: 'Avenida 3E # 55-22, Calima',         phone: '311 555 0304' },
+        { id: 'pra-5',  order: 5,  guide: 'CLL-4525', client: 'Laura Restrepo',       address: 'Carrera 100 # 5-10, Cañaveralejo',   phone: '318 555 0305' },
+        { id: 'pra-6',  order: 6,  guide: 'CLL-4526', client: 'Santiago Henao',       address: 'Calle 15 # 90-45, Meléndez',         phone: '313 555 0306' },
+        { id: 'pra-7',  order: 7,  guide: 'CLL-4527', client: 'Daniela Cardona',      address: 'Avenida 5N # 60-80, La Campiña',     phone: '316 555 0307' },
+        { id: 'pra-8',  order: 8,  guide: 'CLL-4528', client: 'Andrés Montoya',       address: 'Calle 70 # 100-25, Pance',           phone: '314 555 0308' },
+        { id: 'pra-9',  order: 9,  guide: 'CLL-4529', client: 'Catalina Aristizábal', address: 'Carrera 56 # 8-45, El Retiro',       phone: '319 555 0309' },
+        { id: 'pra-10', order: 10, guide: 'CLL-4530', client: 'Camilo Betancur',      address: 'Calle 13 # 66-20, Champagnat',       phone: '321 555 0310' }
+      ]
+    },
+    ATO: {
+      code: 'ATO', name: 'Andrea Torres', zone: 'Ruta Centro',
+      route: [
+        { id: 'ato-1',  order: 1,  guide: 'CLL-5601', client: 'Marcela Sáenz',        address: 'Calle 12 # 5-40, Centro Histórico',  phone: '310 555 0401' },
+        { id: 'ato-2',  order: 2,  guide: 'CLL-5602', client: 'Juan Camilo Londoño',  address: 'Carrera 7 # 10-22, El Calvario',     phone: '315 555 0402' },
+        { id: 'ato-3',  order: 3,  guide: 'CLL-5603', client: 'Estefanía Gil',        address: 'Avenida 4 # 11-60, San Pedro',       phone: '318 555 0403' },
+        { id: 'ato-4',  order: 4,  guide: 'CLL-5604', client: 'Mateo Quintero',       address: 'Calle 13 # 8-15, El Peñón Centro',   phone: '311 555 0404' },
+        { id: 'ato-5',  order: 5,  guide: 'CLL-5605', client: 'Juliana Osorio',       address: 'Carrera 10 # 20-35, Los Cristales',  phone: '313 555 0405' },
+        { id: 'ato-6',  order: 6,  guide: 'CLL-5606', client: 'Samuel Villa',         address: 'Calle 6 # 15-25, San Cayetano',      phone: '316 555 0406' },
+        { id: 'ato-7',  order: 7,  guide: 'CLL-5607', client: 'Daniela Chamorro',     address: 'Carrera 42 # 5-60, Tequendama Centro', phone: '320 555 0407' },
+        { id: 'ato-8',  order: 8,  guide: 'CLL-5608', client: 'José David Muñoz',     address: 'Calle 18 # 30-15, Santa Fe',         phone: '312 555 0408' },
+        { id: 'ato-9',  order: 9,  guide: 'CLL-5609', client: 'Vanessa Caicedo',      address: 'Avenida 6 # 12-40, Bretaña Centro',  phone: '317 555 0409' },
+        { id: 'ato-10', order: 10, guide: 'CLL-5610', client: 'Andrés Felipe Pardo',  address: 'Calle 3 # 22-50, San Fernando Norte', phone: '319 555 0410' }
+      ]
+    }
+  };
+
+  var CURRENT_KEY = 'rutax_current_v10';
+  function dataKey(code, type) { return 'rutax_' + code + '_' + type + '_v10'; }
+  var DEFAULT_SETTINGS = { requireRecipient: false, allowNoPhoto: false, promptWhatsApp: true, requireSignature: true, signatureColor: '#a3e635' };
+
+  var state = {
+    messenger: null,
+    route: [],
+    events: [],
+    settings: Object.assign({}, DEFAULT_SETTINGS)
+  };
+
+  var currentPackage = null;
+  var currentPhotos = [];
+  var currentPhotoIndex = 0;
+  var currentNoPhoto = false;
+  var currentGPS = null;
+  var gpsWatchId = null;
+  var toastTimer = null;
+  var pendingCSVItems = null;
+  var pendingWhatsAppEvent = null;
+  var searchDebounceTimer = null;
+  var addFormType = 'delivery';
+
+  var signatureCanvas = null;
+  var signatureCtx = null;
+  var signatureDpr = 1;
+  var signatureLogicalW = 0;
+  var signatureLogicalH = 0;
+  var hasSignatureStrokes = false;
+  var isDrawing = false;
+  var signatureLastX = 0;
+  var signatureLastY = 0;
+
+  function saveMessengerData() {
+    if (!state.messenger) return;
+    try {
+      localStorage.setItem(dataKey(state.messenger.code, 'route'), JSON.stringify(state.route));
+      localStorage.setItem(dataKey(state.messenger.code, 'events'), JSON.stringify(state.events));
+      localStorage.setItem(dataKey(state.messenger.code, 'settings'), JSON.stringify(state.settings));
+    } catch (e) {
+      showToast('⚠ Almacenamiento lleno.');
+    }
+  }
+
+  function loadMessengerData(code) {
+    var def = MESSENGERS[code];
+    if (!def) return;
+    state.messenger = { code: def.code, name: def.name, zone: def.zone };
+
+    var savedRoute = localStorage.getItem(dataKey(code, 'route'));
+    var savedEvents = localStorage.getItem(dataKey(code, 'events'));
+    var savedSettings = localStorage.getItem(dataKey(code, 'settings'));
+
+    state.route = savedRoute ? safeParse(savedRoute, freshRoute(def)) : freshRoute(def);
+    state.events = savedEvents ? safeParse(savedEvents, []) : [];
+    state.settings = Object.assign({}, DEFAULT_SETTINGS, savedSettings ? safeParse(savedSettings, {}) : {});
+
+    state.route.forEach(function (p) {
+      if (!p.status) p.status = 'pending';
+      if (!p.type) p.type = 'delivery';
+    });
+    saveMessengerData();
+  }
+
+  function safeParse(str, fallback) {
+    try { return JSON.parse(str); } catch (e) { return fallback; }
+  }
+
+  function freshRoute(def) {
+    return def.route.map(function (p) {
+      return {
+        id: p.id, order: p.order, guide: p.guide, client: p.client,
+        address: p.address, phone: p.phone, status: 'pending', type: 'delivery'
+      };
+    });
+  }
+
+  function showToast(msg, duration) {
+    duration = duration || 2400;
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove('show'); }, duration);
+  }
+
+  function formatTime(ts) {
+    var d = new Date(ts);
+    var months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    var day = String(d.getDate()).padStart(2, '0');
+    var hh = String(d.getHours()).padStart(2, '0');
+    var mm = String(d.getMinutes()).padStart(2, '0');
+    return day + ' ' + months[d.getMonth()] + ' · ' + hh + ':' + mm;
+  }
+
+  function formatFullDate(ts) {
+    var d = new Date(ts);
+    var days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    var hh = String(d.getHours()).padStart(2, '0');
+    var mm = String(d.getMinutes()).padStart(2, '0');
+    return days[d.getDay()] + ' ' + d.getDate() + ' de ' + months[d.getMonth()] + ' · ' + hh + ':' + mm;
+  }
+
+  function formatShortDateTime(ts) {
+    var d = new Date(ts);
+    var months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    var day = d.getDate();
+    var hh = String(d.getHours()).padStart(2, '0');
+    var mm = String(d.getMinutes()).padStart(2, '0');
+    return day + ' ' + months[d.getMonth()] + ' · ' + hh + ':' + mm;
+  }
+
+  function compressImage(file, maxWidth, quality) {
+    maxWidth = maxWidth || 640;
+    quality = quality || 0.5;
+    return new Promise(function (resolve, reject) {
+      var img = new Image();
+      var url = URL.createObjectURL(file);
+      img.onload = function () {
+        URL.revokeObjectURL(url);
+        var canvas = document.createElement('canvas');
+        var width = img.width;
+        var height = img.height;
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = url;
+    });
+  }
+
+  function getEventPhotos(evt) {
+    if (evt.photos && evt.photos.length) return evt.photos;
+    if (evt.photo) return [evt.photo];
+    return [];
+  }
+
+  function getSignatureColorHex() {
+    return state.settings.signatureColor || '#a3e635';
+  }
+
+  function setupSignatureCanvas() {
+    var canvas = document.getElementById('signatureCanvas');
+    var wrap = document.getElementById('signatureWrap');
+    if (!canvas) return;
+
+    signatureCanvas = canvas;
+    signatureDpr = window.devicePixelRatio || 1;
+    var rect = canvas.getBoundingClientRect();
+    if (rect.width === 0) return;
+
+    signatureLogicalW = rect.width;
+    signatureLogicalH = rect.height;
+
+    canvas.width = Math.round(rect.width * signatureDpr);
+    canvas.height = Math.round(rect.height * signatureDpr);
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
+
+    signatureCtx = canvas.getContext('2d');
+    signatureCtx.scale(signatureDpr, signatureDpr);
+    signatureCtx.lineWidth = 2.5;
+    signatureCtx.lineCap = 'round';
+    signatureCtx.lineJoin = 'round';
+    signatureCtx.strokeStyle = getSignatureColorHex();
+
+    hasSignatureStrokes = false;
+    isDrawing = false;
+    wrap.classList.remove('signed');
+    document.getElementById('signatureHint').classList.remove('hidden');
+  }
+
+  function getCanvasPos(e) {
+    var rect = signatureCanvas.getBoundingClientRect();
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  }
+
+  function onSigStart(e) {
+    if (!signatureCtx) return;
+    e.preventDefault();
+    try { signatureCanvas.setPointerCapture(e.pointerId); } catch (err) {}
+    isDrawing = true;
+    var pos = getCanvasPos(e);
+    signatureLastX = pos.x;
+    signatureLastY = pos.y;
+    signatureCtx.beginPath();
+    signatureCtx.arc(pos.x, pos.y, 1.2, 0, Math.PI * 2);
+    signatureCtx.fillStyle = signatureCtx.strokeStyle;
+    signatureCtx.fill();
+    if (!hasSignatureStrokes) {
+      hasSignatureStrokes = true;
+      document.getElementById('signatureHint').classList.add('hidden');
+      document.getElementById('signatureWrap').classList.add('signed');
+    }
+  }
+
+  function onSigMove(e) {
+    if (!isDrawing || !signatureCtx) return;
+    e.preventDefault();
+    var pos = getCanvasPos(e);
+    signatureCtx.beginPath();
+    signatureCtx.moveTo(signatureLastX, signatureLastY);
+    signatureCtx.lineTo(pos.x, pos.y);
+    signatureCtx.stroke();
+    signatureLastX = pos.x;
+    signatureLastY = pos.y;
+  }
+
+  function onSigEnd(e) {
+    isDrawing = false;
+    try { signatureCanvas.releasePointerCapture(e.pointerId); } catch (err) {}
+  }
+
+  function clearSignature() {
+    if (!signatureCtx || !signatureCanvas) return;
+    signatureCtx.clearRect(0, 0, signatureLogicalW, signatureLogicalH);
+    hasSignatureStrokes = false;
+    document.getElementById('signatureHint').classList.remove('hidden');
+    document.getElementById('signatureWrap').classList.remove('signed');
+  }
+
+  function findPreviousSignature(clientName) {
+    for (var i = state.events.length - 1; i >= 0; i--) {
+      var e = state.events[i];
+      if (e.client === clientName && e.signature) return e.signature;
+    }
+    return null;
+  }
+
+  function checkReuseSignature() {
+    if (!currentPackage) return;
+    var reuseBtn = document.getElementById('sigReuseBtn');
+    var prev = findPreviousSignature(currentPackage.client);
+    if (prev) reuseBtn.classList.remove('hidden');
+    else reuseBtn.classList.add('hidden');
+  }
+
+  function reuseSignature() {
+    if (!currentPackage) return;
+    var prev = findPreviousSignature(currentPackage.client);
+    if (!prev) return;
+    clearSignature();
+    var img = new Image();
+    img.onload = function () {
+      var tempCanvas = document.createElement('canvas');
+      tempCanvas.width = img.width;
+      tempCanvas.height = img.height;
+      var tempCtx = tempCanvas.getContext('2d');
+      tempCtx.drawImage(img, 0, 0);
+      tempCtx.globalCompositeOperation = 'source-in';
+      tempCtx.fillStyle = getSignatureColorHex();
+      tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+      var aspect = tempCanvas.width / tempCanvas.height;
+      var drawW = signatureLogicalW * 0.85;
+      var drawH = drawW / aspect;
+      if (drawH > signatureLogicalH * 0.75) {
+        drawH = signatureLogicalH * 0.75;
+        drawW = drawH * aspect;
+      }
+      var drawX = (signatureLogicalW - drawW) / 2;
+      var drawY = (signatureLogicalH - drawH) / 2;
+
+      signatureCtx.drawImage(tempCanvas, drawX, drawY, drawW, drawH);
+      hasSignatureStrokes = true;
+      document.getElementById('signatureHint').classList.add('hidden');
+      document.getElementById('signatureWrap').classList.add('signed');
+      showToast('↺ Firma anterior cargada', 1600);
+    };
+    img.src = prev;
+  }
+
+  function truncateText(ctx, text, maxWidth) {
+    if (ctx.measureText(text).width <= maxWidth) return text;
+    var t = text;
+    while (t.length > 0 && ctx.measureText(t + '…').width > maxWidth) {
+      t = t.slice(0, -1);
+    }
+    return t + '…';
+  }
+
+  function generateWatermark(photoDataURL, signatureDataURL, recipientName, timestamp, color) {
+    return new Promise(function (resolve) {
+      var img = new Image();
+      img.onload = function () {
+        var W = img.width;
+        var H = img.height;
+        var canvas = document.createElement('canvas');
+        canvas.width = W;
+        canvas.height = H;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, W, H);
+
+        var bandHeight = Math.max(90, Math.min(140, Math.round(H * 0.19)));
+        var bandY = H - bandHeight;
+
+        var grad = ctx.createLinearGradient(0, bandY, 0, H);
+        grad.addColorStop(0, 'rgba(10, 31, 68, 0.60)');
+        grad.addColorStop(0.5, 'rgba(10, 31, 68, 0.85)');
+        grad.addColorStop(1, 'rgba(10, 31, 68, 0.95)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, bandY, W, bandHeight);
+
+        ctx.fillStyle = '#FF6B35';
+        ctx.fillRect(0, bandY, W, Math.max(2, Math.round(H * 0.004)));
+
+        // Firma al 28% del ancho
+        var sigTargetW = Math.round(W * 0.28);
+        var sigTargetH = Math.round(bandHeight * 0.74);
+        var sigX = Math.round(W * 0.03);
+        var sigY = bandY + Math.round((bandHeight - sigTargetH) / 2);
+
+        var drawTextAndFinish = function () {
+          var textX = sigX + sigTargetW + Math.round(W * 0.03);
+          var textMaxW = W - textX - Math.round(W * 0.15);
+          var fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif';
+
+          var recipientSize = Math.max(14, Math.round(W * 0.030));
+          ctx.font = '700 ' + recipientSize + 'px ' + fontFamily;
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          var recipientText = 'Recibido por: ' + (recipientName || 'Cliente');
+          recipientText = truncateText(ctx, recipientText, textMaxW);
+          var recipientY = bandY + bandHeight * 0.40;
+          ctx.fillText(recipientText, textX, recipientY);
+
+          var dateSize = Math.max(11, Math.round(W * 0.022));
+          ctx.font = '500 ' + dateSize + 'px ' + fontFamily;
+          ctx.fillStyle = 'rgba(255,255,255,0.78)';
+          ctx.fillText(formatShortDateTime(timestamp), textX, bandY + bandHeight * 0.72);
+
+          var logoSize = Math.max(12, Math.round(W * 0.022));
+          var logoY = bandY + bandHeight * 0.55;
+          var rightPad = Math.round(W * 0.03);
+
+          ctx.textAlign = 'right';
+          ctx.textBaseline = 'middle';
+          ctx.font = '800 ' + Math.round(logoSize * 1.15) + 'px ' + fontFamily;
+          ctx.fillStyle = '#FF6B35';
+          ctx.fillText('X', W - rightPad, logoY);
+          var xWidth = ctx.measureText('X').width;
+          ctx.font = '600 ' + logoSize + 'px ' + fontFamily;
+          ctx.fillStyle = 'rgba(255,255,255,0.85)';
+          ctx.fillText('Ruta', W - rightPad - xWidth - 2, logoY);
+
+          resolve(canvas.toDataURL('image/jpeg', 0.75));
+        };
+
+        if (signatureDataURL) {
+          var sigImg = new Image();
+          sigImg.onload = function () {
+            var sigAspect = sigImg.width / sigImg.height;
+            var drawW = sigTargetW;
+            var drawH = drawW / sigAspect;
+            if (drawH > sigTargetH) {
+              drawH = sigTargetH;
+              drawW = drawH * sigAspect;
+            }
+            var drawX = sigX + (sigTargetW - drawW) / 2;
+            var drawY = sigY + (sigTargetH - drawH) / 2;
+            ctx.drawImage(sigImg, drawX, drawY, drawW, drawH);
+            drawTextAndFinish();
+          };
+          sigImg.onerror = drawTextAndFinish;
+          sigImg.src = signatureDataURL;
+        } else {
+          drawTextAndFinish();
+        }
+      };
+      img.onerror = function () { resolve(photoDataURL); };
+      img.src = photoDataURL;
+    });
+  }
+
+  function showProcessing(text) {
+    document.getElementById('processingText').textContent = text || 'Procesando...';
+    document.getElementById('processingOverlay').classList.add('active');
+  }
+  function hideProcessing() {
+    document.getElementById('processingOverlay').classList.remove('active');
+  }
+
+  function normalizePhone(phone) {
+    if (!phone) return '';
+    var p = String(phone).replace(/[^\d]/g, '');
+    if (!p) return '';
+    if (p.indexOf('57') === 0 && p.length >= 12) return p;
+    if (p.length === 10) return '57' + p;
+    return p;
+  }
+
+  function buildWhatsAppMessage(evt) {
+    var clientName = evt.client || 'cliente';
+    var fecha = formatFullDate(evt.timestamp);
+    var msg = 'Hola ' + clientName + ', le confirmamos la entrega de su paquete ';
+    msg += (evt.guide || '') + ' el ' + fecha + '.';
+    if (evt.recipient) msg += '\nRecibido por: ' + evt.recipient + '.';
+    msg += '\n\nAdjuntamos la evidencia fotográfica firmada de la entrega.';
+    msg += '\n— Ruta X';
+    return msg;
+  }
+
+  function dataURLtoBlob(dataURL) {
+    var arr = dataURL.split(',');
+    var mime = arr[0].match(/:(.*?);/)[1];
+    var bstr = atob(arr[1]);
+    var n = bstr.length;
+    var u8 = new Uint8Array(n);
+    while (n--) u8[n] = bstr.charCodeAt(n);
+    return new Blob([u8], { type: mime });
+  }
+
+  function sendWhatsAppDirect(evt) {
+    var phone = normalizePhone(evt.phone || '');
+    if (!phone) { showToast('⚠ No hay teléfono registrado'); return; }
+    var msg = buildWhatsAppMessage(evt);
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  function shareWhatsAppWithPhotos(evt) {
+    var photos = getEventPhotos(evt);
+    var msg = buildWhatsAppMessage(evt);
+    var phone = normalizePhone(evt.phone || '');
+    if (!photos.length || !navigator.share) {
+      if (phone) sendWhatsAppDirect(evt);
+      else showToast('No se puede compartir');
+      return;
+    }
+    var tryShare = function () {
+      var files = [];
+      for (var i = 0; i < photos.length && i < 5; i++) {
+        try {
+          var blob = dataURLtoBlob(photos[i]);
+          files.push(new File([blob], 'entrega-' + (evt.guide || 'ruta') + '-' + (i + 1) + '.jpg', { type: 'image/jpeg' }));
+        } catch (e) {}
+      }
+      if (!files.length) return Promise.reject();
+      if (navigator.canShare && !navigator.canShare({ files: files })) return Promise.reject();
+      return navigator.share({ files: files, text: msg, title: 'Confirmación de entrega firmada' });
+    };
+    tryShare().catch(function (e) {
+      if (e && e.name === 'AbortError') return;
+      if (phone) sendWhatsAppDirect(evt);
+    });
+  }
+
+  function showWhatsAppPrompt(evt) {
+    pendingWhatsAppEvent = evt;
+    var photos = getEventPhotos(evt);
+    var phone = normalizePhone(evt.phone || '');
+    document.getElementById('waClientName').textContent = evt.client || 'el cliente';
+    document.getElementById('waClientPhone').textContent = phone ? '📱 +' + phone : '(sin teléfono registrado)';
+    var directBtn = document.getElementById('waDirectBtn');
+    var directLabel = document.getElementById('waDirectBtnLabel');
+    var photoBtn = document.getElementById('waSharePhotoBtn');
+    var subLabel = document.getElementById('waSheetSub');
+    if (phone) {
+      directBtn.classList.remove('hidden');
+      directLabel.textContent = 'Enviar mensaje al cliente';
+      if (photos.length) { photoBtn.classList.remove('hidden'); subLabel.textContent = 'Elige cómo avisar al cliente'; }
+      else { photoBtn.classList.add('hidden'); subLabel.textContent = 'Enviar mensaje directo al cliente'; }
+    } else if (photos.length) {
+      directBtn.classList.remove('hidden');
+      directLabel.textContent = 'Compartir con foto';
+      photoBtn.classList.add('hidden');
+      subLabel.textContent = 'Sin teléfono guardado: comparte manualmente';
+    } else {
+      directBtn.classList.add('hidden');
+      photoBtn.classList.add('hidden');
+      subLabel.textContent = 'Sin teléfono ni foto: no se puede avisar';
+    }
+    document.getElementById('whatsappOverlay').classList.add('active');
+  }
+
+  function closeWhatsAppPrompt() {
+    document.getElementById('whatsappOverlay').classList.remove('active');
+    pendingWhatsAppEvent = null;
+  }
+
+  function renderSplash() {
+    var box = document.getElementById('messengerOptions');
+    var html = '';
+    var codes = Object.keys(MESSENGERS);
+    for (var i = 0; i < codes.length; i++) {
+      var m = MESSENGERS[codes[i]];
+      html += '<button class="messenger-option" data-code="' + m.code + '">' +
+        '<span class="messenger-option-avatar">' + m.code + '</span>' +
+        '<span class="messenger-option-info">' +
+          '<div class="messenger-option-name">' + m.name + '</div>' +
+          '<div class="messenger-option-zone">' + m.zone + ' · ' + m.route.length + ' entregas</div>' +
+        '</span>' +
+        '<span class="messenger-option-arrow">›</span>' +
+      '</button>';
+    }
+    box.innerHTML = html;
+    var btns = box.querySelectorAll('.messenger-option');
+    for (var j = 0; j < btns.length; j++) {
+      (function (btn) {
+        btn.addEventListener('click', function () {
+          var code = btn.getAttribute('data-code');
+          localStorage.setItem(CURRENT_KEY, code);
+          loadMessengerData(code);
+          renderHeader(); renderRoute(); renderEvents();
+          hideSplash();
+          showToast('Bienvenido, ' + MESSENGERS[code].name.split(' ')[0]);
+        });
+      })(btns[j]);
+    }
+  }
+
+  function showSplash() {
+    document.getElementById('detailOverlay').classList.remove('active');
+    document.getElementById('eventOverlay').classList.remove('active');
+    document.getElementById('settingsOverlay').classList.remove('active');
+    document.getElementById('searchOverlay').classList.remove('active');
+    document.getElementById('whatsappOverlay').classList.remove('active');
+    document.getElementById('addPackageOverlay').classList.remove('active');
+    document.getElementById('splashOverlay').classList.add('active');
+  }
+  function hideSplash() {
+    document.getElementById('splashOverlay').classList.remove('active');
+  }
+
+  function renderHeader() {
+    if (!state.messenger) return;
+    document.getElementById('messengerName').textContent = state.messenger.name;
+    document.getElementById('avatar').textContent = state.messenger.code;
+    document.getElementById('messengerCode').textContent = 'Código: ' + state.messenger.code + ' · ' + state.messenger.zone;
+  }
+
+  function renderRoute() {
+    var list = document.getElementById('routeList');
+    var visible = state.route.filter(function (p) { return p.status !== 'delivered'; });
+    if (!state.route.length) {
+      list.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><div class="empty-title">No hay paquetes en la ruta</div><div>Toca el botón ➕ para agregar uno manualmente.</div></div>';
+    } else if (!visible.length) {
+      list.innerHTML = '<div class="empty celebrate"><div class="empty-icon">🎉</div><div class="empty-title">¡Todo entregado!</div><div>Revisa la pestaña Registro para ver el historial completo.</div></div>';
+    } else {
+      var html = '';
+      for (var i = 0; i < visible.length; i++) {
+        var p = visible[i];
+        var issues = state.events.filter(function (e) { return e.packageId === p.id && e.status === 'issue'; }).length;
+        var isPickup = p.type === 'pickup';
+        var label = p.status === 'issue' ? 'Novedad' : (isPickup ? 'Recogida' : 'Pendiente');
+        var icon = p.status === 'issue' ? '⚠' : (isPickup ? '📤' : '○');
+        var cardClass = p.status + (isPickup ? ' pickup' : '');
+        html += '<div class="package-card ' + cardClass + '" data-id="' + p.id + '">' +
+          '<div class="order-badge">' + p.order + '</div>' +
+          '<div class="package-info">' +
+            '<div class="package-top">' +
+              '<span class="guide">' + (p.guide || (isPickup ? 'RECOGIDA' : '—')) + '</span>' +
+              '<div class="badges-wrap">' +
+                (isPickup ? '<span class="status-badge pickup-badge">📤 Recoger</span>' : '') +
+                '<span class="status-badge ' + p.status + '">' + icon + ' ' + label + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="client">' + p.client + '</div>' +
+            '<div class="address">' + p.address + '</div>' +
+            (issues > 0 ? '<div class="issue-count">⚠ ' + issues + ' novedad' + (issues > 1 ? 'es' : '') + ' previa' + (issues > 1 ? 's' : '') + '</div>' : '') +
+          '</div>' +
+          '<div class="chevron">›</div>' +
+        '</div>';
+      }
+      list.innerHTML = html;
+      var cards = list.querySelectorAll('.package-card');
+      for (var k = 0; k < cards.length; k++) {
+        (function (card) {
+          card.addEventListener('click', function () {
+            var id = card.getAttribute('data-id');
+            var pkg = null;
+            for (var m = 0; m < state.route.length; m++) {
+              if (state.route[m].id === id) { pkg = state.route[m]; break; }
+            }
+            if (pkg) openDetail(pkg);
+          });
+        })(cards[k]);
+      }
+    }
+    var total = state.route.length || 1;
+    var done = state.route.filter(function (p) { return p.status === 'delivered'; }).length;
+    document.getElementById('progressText').textContent = done + ' de ' + state.route.length + ' entregados';
+    document.getElementById('progressFill').style.width = ((done / total) * 100) + '%';
+  }
+
+  function renderEvents() {
+    var box = document.getElementById('eventsTable');
+    if (!state.events.length) {
+      box.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">Aún no hay registros</div><div>Comienza a entregar paquetes para ver aquí tu historial.</div></div>';
+      return;
+    }
+    var sorted = state.events.slice().sort(function (a, b) { return b.timestamp - a.timestamp; });
+    var html = '<div class="events-header"><h3>Registro de entregas</h3><span class="events-count">' + state.events.length + ' evento' + (state.events.length > 1 ? 's' : '') + '</span></div>';
+    for (var i = 0; i < sorted.length; i++) {
+      var e = sorted[i];
+      var photos = getEventPhotos(e);
+      var statusText = e.status === 'delivered' ? '✓ Entregado' : '⚠ Novedad';
+      var firstPhoto = photos[0];
+      var photoCell;
+      var sigBadge = e.signature ? '<span class="sig-badge">✍️</span>' : '';
+      if (firstPhoto) {
+        photoCell = '<img src="' + firstPhoto + '" alt="foto" />' + (photos.length > 1 ? '<span class="photo-count-badge">+' + (photos.length - 1) + '</span>' : '') + sigBadge;
+      } else {
+        photoCell = '<div class="no-photo">Sin foto</div>' + sigBadge;
+      }
+      html += '<div class="event-card" data-id="' + e.id + '">' +
+        '<div class="event-photo">' + photoCell + '</div>' +
+        '<div class="event-info">' +
+          '<div class="event-top"><span class="event-guide">' + e.guide + '</span><span class="status-badge ' + e.status + '">' + statusText + '</span></div>' +
+          '<div class="event-address">' + e.address + '</div>' +
+          (e.recipient ? '<div class="event-note">Recibió: ' + e.recipient + '</div>' : '') +
+          (e.note ? '<div class="event-note">"' + e.note + '"</div>' : '') +
+          '<div class="event-meta"><span>🕒 ' + formatTime(e.timestamp) + '</span>' + (photos.length > 1 ? '<span>📷 ' + photos.length + ' fotos</span>' : '') + '</div>' +
+        '</div>' +
+      '</div>';
+    }
+    box.innerHTML = html;
+    var cards = box.querySelectorAll('.event-card');
+    for (var j = 0; j < cards.length; j++) {
+      (function (card) {
+        card.addEventListener('click', function () {
+          var id = card.getAttribute('data-id');
+          var evt = null;
+          for (var m = 0; m < state.events.length; m++) {
+            if (state.events[m].id === id) { evt = state.events[m]; break; }
+          }
+          if (evt) openEventDetail(evt);
+        });
+      })(cards[j]);
+    }
+  }
+
+  function updateEvidenceFormUI() {
+    var recipientWrap = document.getElementById('recipientFieldWrap');
+    if (state.settings.requireRecipient) recipientWrap.classList.remove('hidden');
+    else recipientWrap.classList.add('hidden');
+
+    var sigSection = document.getElementById('signatureSection');
+    if (state.settings.requireSignature) sigSection.classList.remove('hidden');
+    else sigSection.classList.add('hidden');
+
+    var noPhotoBtn = document.getElementById('noPhotoBtn');
+    if (state.settings.allowNoPhoto && !currentPhotos.length && !currentNoPhoto) {
+      noPhotoBtn.classList.remove('hidden');
+      noPhotoBtn.classList.remove('active');
+      noPhotoBtn.innerHTML = '📷 Marcar entrega sin foto';
+    } else if (state.settings.allowNoPhoto && currentNoPhoto) {
+      noPhotoBtn.classList.remove('hidden');
+      noPhotoBtn.classList.add('active');
+      noPhotoBtn.innerHTML = '✓ Entrega sin foto marcada · toca para quitar';
+    } else {
+      noPhotoBtn.classList.add('hidden');
+    }
+
+    var area = document.getElementById('photoArea');
+    if (currentNoPhoto) area.classList.add('no-photo-mode');
+    else area.classList.remove('no-photo-mode');
+
+    var placeholder = document.getElementById('photoPlaceholder');
+    var noPhotoContent = document.getElementById('noPhotoModeContent');
+    var preview = document.getElementById('photoPreview');
+    var posInd = document.getElementById('photoPosIndicator');
+
+    if (currentPhotos.length) {
+      preview.classList.remove('hidden');
+      preview.src = currentPhotos[currentPhotoIndex];
+      placeholder.classList.add('hidden');
+      noPhotoContent.classList.add('hidden');
+      if (currentPhotos.length > 1) {
+        posInd.classList.remove('hidden');
+        posInd.textContent = (currentPhotoIndex + 1) + '/' + currentPhotos.length;
+      } else {
+        posInd.classList.add('hidden');
+      }
+    } else if (currentNoPhoto) {
+      preview.classList.add('hidden');
+      placeholder.classList.add('hidden');
+      noPhotoContent.classList.remove('hidden');
+      posInd.classList.add('hidden');
+    } else {
+      preview.classList.add('hidden');
+      placeholder.classList.remove('hidden');
+      noPhotoContent.classList.add('hidden');
+      posInd.classList.add('hidden');
+    }
+
+    var thumbs = document.getElementById('photoThumbs');
+    if (currentPhotos.length > 1) {
+      thumbs.classList.remove('hidden');
+      var thtml = '';
+      for (var i = 0; i < currentPhotos.length; i++) {
+        thtml += '<div class="photo-thumb' + (i === currentPhotoIndex ? ' active' : '') + '" data-i="' + i + '">' +
+          '<img src="' + currentPhotos[i] + '" />' +
+          '<button class="photo-thumb-remove" data-remove="' + i + '" title="Eliminar">✕</button>' +
+        '</div>';
+      }
+      thumbs.innerHTML = thtml;
+      var ths = thumbs.querySelectorAll('.photo-thumb');
+      for (var t = 0; t < ths.length; t++) {
+        (function (th) {
+          th.addEventListener('click', function (evt) {
+            if (evt.target.classList.contains('photo-thumb-remove')) return;
+            currentPhotoIndex = parseInt(th.getAttribute('data-i'), 10);
+            updateEvidenceFormUI();
+          });
+        })(ths[t]);
+      }
+      var removes = thumbs.querySelectorAll('.photo-thumb-remove');
+      for (var r = 0; r < removes.length; r++) {
+        (function (rm) {
+          rm.addEventListener('click', function (evt) {
+            evt.stopPropagation();
+            removePhotoAt(parseInt(rm.getAttribute('data-remove'), 10));
+          });
+        })(removes[r]);
+      }
+    } else {
+      thumbs.classList.add('hidden');
+      thumbs.innerHTML = '';
+    }
+
+    var addBtn = document.getElementById('addPhotoBtn');
+    if (currentPhotos.length) {
+      addBtn.classList.remove('hidden');
+      addBtn.textContent = '➕ Agregar otra foto' + (currentPhotos.length > 1 ? ' (' + currentPhotos.length + ' en total)' : '');
+    } else {
+      addBtn.classList.add('hidden');
+    }
+
+    var countLbl = document.getElementById('photoCountLabel');
+    if (currentPhotos.length) {
+      countLbl.classList.remove('hidden');
+      countLbl.textContent = currentPhotos.length + ' foto' + (currentPhotos.length > 1 ? 's' : '');
+    } else {
+      countLbl.classList.add('hidden');
+    }
+  }
+
+  function addPhotoToCurrent(dataURL) {
+    currentPhotos.push(dataURL);
+    currentPhotoIndex = currentPhotos.length - 1;
+    currentNoPhoto = false;
+    updateEvidenceFormUI();
+  }
+
+  function removePhotoAt(idx) {
+    if (idx < 0 || idx >= currentPhotos.length) return;
+    currentPhotos.splice(idx, 1);
+    if (currentPhotoIndex >= currentPhotos.length) currentPhotoIndex = Math.max(0, currentPhotos.length - 1);
+    if (!currentPhotos.length) currentPhotoIndex = 0;
+    updateEvidenceFormUI();
+    showToast('Foto eliminada', 1400);
+  }
+
+  function openDetail(pkg) {
+    currentPackage = pkg;
+    currentPhotos = [];
+    currentPhotoIndex = 0;
+    currentNoPhoto = false;
+    currentGPS = null;
+
+    var isPickup = pkg.type === 'pickup';
+    document.getElementById('detailTitle').textContent = isPickup ? 'Registrar recogida' : 'Registrar evidencia';
+    document.getElementById('detailGuide').textContent = 'Guía ' + (pkg.guide || '—');
+    document.getElementById('detailClient').textContent = pkg.client;
+    document.getElementById('detailAddress').textContent = pkg.address;
+    document.getElementById('detailPhone').textContent = pkg.phone || '—';
+
+    var btnEnt = document.getElementById('btnEntregado');
+    btnEnt.textContent = isPickup ? '✓ Recogido' : '✓ Entregado';
+    if (isPickup) btnEnt.classList.add('pickup');
+    else btnEnt.classList.remove('pickup');
+
+    document.getElementById('recipientInput').value = '';
+    document.getElementById('noteInput').value = '';
+    document.getElementById('photoInput').value = '';
+
+    updateEvidenceFormUI();
+    document.getElementById('detailOverlay').classList.add('active');
+
+    if (state.settings.requireSignature) {
+      setTimeout(function () {
+        setupSignatureCanvas();
+        checkReuseSignature();
+      }, 50);
+    }
+    startGPS();
+  }
+
+  function closeDetail() {
+    document.getElementById('detailOverlay').classList.remove('active');
+    if (gpsWatchId !== null) {
+      navigator.geolocation.clearWatch(gpsWatchId);
+      gpsWatchId = null;
+    }
+    currentPackage = null;
+    currentPhotos = [];
+    currentPhotoIndex = 0;
+    currentNoPhoto = false;
+    currentGPS = null;
+    hasSignatureStrokes = false;
+  }
+
+  function startGPS() {
+    var gpsBox = document.getElementById('gpsBox');
+    var gpsText = document.getElementById('gpsText');
+    gpsBox.classList.remove('ok', 'error');
+    if (!navigator.geolocation) {
+      gpsText.textContent = 'GPS no disponible en este dispositivo';
+      gpsBox.classList.add('error');
+      return;
+    }
+    gpsText.textContent = 'Buscando ubicación...';
+    if (gpsWatchId !== null) navigator.geolocation.clearWatch(gpsWatchId);
+    gpsWatchId = navigator.geolocation.watchPosition(
+      function (pos) {
+        currentGPS = { lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: Math.round(pos.coords.accuracy) };
+        gpsText.innerHTML = '<strong>' + currentGPS.lat.toFixed(5) + ', ' + currentGPS.lng.toFixed(5) + '</strong><br><small>Precisión: ±' + currentGPS.accuracy + ' m</small>';
+        gpsBox.classList.add('ok');
+        gpsBox.classList.remove('error');
+      },
+      function (err) {
+        gpsText.textContent = 'No se pudo obtener ubicación: ' + err.message;
+        gpsBox.classList.add('error');
+        gpsBox.classList.remove('ok');
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    );
+  }
+
+  function saveDelivery(status) {
+    if (!currentPackage) return;
+    var isPickup = currentPackage.type === 'pickup';
+
+    if (status === 'delivered') {
+      if (!currentPhotos.length && !(state.settings.allowNoPhoto && currentNoPhoto)) {
+        if (state.settings.allowNoPhoto) showToast('⚠ Toma una foto o marca "sin foto"');
+        else showToast('⚠ Toma una foto para ' + (isPickup ? 'recoger' : 'entregar'));
+        return;
+      }
+      if (state.settings.requireRecipient) {
+        var r = document.getElementById('recipientInput').value.trim();
+        if (!r) { showToast('⚠ Escribe quién ' + (isPickup ? 'entrega' : 'recibe') + ' el paquete'); return; }
+      }
+      if (state.settings.requireSignature && !hasSignatureStrokes) {
+        showToast('⚠ El cliente debe firmar para confirmar');
+        return;
+      }
+    }
+
+    var recipient = document.getElementById('recipientInput').value.trim();
+    var note = document.getElementById('noteInput').value.trim();
+
+    var needSignature = status === 'delivered' && state.settings.requireSignature && hasSignatureStrokes;
+
+    var signatureData = null;
+    if (needSignature) {
+      try { signatureData = signatureCanvas.toDataURL('image/png'); }
+      catch (e) { showToast('No se pudo capturar la firma'); return; }
+    }
+
+    if (needSignature && currentPhotos.length > 0) {
+      showProcessing('Aplicando firma a ' + currentPhotos.length + ' foto' + (currentPhotos.length > 1 ? 's' : '') + '...');
+      var color = getSignatureColorHex();
+      var watermarked = [];
+      var ts = Date.now();
+      var processNext = function (i) {
+        if (i >= currentPhotos.length) {
+          finalizeEvent._status = status;
+          finalizeEvent._recipient = recipient;
+          finalizeEvent._note = note;
+          finalizeEvent._isPickup = isPickup;
+          finalizeEvent(watermarked, signatureData, color);
+          return;
+        }
+        generateWatermark(currentPhotos[i], signatureData, recipient, ts, color).then(function (wm) {
+          watermarked.push(wm);
+          processNext(i + 1);
+        }).catch(function () {
+          watermarked.push(currentPhotos[i]);
+          processNext(i + 1);
+        });
+      };
+      processNext(0);
+    } else {
+      finalizeEvent._status = status;
+      finalizeEvent._recipient = recipient;
+      finalizeEvent._note = note;
+      finalizeEvent._isPickup = isPickup;
+      finalizeEvent(currentPhotos.slice(), signatureData, needSignature ? getSignatureColorHex() : null);
+    }
+  }
+
+  function finalizeEvent(photos, signatureData, color) {
+    var pendingStatus = finalizeEvent._status || 'delivered';
+    var recipient = finalizeEvent._recipient || '';
+    var note = finalizeEvent._note || '';
+    var isPickup = finalizeEvent._isPickup || false;
+
+    var event = {
+      id: 'evt-' + Date.now(),
+      packageId: currentPackage.id,
+      guide: currentPackage.guide,
+      client: currentPackage.client,
+      address: currentPackage.address,
+      phone: currentPackage.phone || '',
+      recipient: recipient,
+      status: pendingStatus,
+      type: currentPackage.type || 'delivery',
+      photos: photos,
+      photo: photos[0] || null,
+      noPhoto: currentNoPhoto && !photos.length,
+      signature: signatureData,
+      signatureColor: color,
+      note: note,
+      gps: currentGPS,
+      messengerCode: state.messenger.code,
+      messengerName: state.messenger.name,
+      timestamp: Date.now()
+    };
+
+    state.events.push(event);
+
+    var pkg = null;
+    for (var i = 0; i < state.route.length; i++) {
+      if (state.route[i].id === currentPackage.id) { pkg = state.route[i]; break; }
+    }
+    if (pkg) pkg.status = pendingStatus === 'delivered' ? 'delivered' : 'issue';
+
+    saveMessengerData();
+    hideProcessing();
+    closeDetail();
+    renderRoute();
+    renderEvents();
+
+    if (pendingStatus === 'delivered' && state.settings.promptWhatsApp) {
+      showWhatsAppPrompt(event);
+    } else {
+      var verb = isPickup ? 'Recogida' : 'Entrega';
+      showToast(pendingStatus === 'delivered' ? '✓ ' + verb + ' registrada' : '⚠ Novedad registrada');
+    }
+  }
+
+  var eventCarouselState = { evt: null, index: 0, photos: [] };
+
+  function openEventDetail(evt) {
+    document.getElementById('eventDetailGuide').textContent = 'Guía ' + (evt.guide || '—');
+    var photos = getEventPhotos(evt);
+    eventCarouselState = { evt: evt, index: 0, photos: photos };
+    renderEventCarousel();
+    renderEventDetailBody(evt);
+    document.getElementById('eventOverlay').classList.add('active');
+  }
+
+  function renderEventCarousel() {
+    var wrap = document.getElementById('eventCarouselWrap');
+    var photos = eventCarouselState.photos;
+    var idx = eventCarouselState.index;
+    var evt = eventCarouselState.evt;
+    if (!photos.length) {
+      var emptyText = evt.noPhoto ? 'Entrega marcada sin foto' : 'Sin fotografía de evidencia';
+      wrap.innerHTML = '<div class="carousel-main"><div class="empty-photo">' + emptyText + '</div></div>';
+      return;
+    }
+    var html = '<div class="carousel-main"><img src="' + photos[idx] + '" alt="Evidencia ' + (idx + 1) + '" />';
+    if (photos.length > 1) {
+      html += '<button class="car-nav prev" id="carPrevBtn">‹</button><button class="car-nav next" id="carNextBtn">›</button><div class="car-counter">' + (idx + 1) + ' / ' + photos.length + '</div>';
+    }
+    html += '</div>';
+    if (photos.length > 1) {
+      html += '<div class="carousel-thumbs" id="carThumbs">';
+      for (var i = 0; i < photos.length; i++) {
+        html += '<img class="carousel-thumb' + (i === idx ? ' active' : '') + '" data-i="' + i + '" src="' + photos[i] + '" />';
+      }
+      html += '</div>';
+    }
+    wrap.innerHTML = html;
+    if (photos.length > 1) {
+      document.getElementById('carPrevBtn').addEventListener('click', function () {
+        eventCarouselState.index = (eventCarouselState.index - 1 + photos.length) % photos.length;
+        renderEventCarousel();
+      });
+      document.getElementById('carNextBtn').addEventListener('click', function () {
+        eventCarouselState.index = (eventCarouselState.index + 1) % photos.length;
+        renderEventCarousel();
+      });
+      var ths = document.querySelectorAll('#carThumbs .carousel-thumb');
+      for (var t = 0; t < ths.length; t++) {
+        (function (th) {
+          th.addEventListener('click', function () {
+            eventCarouselState.index = parseInt(th.getAttribute('data-i'), 10);
+            renderEventCarousel();
+          });
+        })(ths[t]);
+      }
+    }
+  }
+
+  function renderEventDetailBody(evt) {
+    var photos = getEventPhotos(evt);
+    var statusLabel = evt.status === 'delivered' ? '✓ Entregado' : '⚠ Novedad';
+    var statusClass = evt.status === 'delivered' ? 'delivered' : 'issue';
+    if (evt.type === 'pickup' && evt.status === 'delivered') statusLabel = '✓ Recogido';
+    var phone = normalizePhone(evt.phone || '');
+    var hasPhone = phone.length > 0;
+
+    var html = '';
+    html += '<div class="ev-status-row"><span class="status-badge ' + statusClass + '">' + statusLabel + '</span><span class="ev-time">' + formatTime(evt.timestamp) + '</span></div>';
+    html += '<div class="ev-block"><div class="ev-label">Cliente</div><div class="ev-value">' + (evt.client || '—') + '</div></div>';
+    if (evt.phone) html += '<div class="ev-block"><div class="ev-label">Teléfono</div><div class="ev-value">' + evt.phone + '</div></div>';
+    html += '<div class="ev-block"><div class="ev-label">Dirección</div><div class="ev-value">' + (evt.address || '—') + '</div></div>';
+    if (evt.recipient) html += '<div class="ev-block"><div class="ev-label">Recibido por</div><div class="ev-value">' + evt.recipient + '</div></div>';
+    if (evt.note) html += '<div class="ev-block note"><div class="ev-label">Nota del mensajero</div><div class="ev-value">"' + evt.note + '"</div></div>';
+    html += '<div class="ev-grid">' +
+      '<div class="ev-block"><div class="ev-label">Fecha y hora</div><div class="ev-value" style="font-size:13px;">' + formatFullDate(evt.timestamp) + '</div></div>' +
+      '<div class="ev-block"><div class="ev-label">Mensajero</div><div class="ev-value" style="font-size:13px;">' + (evt.messengerName || state.messenger.name) + '<br><span style="color:var(--muted);font-weight:500;font-size:11px;">' + (evt.messengerCode || state.messenger.code) + '</span></div></div>' +
+    '</div>';
+    if (photos.length > 1) html += '<div class="ev-block"><div class="ev-label">Evidencias</div><div class="ev-value">' + photos.length + ' fotografías adjuntas</div></div>';
+    if (evt.signature) html += '<div class="ev-signature-img"><div class="ev-label">Firma del cliente</div><img src="' + evt.signature + '" alt="Firma" /></div>';
+    if (evt.gps) {
+      html += '<div class="ev-block"><div class="ev-label">Ubicación GPS</div><div class="ev-value" style="font-size:13px;">' + evt.gps.lat.toFixed(5) + ', ' + evt.gps.lng.toFixed(5) + (evt.gps.accuracy ? '<br><span style="color:var(--muted);font-weight:500;font-size:11px;">Precisión ±' + evt.gps.accuracy + ' m</span>' : '') + '</div></div>';
+    }
+    if (evt.status === 'delivered') html += '<div class="wa-actions-wrap" id="evtWaActions"></div>';
+    document.getElementById('eventDetailBody').innerHTML = html;
+
+    if (evt.status === 'delivered') {
+      var actions = document.getElementById('evtWaActions');
+      var btnHtml = '';
+      if (hasPhone) {
+        btnHtml += '<button class="wa-share-btn" data-action="direct"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>Enviar mensaje al cliente</button>';
+      }
+      if (photos.length) {
+        btnHtml += '<button class="wa-share-btn' + (hasPhone ? ' secondary' : '') + '" data-action="photo">📷 Compartir ' + (photos.length > 1 ? photos.length + ' fotos' : 'con foto') + '</button>';
+      }
+      actions.innerHTML = btnHtml;
+      var buttons = actions.querySelectorAll('button');
+      for (var i = 0; i < buttons.length; i++) {
+        (function (btn) {
+          btn.addEventListener('click', function () {
+            var action = btn.getAttribute('data-action');
+            if (action === 'direct') sendWhatsAppDirect(evt);
+            else shareWhatsAppWithPhotos(evt);
+          });
+        })(buttons[i]);
+      }
+    }
+  }
+
+  function closeEventDetail() {
+    document.getElementById('eventOverlay').classList.remove('active');
+  }
+
+  function openAddPackage() {
+    document.getElementById('addClient').value = '';
+    document.getElementById('addAddress').value = '';
+    document.getElementById('addPhone').value = '';
+    document.getElementById('addGuide').value = '';
+    document.getElementById('addNote').value = '';
+    setAddFormType('delivery');
+    document.getElementById('addPackageOverlay').classList.add('active');
+    setTimeout(function () { document.getElementById('addClient').focus(); }, 200);
+  }
+  function closeAddPackage() {
+    document.getElementById('addPackageOverlay').classList.remove('active');
+  }
+  function setAddFormType(type) {
+    addFormType = type;
+    var btnD = document.getElementById('typeDelivery');
+    var btnP = document.getElementById('typePickup');
+    btnD.classList.remove('active', 'pickup-active');
+    btnP.classList.remove('active', 'pickup-active');
+    if (type === 'pickup') btnP.classList.add('active', 'pickup-active');
+    else btnD.classList.add('active');
+  }
+  function confirmAddPackage() {
+    var client = document.getElementById('addClient').value.trim();
+    var address = document.getElementById('addAddress').value.trim();
+    var phone = document.getElementById('addPhone').value.trim();
+    var guide = document.getElementById('addGuide').value.trim();
+    var note = document.getElementById('addNote').value.trim();
+    if (!client) { showToast('⚠ Escribe el nombre del cliente'); return; }
+    if (!address) { showToast('⚠ Escribe la dirección'); return; }
+    var maxOrder = 0;
+    for (var i = 0; i < state.route.length; i++) {
+      if ((state.route[i].order || 0) > maxOrder) maxOrder = state.route[i].order;
+    }
+    state.route.push({
+      id: 'pkg-manual-' + Date.now(),
+      order: maxOrder + 1,
+      guide: guide || (addFormType === 'pickup' ? 'REC-' + (maxOrder + 1) : 'MAN-' + (maxOrder + 1)),
+      client: client,
+      address: address,
+      phone: phone,
+      type: addFormType,
+      manualNote: note,
+      status: 'pending',
+      fromManual: true
+    });
+    saveMessengerData();
+    renderRoute();
+    closeAddPackage();
+    showToast('✓ Agregado a tu ruta');
+  }
+
+  function normalizeQuery(s) {
+    return (s || '').toString().toLowerCase().trim()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+  function buildDateHaystack(ts) {
+    var d = new Date(ts);
+    var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    var monthsShort = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    var days = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
+    return [d.getDate(), d.getMonth() + 1, d.getFullYear(), months[d.getMonth()], monthsShort[d.getMonth()], days[d.getDay()]].join(' ');
+  }
+  function matchesAll(haystack, query) {
+    var terms = query.split(/\s+/).filter(Boolean);
+    if (!terms.length) return true;
+    for (var i = 0; i < terms.length; i++) {
+      if (haystack.indexOf(terms[i]) < 0) return false;
+    }
+    return true;
+  }
+  function performSearch(query) {
+    var q = normalizeQuery(query);
+    var hasQuery = q.length > 0;
+    var pending = [];
+    var events = [];
+    for (var i = 0; i < state.route.length; i++) {
+      var p = state.route[i];
+      if (p.status !== 'pending') continue;
+      var hayP = normalizeQuery([p.client, p.guide, p.address, p.phone].filter(Boolean).join(' '));
+      if (!hasQuery || matchesAll(hayP, q)) pending.push(p);
+    }
+    for (var j = 0; j < state.events.length; j++) {
+      var e = state.events[j];
+      var parts = [e.client, e.guide, e.address, e.recipient, e.note, e.phone, buildDateHaystack(e.timestamp)];
+      var hayE = normalizeQuery(parts.filter(Boolean).join(' '));
+      if (!hasQuery || matchesAll(hayE, q)) events.push(e);
+    }
+    events.sort(function (a, b) { return b.timestamp - a.timestamp; });
+    return { pending: pending, events: events, hasQuery: hasQuery };
+  }
+
+  function renderSearchResults(query) {
+    var box = document.getElementById('searchResults');
+    var res = performSearch(query);
+    var html = '';
+    if (!res.hasQuery) {
+      html += '<div class="sr-section-title">Entregas recientes</div>';
+      var recent = res.events.slice(0, 8);
+      if (!recent.length && !res.pending.length) {
+        box.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">Busca cualquier entrega</div><div>Por nombre, guía, dirección, fecha o quién recibió.</div></div>';
+        return;
+      }
+      for (var i = 0; i < recent.length; i++) html += buildEventResultCard(recent[i]);
+      box.innerHTML = html;
+      attachSearchResultHandlers();
+      return;
+    }
+    var total = res.pending.length + res.events.length;
+    if (!total) {
+      box.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">Sin resultados</div><div>No encontramos nada para "' + query + '".</div></div>';
+      return;
+    }
+    if (res.pending.length) {
+      html += '<div class="sr-section-title">Pendientes (' + res.pending.length + ')</div>';
+      for (var k = 0; k < res.pending.length; k++) html += buildPendingResultCard(res.pending[k]);
+    }
+    if (res.events.length) {
+      html += '<div class="sr-section-title">Entregas (' + res.events.length + ')</div>';
+      for (var m = 0; m < res.events.length; m++) html += buildEventResultCard(res.events[m]);
+    }
+    box.innerHTML = html;
+    attachSearchResultHandlers();
+  }
+
+  function buildPendingResultCard(p) {
+    var isPickup = p.type === 'pickup';
+    return '<div class="sr-card" data-type="pending" data-id="' + p.id + '">' +
+      '<div class="sr-photo">' + (isPickup ? '📤' : '📦') + '</div>' +
+      '<div class="sr-body"><div class="sr-top"><span class="sr-guide">' + (p.guide || '—') + '</span><span class="status-badge pending">○ ' + (isPickup ? 'Recogida' : 'Pendiente') + '</span></div><div class="sr-title">' + p.client + '</div><div class="sr-sub">' + p.address + '</div></div>' +
+      '<div class="chevron">›</div>' +
+    '</div>';
+  }
+
+  function buildEventResultCard(e) {
+    var photos = getEventPhotos(e);
+    var statusText = e.status === 'delivered' ? (e.type === 'pickup' ? '✓ Recogido' : '✓ Entregado') : '⚠ Novedad';
+    var photoCell;
+    if (photos.length) photoCell = '<img src="' + photos[0] + '" />' + (photos.length > 1 ? '<span class="photo-count-badge">+' + (photos.length - 1) + '</span>' : '');
+    else if (e.noPhoto) photoCell = '🚫';
+    else photoCell = '📋';
+    var sigIcon = e.signature ? ' · ✍️' : '';
+    return '<div class="sr-card" data-type="event" data-id="' + e.id + '">' +
+      '<div class="sr-photo">' + photoCell + '</div>' +
+      '<div class="sr-body"><div class="sr-top"><span class="sr-guide">' + e.guide + '</span><span class="status-badge ' + e.status + '">' + statusText + '</span></div><div class="sr-title">' + (e.client || '—') + '</div><div class="sr-sub">' + (e.address || '') + '</div>' + (e.recipient ? '<div class="sr-sub">Recibió: ' + e.recipient + '</div>' : '') + '<div class="sr-date">🕒 ' + formatTime(e.timestamp) + (photos.length > 1 ? ' · 📷 ' + photos.length : '') + sigIcon + '</div></div>' +
+    '</div>';
+  }
+
+  function attachSearchResultHandlers() {
+    var cards = document.querySelectorAll('#searchResults .sr-card');
+    for (var i = 0; i < cards.length; i++) {
+      (function (card) {
+        card.addEventListener('click', function () {
+          var type = card.getAttribute('data-type');
+          var id = card.getAttribute('data-id');
+          closeSearch();
+          if (type === 'pending') {
+            var pkg = null;
+            for (var j = 0; j < state.route.length; j++) {
+              if (state.route[j].id === id) { pkg = state.route[j]; break; }
+            }
+            if (pkg) openDetail(pkg);
+          } else {
+            var evt = null;
+            for (var k = 0; k < state.events.length; k++) {
+              if (state.events[k].id === id) { evt = state.events[k]; break; }
+            }
+            if (evt) openEventDetail(evt);
+          }
+        });
+      })(cards[i]);
+    }
+  }
+
+  function openSearch() {
+    document.getElementById('searchOverlay').classList.add('active');
+    var input = document.getElementById('searchInput');
+    input.value = '';
+    document.getElementById('searchClearBtn').classList.remove('visible');
+    renderSearchResults('');
+    setTimeout(function () { input.focus(); }, 100);
+  }
+  function closeSearch() {
+    document.getElementById('searchOverlay').classList.remove('active');
+  }
+
+  function openSettings() {
+    document.getElementById('settingsAccountText').textContent = 'Estás como: ' + state.messenger.name + ' (' + state.messenger.code + ') · ' + state.messenger.zone;
+    document.getElementById('csvPreviewBox').classList.add('hidden');
+    pendingCSVItems = null;
+    updateTogglesUI();
+    document.getElementById('settingsOverlay').classList.add('active');
+  }
+  function closeSettings() {
+    document.getElementById('settingsOverlay').classList.remove('active');
+  }
+
+  function updateTogglesUI() {
+    var tr = document.getElementById('toggleRecipient');
+    var tn = document.getElementById('toggleNoPhoto');
+    var tw = document.getElementById('toggleWhatsApp');
+    var ts = document.getElementById('toggleSignature');
+    if (state.settings.requireRecipient) tr.classList.add('on'); else tr.classList.remove('on');
+    tr.setAttribute('aria-checked', state.settings.requireRecipient ? 'true' : 'false');
+    if (state.settings.allowNoPhoto) tn.classList.add('on'); else tn.classList.remove('on');
+    tn.setAttribute('aria-checked', state.settings.allowNoPhoto ? 'true' : 'false');
+    if (state.settings.promptWhatsApp) tw.classList.add('on'); else tw.classList.remove('on');
+    tw.setAttribute('aria-checked', state.settings.promptWhatsApp ? 'true' : 'false');
+    if (state.settings.requireSignature) ts.classList.add('on'); else ts.classList.remove('on');
+    ts.setAttribute('aria-checked', state.settings.requireSignature ? 'true' : 'false');
+    var colorWrap = document.getElementById('signatureColorWrap');
+    if (state.settings.requireSignature) colorWrap.classList.remove('hidden');
+    else colorWrap.classList.add('hidden');
+    updateColorChips();
+  }
+
+  function updateColorChips() {
+    var chips = document.querySelectorAll('.color-chip');
+    for (var i = 0; i < chips.length; i++) {
+      if (chips[i].getAttribute('data-color') === state.settings.signatureColor) chips[i].classList.add('active');
+      else chips[i].classList.remove('active');
+    }
+  }
+
+  function parseCSV(text) {
+    var rows = [];
+    var row = [];
+    var cur = '';
+    var inQuotes = false;
+    if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (inQuotes) {
+        if (c === '"') {
+          if (text[i + 1] === '"') { cur += '"'; i++; }
+          else inQuotes = false;
+        } else cur += c;
+      } else {
+        if (c === '"') inQuotes = true;
+        else if (c === ',' || c === ';') { row.push(cur); cur = ''; }
+        else if (c === '\n') { row.push(cur); rows.push(row); row = []; cur = ''; }
+        else if (c === '\r') {}
+        else cur += c;
+      }
+    }
+    if (cur.length || row.length) { row.push(cur); rows.push(row); }
+    return rows;
+  }
+  function normalizeCSVHeader(s) {
+    return (s || '').toString().trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+  function detectColumns(header) {
+    var map = { guide: -1, client: -1, address: -1, phone: -1, type: -1 };
+    for (var i = 0; i < header.length; i++) {
+      var l = normalizeCSVHeader(header[i]);
+      if (map.guide < 0 && ['guia','guide','num guia','numero de guia','guia de envio','tracking'].indexOf(l) >= 0) map.guide = i;
+      else if (map.client < 0 && ['cliente','client','nombre','name','destinatario','nombre destinatario','nombre cliente'].indexOf(l) >= 0) map.client = i;
+      else if (map.address < 0 && ['direccion','address','dir','direccion de entrega','direccion destino'].indexOf(l) >= 0) map.address = i;
+      else if (map.phone < 0 && ['telefono','phone','tel','celular','movil','contacto'].indexOf(l) >= 0) map.phone = i;
+      else if (map.type < 0 && ['tipo','type','categoria','tipo de visita'].indexOf(l) >= 0) map.type = i;
+    }
+    return map;
+  }
+  function rowsToItems(rows) {
+    if (!rows.length) return [];
+    var header = rows[0];
+    var map = detectColumns(header);
+    var useHeader = map.guide >= 0 || map.address >= 0 || map.client >= 0;
+    var dataRows = useHeader ? rows.slice(1) : rows;
+    var items = [];
+    for (var i = 0; i < dataRows.length; i++) {
+      var row = dataRows[i];
+      var empty = true;
+      for (var k = 0; k < row.length; k++) {
+        if (row[k] && row[k].toString().trim()) { empty = false; break; }
+      }
+      if (empty) continue;
+      var guide, client, address, phone, type = 'delivery';
+      if (useHeader) {
+        guide = map.guide >= 0 ? (row[map.guide] || '').trim() : '';
+        client = map.client >= 0 ? (row[map.client] || '').trim() : '';
+        address = map.address >= 0 ? (row[map.address] || '').trim() : '';
+        phone = map.phone >= 0 ? (row[map.phone] || '').trim() : '';
+        if (map.type >= 0) {
+          var t = normalizeCSVHeader(row[map.type] || '');
+          if (t === 'recogida' || t === 'pickup' || t === 'recoger') type = 'pickup';
+        }
+      } else {
+        guide = (row[0] || '').trim();
+        client = (row[1] || '').trim();
+        address = (row[2] || '').trim();
+        phone = (row[3] || '').trim();
+      }
+      if (!guide && !address) continue;
+      items.push({ guide: guide, client: client, address: address, phone: phone, type: type });
+    }
+    return items;
+  }
+  function addItemsToRoute(items) {
+    var maxOrder = 0;
+    for (var i = 0; i < state.route.length; i++) {
+      if ((state.route[i].order || 0) > maxOrder) maxOrder = state.route[i].order;
+    }
+    var now = Date.now();
+    for (var j = 0; j < items.length; j++) {
+      var item = items[j];
+      state.route.push({
+        id: 'pkg-csv-' + now + '-' + j,
+        order: maxOrder + j + 1,
+        guide: item.guide || ('CSV-' + (now + j)),
+        client: item.client || 'Sin nombre',
+        address: item.address || 'Sin dirección',
+        phone: item.phone || '',
+        type: item.type || 'delivery',
+        status: 'pending',
+        fromCSV: true
+      });
+    }
+    saveMessengerData();
+    renderRoute();
+  }
+  function renderCSVPreview(items) {
+    var box = document.getElementById('csvPreview');
+    var shown = items.slice(0, 50);
+    var html = '<div style="font-weight:700;color:var(--ink);margin-bottom:6px;">' + items.length + ' nueva' + (items.length > 1 ? 's' : '') + ' entrega' + (items.length > 1 ? 's' : '') + ':</div>';
+    for (var i = 0; i < shown.length; i++) {
+      var it = shown[i];
+      var tag = it.type === 'pickup' ? ' 📤 Recogida' : '';
+      html += '<div class="csv-preview-item"><div><span class="guide">' + (it.guide || '(sin guía)') + '</span> · ' + (it.client || 'Sin cliente') + tag + '</div><div class="addr">' + (it.address || '(sin dirección)') + (it.phone ? ' · ' + it.phone : '') + '</div></div>';
+    }
+    if (items.length > 50) html += '<div style="text-align:center;color:var(--muted);font-size:11px;padding-top:6px;">... y ' + (items.length - 50) + ' más</div>';
+    box.innerHTML = html;
+  }
+
+  function setupPhotoInput() {
+    var input = document.getElementById('photoInput');
+    var area = document.getElementById('photoArea');
+    var addBtn = document.getElementById('addPhotoBtn');
+    area.addEventListener('click', function () { input.click(); });
+    addBtn.addEventListener('click', function (e) { e.stopPropagation(); input.click(); });
+    input.addEventListener('change', function (e) {
+      var file = e.target.files && e.target.files[0];
+      if (!file) return;
+      showToast('Procesando foto...', 1200);
+      compressImage(file).then(function (compressed) {
+        addPhotoToCurrent(compressed);
+        showToast('📷 Foto ' + currentPhotos.length + ' agregada', 1400);
+      }).catch(function () { showToast('No se pudo procesar la foto'); })
+        .finally(function () { input.value = ''; });
+    });
+  }
+
+  function setupSignatureEvents() {
+    var canvas = document.getElementById('signatureCanvas');
+    canvas.addEventListener('pointerdown', onSigStart);
+    canvas.addEventListener('pointermove', onSigMove);
+    canvas.addEventListener('pointerup', onSigEnd);
+    canvas.addEventListener('pointercancel', onSigEnd);
+    document.getElementById('sigClearBtn').addEventListener('click', function () {
+      clearSignature();
+      showToast('Firma borrada', 1400);
+    });
+    document.getElementById('sigReuseBtn').addEventListener('click', reuseSignature);
+  }
+
+  function updateFabVisibility() {
+    var activeTab = document.querySelector('.tab.active');
+    if (!activeTab) return;
+    var tab = activeTab.getAttribute('data-tab');
+    var fab = document.getElementById('addManualFab');
+    if (tab === 'ruta') fab.classList.remove('hidden');
+    else fab.classList.add('hidden');
+  }
+
+  function setupEventListeners() {
+    var tabs = document.querySelectorAll('.tab');
+    for (var i = 0; i < tabs.length; i++) {
+      (function (tab) {
+        tab.addEventListener('click', function () {
+          var all = document.querySelectorAll('.tab');
+          for (var a = 0; a < all.length; a++) all[a].classList.remove('active');
+          var views = document.querySelectorAll('.view');
+          for (var b = 0; b < views.length; b++) views[b].classList.remove('active');
+          tab.classList.add('active');
+          var target = tab.getAttribute('data-tab') === 'ruta' ? 'viewRuta' : 'viewRegistro';
+          document.getElementById(target).classList.add('active');
+          updateFabVisibility();
+        });
+      })(tabs[i]);
+    }
+
+    document.getElementById('backBtn').addEventListener('click', closeDetail);
+    document.getElementById('btnEntregado').addEventListener('click', function () { saveDelivery('delivered'); });
+    document.getElementById('btnNovedad').addEventListener('click', function () { saveDelivery('issue'); });
+
+    document.getElementById('noPhotoBtn').addEventListener('click', function () {
+      if (currentPhotos.length) { currentPhotos = []; currentPhotoIndex = 0; }
+      currentNoPhoto = !currentNoPhoto;
+      updateEvidenceFormUI();
+    });
+
+    document.getElementById('eventBackBtn').addEventListener('click', closeEventDetail);
+    document.getElementById('settingsBtn').addEventListener('click', openSettings);
+    document.getElementById('settingsBackBtn').addEventListener('click', closeSettings);
+
+    document.getElementById('toggleRecipient').addEventListener('click', function () {
+      state.settings.requireRecipient = !state.settings.requireRecipient;
+      saveMessengerData(); updateTogglesUI();
+      showToast(state.settings.requireRecipient ? 'Ajuste activado' : 'Ajuste desactivado', 1600);
+    });
+    document.getElementById('toggleNoPhoto').addEventListener('click', function () {
+      state.settings.allowNoPhoto = !state.settings.allowNoPhoto;
+      saveMessengerData(); updateTogglesUI();
+      showToast(state.settings.allowNoPhoto ? 'Ajuste activado' : 'Ajuste desactivado', 1600);
+    });
+    document.getElementById('toggleWhatsApp').addEventListener('click', function () {
+      state.settings.promptWhatsApp = !state.settings.promptWhatsApp;
+      saveMessengerData(); updateTogglesUI();
+      showToast(state.settings.promptWhatsApp ? 'Ajuste activado' : 'Ajuste desactivado', 1600);
+    });
+    document.getElementById('toggleSignature').addEventListener('click', function () {
+      state.settings.requireSignature = !state.settings.requireSignature;
+      saveMessengerData(); updateTogglesUI();
+      showToast(state.settings.requireSignature ? 'Firma obligatoria activada' : 'Firma obligatoria desactivada', 1800);
+    });
+
+    var chips = document.querySelectorAll('.color-chip');
+    for (var c = 0; c < chips.length; c++) {
+      (function (chip) {
+        chip.addEventListener('click', function () {
+          state.settings.signatureColor = chip.getAttribute('data-color');
+          saveMessengerData();
+          updateColorChips();
+          if (signatureCtx) signatureCtx.strokeStyle = getSignatureColorHex();
+          showToast('Color de firma cambiado', 1500);
+        });
+      })(chips[c]);
+    }
+
+    document.getElementById('changeMessengerBtn').addEventListener('click', function () {
+      closeSettings();
+      localStorage.removeItem(CURRENT_KEY);
+      renderSplash();
+      showSplash();
+    });
+    document.getElementById('resetRouteBtn').addEventListener('click', function () {
+      if (!confirm('¿Reiniciar los datos de ' + state.messenger.name + '?')) return;
+      localStorage.removeItem(dataKey(state.messenger.code, 'route'));
+      localStorage.removeItem(dataKey(state.messenger.code, 'events'));
+      localStorage.removeItem(dataKey(state.messenger.code, 'settings'));
+      loadMessengerData(state.messenger.code);
+      renderHeader(); renderRoute(); renderEvents();
+      closeSettings();
+      showToast('Ruta reiniciada');
+    });
+
+    var csvInput = document.getElementById('csvInput');
+    document.getElementById('csvSelectBtn').addEventListener('click', function () { csvInput.click(); });
+    csvInput.addEventListener('change', function (e) {
+      var file = e.target.files && e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var items = rowsToItems(parseCSV(reader.result));
+          if (!items.length) { showToast('⚠ No se encontraron filas válidas'); return; }
+          pendingCSVItems = items;
+          renderCSVPreview(items);
+          document.getElementById('csvPreviewBox').classList.remove('hidden');
+        } catch (err) { showToast('Error al leer el archivo'); }
+        finally { csvInput.value = ''; }
+      };
+      reader.readAsText(file, 'UTF-8');
+    });
+    document.getElementById('csvCancelBtn').addEventListener('click', function () {
+      pendingCSVItems = null;
+      document.getElementById('csvPreviewBox').classList.add('hidden');
+    });
+    document.getElementById('csvConfirmBtn').addEventListener('click', function () {
+      if (!pendingCSVItems || !pendingCSVItems.length) return;
+      var count = pendingCSVItems.length;
+      addItemsToRoute(pendingCSVItems);
+      pendingCSVItems = null;
+      document.getElementById('csvPreviewBox').classList.add('hidden');
+      closeSettings();
+      showToast('✓ ' + count + ' agregada' + (count > 1 ? 's' : ''));
+    });
+
+    document.getElementById('searchTrigger').addEventListener('click', openSearch);
+    document.getElementById('searchCancelBtn').addEventListener('click', closeSearch);
+    var searchInput = document.getElementById('searchInput');
+    var searchClear = document.getElementById('searchClearBtn');
+    searchInput.addEventListener('input', function () {
+      var v = searchInput.value;
+      if (v && v.length) searchClear.classList.add('visible');
+      else searchClear.classList.remove('visible');
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(function () { renderSearchResults(v); }, 180);
+    });
+    searchClear.addEventListener('click', function () {
+      searchInput.value = '';
+      searchClear.classList.remove('visible');
+      renderSearchResults('');
+      searchInput.focus();
+    });
+
+    document.getElementById('waSkipBtn').addEventListener('click', closeWhatsAppPrompt);
+    document.getElementById('waDirectBtn').addEventListener('click', function () {
+      var evt = pendingWhatsAppEvent;
+      closeWhatsAppPrompt();
+      if (!evt) return;
+      var phone = normalizePhone(evt.phone || '');
+      if (phone) sendWhatsAppDirect(evt);
+      else shareWhatsAppWithPhotos(evt);
+    });
+    document.getElementById('waSharePhotoBtn').addEventListener('click', function () {
+      var evt = pendingWhatsAppEvent;
+      closeWhatsAppPrompt();
+      if (evt) shareWhatsAppWithPhotos(evt);
+    });
+
+    document.getElementById('addManualFab').addEventListener('click', openAddPackage);
+    document.getElementById('addCancelBtn').addEventListener('click', closeAddPackage);
+    document.getElementById('addConfirmBtn').addEventListener('click', confirmAddPackage);
+    document.getElementById('typeDelivery').addEventListener('click', function () { setAddFormType('delivery'); });
+    document.getElementById('typePickup').addEventListener('click', function () { setAddFormType('pickup'); });
+    document.getElementById('addPackageOverlay').addEventListener('click', function (e) {
+      if (e.target.id === 'addPackageOverlay') closeAddPackage();
+    });
+    document.getElementById('whatsappOverlay').addEventListener('click', function (e) {
+      if (e.target.id === 'whatsappOverlay') closeWhatsAppPrompt();
+    });
+
+    setupSignatureEvents();
+  }
+
+  function init() {
+    try {
+      renderSplash();
+      setupPhotoInput();
+      setupEventListeners();
+      var savedCode = localStorage.getItem(CURRENT_KEY);
+      if (savedCode && MESSENGERS[savedCode]) {
+        loadMessengerData(savedCode);
+        renderHeader(); renderRoute(); renderEvents();
+        hideSplash();
+        updateFabVisibility();
+      } else {
+        showSplash();
+      }
+    } catch (e) {
+      console.error('Ruta X init error:', e);
+      var box = document.getElementById('messengerOptions');
+      if (box) {
+        box.innerHTML = '<div style="background:#7f1d1d;border:1px solid #ef4444;border-radius:12px;padding:16px;font-size:13px;line-height:1.5;"><strong>Error al iniciar Ruta X</strong><br>' + e.message + '</div>';
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>
