@@ -338,9 +338,6 @@
   .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy-deep); color: white; padding: 12px 20px; border-radius: 30px; font-size: 13px; font-weight: 600; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 200; max-width: 90%; text-align: center; box-shadow: 0 8px 20px rgba(10,31,68,0.3); }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ============================== */
-  /* PIN MODAL · Bloque 2B          */
-  /* ============================== */
   .pin-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; background: linear-gradient(160deg, #0A1F44 0%, #0E3A6C 55%, #1E5BB8 100%); color: white; max-width: 480px; margin: 0 auto; position: relative; }
   .pin-header { position: absolute; top: 16px; left: 16px; }
   .pin-back { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; width: 40px; height: 40px; border-radius: 12px; font-size: 20px; cursor: pointer; }
@@ -357,12 +354,8 @@
   .pin-key:active { transform: scale(0.94); background: rgba(255,255,255,0.22); }
   .pin-key-empty { background: transparent; border: none; cursor: default; }
   .pin-key-del { font-size: 20px; }
-
-
 </style>
 <script src="api.js"></script>
-
-  
 </head>
 <body>
 
@@ -646,7 +639,7 @@
         <button class="settings-btn danger" id="resetRouteBtn">Reiniciar mis datos</button>
       </div>
 
-      <div class="app-version">Ruta X · Demo local v0.10 · Sin conexión a servidor</div>
+      <div class="app-version">Ruta X · Demo local v0.10 · Conectado a Sheets</div>
     </div>
   </div>
 </div>
@@ -709,7 +702,6 @@
   </div>
 </div>
 
-<!-- PIN Modal · Bloque 2B -->
 <div id="pinOverlay" class="overlay">
   <div class="pin-screen">
     <div class="pin-header">
@@ -727,7 +719,6 @@
   </div>
 </div>
 
-  
 <div id="toast" class="toast"></div>
 
 <script>
@@ -810,9 +801,10 @@
   var addFormType = 'delivery';
 
   // ---------- Estado del login PIN ----------
-var pinTarget = { code: null, name: null, zone: null };
-var pinBuffer = '';
+  var pinTarget = { code: null, name: null, zone: null };
+  var pinBuffer = '';
 
+  // ---------- Estado de firma ----------
   var signatureCanvas = null;
   var signatureCtx = null;
   var signatureDpr = 1;
@@ -934,6 +926,9 @@ var pinBuffer = '';
     return [];
   }
 
+  // ============================================================
+  // FIRMA · capture, recolor, reuse
+  // ============================================================
   function getSignatureColorHex() {
     return state.settings.signatureColor || '#a3e635';
   }
@@ -1029,6 +1024,7 @@ var pinBuffer = '';
   function checkReuseSignature() {
     if (!currentPackage) return;
     var reuseBtn = document.getElementById('sigReuseBtn');
+    if (!reuseBtn) return;
     var prev = findPreviousSignature(currentPackage.client);
     if (prev) reuseBtn.classList.remove('hidden');
     else reuseBtn.classList.add('hidden');
@@ -1103,7 +1099,6 @@ var pinBuffer = '';
         ctx.fillStyle = '#FF6B35';
         ctx.fillRect(0, bandY, W, Math.max(2, Math.round(H * 0.004)));
 
-        // Firma al 28% del ancho
         var sigTargetW = Math.round(W * 0.28);
         var sigTargetH = Math.round(bandHeight * 0.74);
         var sigX = Math.round(W * 0.03);
@@ -1173,13 +1168,19 @@ var pinBuffer = '';
   }
 
   function showProcessing(text) {
-    document.getElementById('processingText').textContent = text || 'Procesando...';
-    document.getElementById('processingOverlay').classList.add('active');
+    var el = document.getElementById('processingText');
+    if (el) el.textContent = text || 'Procesando...';
+    var ov = document.getElementById('processingOverlay');
+    if (ov) ov.classList.add('active');
   }
   function hideProcessing() {
-    document.getElementById('processingOverlay').classList.remove('active');
+    var ov = document.getElementById('processingOverlay');
+    if (ov) ov.classList.remove('active');
   }
 
+  // ============================================================
+  // WhatsApp
+  // ============================================================
   function normalizePhone(phone) {
     if (!phone) return '';
     var p = String(phone).replace(/[^\d]/g, '');
@@ -1202,7 +1203,7 @@ var pinBuffer = '';
       msg += '\n\nEvidencia fotográfica:';
       for (var i = 0; i < urlPhotos.length; i++) msg += '\n' + urlPhotos[i];
     } else {
-      msg += '\n\nAdjuntamos la evidencia fotográfica de la entrega.';
+      msg += '\n\nAdjuntamos la evidencia fotográfica firmada de la entrega.';
     }
     msg += '\n— Ruta X';
     return msg;
@@ -1225,12 +1226,11 @@ var pinBuffer = '';
     window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
   }
 
-    function shareWhatsAppWithPhotos(evt) {
+  function shareWhatsAppWithPhotos(evt) {
     var photos = getEventPhotos(evt);
     var phone = normalizePhone(evt.phone || '');
     var hasLocal = photos.some(function (p) { return p && p.indexOf('data:') === 0; });
 
-    // Si las fotos ya son URLs de Drive → mandamos mensaje con links
     if (!hasLocal) {
       if (phone) sendWhatsAppDirect(evt);
       else showToast('Las fotos ya están en Drive · compártelas desde allí');
@@ -1254,7 +1254,7 @@ var pinBuffer = '';
       }
       if (!files.length) return Promise.reject();
       if (navigator.canShare && !navigator.canShare({ files: files })) return Promise.reject();
-      return navigator.share({ files: files, text: msg, title: 'Confirmación de entrega' });
+      return navigator.share({ files: files, text: msg, title: 'Confirmación de entrega firmada' });
     };
 
     tryShare().catch(function (e) {
@@ -1296,8 +1296,10 @@ var pinBuffer = '';
     pendingWhatsAppEvent = null;
   }
 
+  // ============================================================
+  // Splash
+  // ============================================================
   function renderSplash() {
-    // Fallback: usa los mensajeros hardcodeados si la API falla
     var box = document.getElementById('messengerOptions');
     var html = '';
     var codes = Object.keys(MESSENGERS);
@@ -1604,6 +1606,7 @@ var pinBuffer = '';
     currentPhotoIndex = 0;
     currentNoPhoto = false;
     currentGPS = null;
+    hasSignatureStrokes = false;
 
     var isPickup = pkg.type === 'pickup';
     document.getElementById('detailTitle').textContent = isPickup ? 'Registrar recogida' : 'Registrar evidencia';
@@ -1674,6 +1677,9 @@ var pinBuffer = '';
     );
   }
 
+  // ============================================================
+  // saveDelivery — con firma y watermark
+  // ============================================================
   function saveDelivery(status) {
     if (!currentPackage) return;
     var isPickup = currentPackage.type === 'pickup';
@@ -1694,58 +1700,107 @@ var pinBuffer = '';
           return;
         }
       }
+      if (state.settings.requireSignature && !hasSignatureStrokes) {
+        showToast('⚠ El cliente debe firmar para confirmar');
+        return;
+      }
     }
 
     var recipient = document.getElementById('recipientInput').value.trim();
     var note = document.getElementById('noteInput').value.trim();
 
-    var event = {
-      id: 'evt-' + Date.now(),
-      packageId: currentPackage.id,
-      guide: currentPackage.guide,
-      client: currentPackage.client,
-      address: currentPackage.address,
-      phone: currentPackage.phone || '',
-      recipient: recipient,
-      status: status,
-      type: currentPackage.type || 'delivery',
-      photos: currentPhotos.slice(),
-      photo: currentPhotos[0] || null,
-      noPhoto: currentNoPhoto && !currentPhotos.length,
-      note: note,
-      gps: currentGPS,
-      messengerCode: state.messenger.code,
-      messengerName: state.messenger.name,
-      timestamp: Date.now()
+    var needSignature = status === 'delivered' && state.settings.requireSignature && hasSignatureStrokes;
+
+    var signatureData = null;
+    if (needSignature) {
+      try {
+        signatureData = signatureCanvas.toDataURL('image/png');
+      } catch (e) {
+        showToast('No se pudo capturar la firma');
+        return;
+      }
+    }
+
+    // Snapshots ANTES de closeDetail
+    var pkgSnapshot = currentPackage;
+    var gpsSnapshot = currentGPS;
+    var noPhotoSnapshot = currentNoPhoto;
+    var photosSnapshot = currentPhotos.slice();
+    var signatureColor = getSignatureColorHex();
+    var ts = Date.now();
+
+    var commit = function (photos, sigData, sigColor) {
+      var event = {
+        id: 'evt-' + Date.now(),
+        packageId: pkgSnapshot.id,
+        guide: pkgSnapshot.guide,
+        client: pkgSnapshot.client,
+        address: pkgSnapshot.address,
+        phone: pkgSnapshot.phone || '',
+        recipient: recipient,
+        status: status,
+        type: pkgSnapshot.type || 'delivery',
+        photos: photos,
+        photo: photos[0] || null,
+        noPhoto: noPhotoSnapshot && !photos.length,
+        signature: sigData,
+        signatureColor: sigColor,
+        note: note,
+        gps: gpsSnapshot,
+        messengerCode: state.messenger.code,
+        messengerName: state.messenger.name,
+        timestamp: ts
+      };
+
+      var photosToUpload = photos.slice();
+
+      state.events.push(event);
+
+      var pkg = null;
+      for (var i = 0; i < state.route.length; i++) {
+        if (state.route[i].id === pkgSnapshot.id) { pkg = state.route[i]; break; }
+      }
+      if (pkg) pkg.status = status === 'delivered' ? 'delivered' : 'issue';
+
+      saveMessengerData();
+      hideProcessing();
+      closeDetail();
+      renderRoute();
+      renderEvents();
+
+      // ☁️ Sincronizar con el Sheet (en paralelo, no bloquea la UX)
+      syncEventToServer(event, photosToUpload);
+
+      // Copia congelada para el prompt de WhatsApp (mantiene base64 por si comparte archivo)
+      var eventForWA = JSON.parse(JSON.stringify(event));
+
+      if (status === 'delivered' && state.settings.promptWhatsApp) {
+        showWhatsAppPrompt(eventForWA);
+      } else {
+        var verb = isPickup ? 'Recogida' : 'Entrega';
+        showToast(status === 'delivered' ? '✓ ' + verb + ' registrada' : '⚠ Novedad registrada');
+      }
     };
 
-    // Capturamos las fotos ANTES de closeDetail (que las limpia)
-    var photosToUpload = currentPhotos.slice();
-
-    state.events.push(event);
-
-    var pkg = null;
-    for (var i = 0; i < state.route.length; i++) {
-      if (state.route[i].id === currentPackage.id) { pkg = state.route[i]; break; }
-    }
-    if (pkg) pkg.status = status === 'delivered' ? 'delivered' : 'issue';
-
-    saveMessengerData();
-    closeDetail();
-    renderRoute();
-    renderEvents();
-
-    // ☁️ Sincronizar con el Sheet (en paralelo, no bloquea la UX)
-    syncEventToServer(event, photosToUpload);
-
-    // Copia congelada para el prompt de WhatsApp (mantiene base64 por si comparte archivo)
-    var eventForWA = JSON.parse(JSON.stringify(event));
-
-    if (status === 'delivered' && state.settings.promptWhatsApp) {
-      showWhatsAppPrompt(eventForWA);
+    if (needSignature && photosSnapshot.length > 0) {
+      showProcessing('Aplicando firma a ' + photosSnapshot.length + ' foto' + (photosSnapshot.length > 1 ? 's' : '') + '...');
+      var watermarked = [];
+      var processNext = function (i) {
+        if (i >= photosSnapshot.length) {
+          commit(watermarked, signatureData, signatureColor);
+          return;
+        }
+        generateWatermark(photosSnapshot[i], signatureData, recipient, ts, signatureColor).then(function (wm) {
+          watermarked.push(wm);
+          processNext(i + 1);
+        }).catch(function () {
+          watermarked.push(photosSnapshot[i]);
+          processNext(i + 1);
+        });
+      };
+      processNext(0);
     } else {
-      var verb = isPickup ? 'Recogida' : 'Entrega';
-      showToast(status === 'delivered' ? '✓ ' + verb + ' registrada' : '⚠ Novedad registrada');
+      commit(photosSnapshot, signatureData, needSignature ? signatureColor : null);
     }
   }
 
@@ -1780,6 +1835,7 @@ var pinBuffer = '';
       showToast('⚠ Sin conexión · guardado localmente', 2600);
     }
   }
+
   function finalizeEvent(photos, signatureData, color) {
     var pendingStatus = finalizeEvent._status || 'delivered';
     var recipient = finalizeEvent._recipient || '';
@@ -1961,7 +2017,7 @@ var pinBuffer = '';
     if (type === 'pickup') btnP.classList.add('active', 'pickup-active');
     else btnD.classList.add('active');
   }
-   function confirmAddPackage() {
+  function confirmAddPackage() {
     var client = document.getElementById('addClient').value.trim();
     var address = document.getElementById('addAddress').value.trim();
     var phone = document.getElementById('addPhone').value.trim();
@@ -2159,11 +2215,15 @@ var pinBuffer = '';
     tn.setAttribute('aria-checked', state.settings.allowNoPhoto ? 'true' : 'false');
     if (state.settings.promptWhatsApp) tw.classList.add('on'); else tw.classList.remove('on');
     tw.setAttribute('aria-checked', state.settings.promptWhatsApp ? 'true' : 'false');
-    if (state.settings.requireSignature) ts.classList.add('on'); else ts.classList.remove('on');
-    ts.setAttribute('aria-checked', state.settings.requireSignature ? 'true' : 'false');
+    if (ts) {
+      if (state.settings.requireSignature) ts.classList.add('on'); else ts.classList.remove('on');
+      ts.setAttribute('aria-checked', state.settings.requireSignature ? 'true' : 'false');
+    }
     var colorWrap = document.getElementById('signatureColorWrap');
-    if (state.settings.requireSignature) colorWrap.classList.remove('hidden');
-    else colorWrap.classList.add('hidden');
+    if (colorWrap) {
+      if (state.settings.requireSignature) colorWrap.classList.remove('hidden');
+      else colorWrap.classList.add('hidden');
+    }
     updateColorChips();
   }
 
@@ -2305,15 +2365,19 @@ var pinBuffer = '';
 
   function setupSignatureEvents() {
     var canvas = document.getElementById('signatureCanvas');
+    if (!canvas) return;
     canvas.addEventListener('pointerdown', onSigStart);
     canvas.addEventListener('pointermove', onSigMove);
     canvas.addEventListener('pointerup', onSigEnd);
     canvas.addEventListener('pointercancel', onSigEnd);
-    document.getElementById('sigClearBtn').addEventListener('click', function () {
+
+    var clearBtn = document.getElementById('sigClearBtn');
+    if (clearBtn) clearBtn.addEventListener('click', function () {
       clearSignature();
       showToast('Firma borrada', 1400);
     });
-    document.getElementById('sigReuseBtn').addEventListener('click', reuseSignature);
+    var reuseBtn = document.getElementById('sigReuseBtn');
+    if (reuseBtn) reuseBtn.addEventListener('click', reuseSignature);
   }
 
   function updateFabVisibility() {
@@ -2356,7 +2420,7 @@ var pinBuffer = '';
     document.getElementById('settingsBtn').addEventListener('click', openSettings);
     document.getElementById('settingsBackBtn').addEventListener('click', closeSettings);
 
-        document.getElementById('toggleRecipient').addEventListener('click', function () {
+    document.getElementById('toggleRecipient').addEventListener('click', function () {
       state.settings.requireRecipient = !state.settings.requireRecipient;
       saveMessengerData();
       updateTogglesUI();
@@ -2379,10 +2443,14 @@ var pinBuffer = '';
       showToast(state.settings.promptWhatsApp ? 'Ajuste activado' : 'Ajuste desactivado', 1600);
       RutaXAPI.saveSettings(state.settings).catch(function (e) { console.warn('sync settings', e); });
     });
-    document.getElementById('toggleSignature').addEventListener('click', function () {
+
+    var ts = document.getElementById('toggleSignature');
+    if (ts) ts.addEventListener('click', function () {
       state.settings.requireSignature = !state.settings.requireSignature;
-      saveMessengerData(); updateTogglesUI();
+      saveMessengerData();
+      updateTogglesUI();
       showToast(state.settings.requireSignature ? 'Firma obligatoria activada' : 'Firma obligatoria desactivada', 1800);
+      RutaXAPI.saveSettings(state.settings).catch(function (e) { console.warn('sync settings', e); });
     });
 
     var chips = document.querySelectorAll('.color-chip');
@@ -2394,11 +2462,12 @@ var pinBuffer = '';
           updateColorChips();
           if (signatureCtx) signatureCtx.strokeStyle = getSignatureColorHex();
           showToast('Color de firma cambiado', 1500);
+          RutaXAPI.saveSettings(state.settings).catch(function (e) { console.warn('sync settings', e); });
         });
       })(chips[c]);
     }
 
-       document.getElementById('changeMessengerBtn').addEventListener('click', function () {
+    document.getElementById('changeMessengerBtn').addEventListener('click', function () {
       closeSettings();
       RutaXAPI.clearSession();
       localStorage.removeItem(CURRENT_KEY);
@@ -2498,11 +2567,6 @@ var pinBuffer = '';
     setupSignatureEvents();
   }
 
-
-  // ============================================================
-  // LOGIN CON PIN · Bloque 2B
-  // ============================================================
-
   function openPinModal(code, name, zone) {
     pinTarget = { code: code, name: name, zone: zone };
     pinBuffer = '';
@@ -2598,7 +2662,6 @@ var pinBuffer = '';
       updateFabVisibility();
       showToast('Bienvenido, ' + info.name.split(' ')[0]);
 
-      // Si es admin, ofrecer panel (Bloque 3)
       if (data.role === 'admin') {
         showToast('👑 Sesión de admin — panel viene en Bloque 3', 3200);
       }
@@ -2609,15 +2672,14 @@ var pinBuffer = '';
       updatePinDots();
     });
   }
-  
-    function init() {
+
+  function init() {
     try {
       setupPhotoInput();
       setupEventListeners();
 
       document.getElementById('pinBackBtn').addEventListener('click', closePinModal);
 
-      // 1. Cargar lista de mensajeros desde el Sheet
       RutaXAPI.publicList()
         .then(function (ms) { renderSplashFromAPI(ms); })
         .catch(function (err) {
@@ -2625,7 +2687,6 @@ var pinBuffer = '';
           renderSplash();
         });
 
-      // 2. Intentar auto-login si hay token guardado
       var savedCode = localStorage.getItem('rutax_current_v8');
       if (savedCode && RutaXAPI.isLoggedIn()) {
         RutaXAPI.pull().then(function (data) {
@@ -2655,7 +2716,6 @@ var pinBuffer = '';
           updateFabVisibility();
         }).catch(function (err) {
           console.warn('Auto-login falló:', err);
-          // Fallback a local
           if (localStorage.getItem(dataKey(savedCode, 'route'))) {
             loadMessengerData(savedCode);
             renderHeader();
