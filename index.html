@@ -360,6 +360,9 @@
 
 
 </style>
+<script src="api.js"></script>
+
+  
 </head>
 <body>
 
@@ -706,6 +709,25 @@
   </div>
 </div>
 
+<!-- PIN Modal · Bloque 2B -->
+<div id="pinOverlay" class="overlay">
+  <div class="pin-screen">
+    <div class="pin-header">
+      <button class="pin-back" id="pinBackBtn" aria-label="Volver">←</button>
+    </div>
+    <div class="pin-avatar" id="pinAvatar">M01</div>
+    <div class="pin-name" id="pinName">Mensajero</div>
+    <div class="pin-zone" id="pinZone">—</div>
+    <div class="pin-title">Ingresa tu PIN</div>
+    <div class="pin-dots" id="pinDots">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="pin-error" id="pinError"></div>
+    <div class="pin-pad" id="pinPad"></div>
+  </div>
+</div>
+
+  
 <div id="toast" class="toast"></div>
 
 <script>
@@ -786,6 +808,10 @@
   var pendingWhatsAppEvent = null;
   var searchDebounceTimer = null;
   var addFormType = 'delivery';
+
+  // ---------- Estado del login PIN ----------
+var pinTarget = { code: null, name: null, zone: null };
+var pinBuffer = '';
 
   var signatureCanvas = null;
   var signatureCtx = null;
@@ -1169,7 +1195,15 @@
     var msg = 'Hola ' + clientName + ', le confirmamos la entrega de su paquete ';
     msg += (evt.guide || '') + ' el ' + fecha + '.';
     if (evt.recipient) msg += '\nRecibido por: ' + evt.recipient + '.';
-    msg += '\n\nAdjuntamos la evidencia fotográfica firmada de la entrega.';
+
+    var photos = getEventPhotos(evt);
+    var urlPhotos = photos.filter(function (p) { return p && p.indexOf('http') === 0; });
+    if (urlPhotos.length) {
+      msg += '\n\nEvidencia fotográfica:';
+      for (var i = 0; i < urlPhotos.length; i++) msg += '\n' + urlPhotos[i];
+    } else {
+      msg += '\n\nAdjuntamos la evidencia fotográfica de la entrega.';
+    }
     msg += '\n— Ruta X';
     return msg;
   }
@@ -1191,15 +1225,25 @@
     window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
   }
 
-  function shareWhatsAppWithPhotos(evt) {
+    function shareWhatsAppWithPhotos(evt) {
     var photos = getEventPhotos(evt);
-    var msg = buildWhatsAppMessage(evt);
     var phone = normalizePhone(evt.phone || '');
+    var hasLocal = photos.some(function (p) { return p && p.indexOf('data:') === 0; });
+
+    // Si las fotos ya son URLs de Drive → mandamos mensaje con links
+    if (!hasLocal) {
+      if (phone) sendWhatsAppDirect(evt);
+      else showToast('Las fotos ya están en Drive · compártelas desde allí');
+      return;
+    }
+
+    var msg = buildWhatsAppMessage(evt);
     if (!photos.length || !navigator.share) {
       if (phone) sendWhatsAppDirect(evt);
       else showToast('No se puede compartir');
       return;
     }
+
     var tryShare = function () {
       var files = [];
       for (var i = 0; i < photos.length && i < 5; i++) {
@@ -1210,8 +1254,9 @@
       }
       if (!files.length) return Promise.reject();
       if (navigator.canShare && !navigator.canShare({ files: files })) return Promise.reject();
-      return navigator.share({ files: files, text: msg, title: 'Confirmación de entrega firmada' });
+      return navigator.share({ files: files, text: msg, title: 'Confirmación de entrega' });
     };
+
     tryShare().catch(function (e) {
       if (e && e.name === 'AbortError') return;
       if (phone) sendWhatsAppDirect(evt);
@@ -1252,31 +1297,59 @@
   }
 
   function renderSplash() {
+    // Fallback: usa los mensajeros hardcodeados si la API falla
     var box = document.getElementById('messengerOptions');
     var html = '';
     var codes = Object.keys(MESSENGERS);
     for (var i = 0; i < codes.length; i++) {
       var m = MESSENGERS[codes[i]];
-      html += '<button class="messenger-option" data-code="' + m.code + '">' +
+      html += '<button class="messenger-option" data-code="' + m.code + '" data-name="' + m.name + '" data-zone="' + m.zone + '">' +
         '<span class="messenger-option-avatar">' + m.code + '</span>' +
         '<span class="messenger-option-info">' +
           '<div class="messenger-option-name">' + m.name + '</div>' +
-          '<div class="messenger-option-zone">' + m.zone + ' · ' + m.route.length + ' entregas</div>' +
+          '<div class="messenger-option-zone">' + m.zone + '</div>' +
         '</span>' +
         '<span class="messenger-option-arrow">›</span>' +
       '</button>';
     }
     box.innerHTML = html;
+    attachSplashHandlers(box);
+  }
+
+  function renderSplashFromAPI(messengers) {
+    var box = document.getElementById('messengerOptions');
+    if (!messengers || !messengers.length) {
+      box.innerHTML = '<div style="text-align:center;padding:22px;color:#fff;opacity:.75;font-size:14px;line-height:1.5;">' +
+        'No hay mensajeros activos.<br><span style="font-size:12px;opacity:.7;">Pídele al admin que habilite al menos uno.</span>' +
+        '</div>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < messengers.length; i++) {
+      var m = messengers[i];
+      html += '<button class="messenger-option" data-code="' + m.code + '" data-name="' + m.name + '" data-zone="' + m.zone + '">' +
+        '<span class="messenger-option-avatar">' + m.code + '</span>' +
+        '<span class="messenger-option-info">' +
+          '<div class="messenger-option-name">' + m.name + '</div>' +
+          '<div class="messenger-option-zone">' + (m.zone || 'Sin zona') + '</div>' +
+        '</span>' +
+        '<span class="messenger-option-arrow">›</span>' +
+      '</button>';
+    }
+    box.innerHTML = html;
+    attachSplashHandlers(box);
+  }
+
+  function attachSplashHandlers(box) {
     var btns = box.querySelectorAll('.messenger-option');
     for (var j = 0; j < btns.length; j++) {
       (function (btn) {
         btn.addEventListener('click', function () {
-          var code = btn.getAttribute('data-code');
-          localStorage.setItem(CURRENT_KEY, code);
-          loadMessengerData(code);
-          renderHeader(); renderRoute(); renderEvents();
-          hideSplash();
-          showToast('Bienvenido, ' + MESSENGERS[code].name.split(' ')[0]);
+          openPinModal(
+            btn.getAttribute('data-code'),
+            btn.getAttribute('data-name'),
+            btn.getAttribute('data-zone')
+          );
         });
       })(btns[j]);
     }
@@ -1607,63 +1680,106 @@
 
     if (status === 'delivered') {
       if (!currentPhotos.length && !(state.settings.allowNoPhoto && currentNoPhoto)) {
-        if (state.settings.allowNoPhoto) showToast('⚠ Toma una foto o marca "sin foto"');
-        else showToast('⚠ Toma una foto para ' + (isPickup ? 'recoger' : 'entregar'));
+        if (state.settings.allowNoPhoto) {
+          showToast('⚠ Toma una foto o marca "sin foto"');
+        } else {
+          showToast('⚠ Toma una foto para ' + (isPickup ? 'recoger' : 'entregar'));
+        }
         return;
       }
       if (state.settings.requireRecipient) {
         var r = document.getElementById('recipientInput').value.trim();
-        if (!r) { showToast('⚠ Escribe quién ' + (isPickup ? 'entrega' : 'recibe') + ' el paquete'); return; }
-      }
-      if (state.settings.requireSignature && !hasSignatureStrokes) {
-        showToast('⚠ El cliente debe firmar para confirmar');
-        return;
+        if (!r) {
+          showToast('⚠ Escribe quién ' + (isPickup ? 'entrega' : 'recibe') + ' el paquete');
+          return;
+        }
       }
     }
 
     var recipient = document.getElementById('recipientInput').value.trim();
     var note = document.getElementById('noteInput').value.trim();
 
-    var needSignature = status === 'delivered' && state.settings.requireSignature && hasSignatureStrokes;
+    var event = {
+      id: 'evt-' + Date.now(),
+      packageId: currentPackage.id,
+      guide: currentPackage.guide,
+      client: currentPackage.client,
+      address: currentPackage.address,
+      phone: currentPackage.phone || '',
+      recipient: recipient,
+      status: status,
+      type: currentPackage.type || 'delivery',
+      photos: currentPhotos.slice(),
+      photo: currentPhotos[0] || null,
+      noPhoto: currentNoPhoto && !currentPhotos.length,
+      note: note,
+      gps: currentGPS,
+      messengerCode: state.messenger.code,
+      messengerName: state.messenger.name,
+      timestamp: Date.now()
+    };
 
-    var signatureData = null;
-    if (needSignature) {
-      try { signatureData = signatureCanvas.toDataURL('image/png'); }
-      catch (e) { showToast('No se pudo capturar la firma'); return; }
+    // Capturamos las fotos ANTES de closeDetail (que las limpia)
+    var photosToUpload = currentPhotos.slice();
+
+    state.events.push(event);
+
+    var pkg = null;
+    for (var i = 0; i < state.route.length; i++) {
+      if (state.route[i].id === currentPackage.id) { pkg = state.route[i]; break; }
     }
+    if (pkg) pkg.status = status === 'delivered' ? 'delivered' : 'issue';
 
-    if (needSignature && currentPhotos.length > 0) {
-      showProcessing('Aplicando firma a ' + currentPhotos.length + ' foto' + (currentPhotos.length > 1 ? 's' : '') + '...');
-      var color = getSignatureColorHex();
-      var watermarked = [];
-      var ts = Date.now();
-      var processNext = function (i) {
-        if (i >= currentPhotos.length) {
-          finalizeEvent._status = status;
-          finalizeEvent._recipient = recipient;
-          finalizeEvent._note = note;
-          finalizeEvent._isPickup = isPickup;
-          finalizeEvent(watermarked, signatureData, color);
-          return;
-        }
-        generateWatermark(currentPhotos[i], signatureData, recipient, ts, color).then(function (wm) {
-          watermarked.push(wm);
-          processNext(i + 1);
-        }).catch(function () {
-          watermarked.push(currentPhotos[i]);
-          processNext(i + 1);
-        });
-      };
-      processNext(0);
+    saveMessengerData();
+    closeDetail();
+    renderRoute();
+    renderEvents();
+
+    // ☁️ Sincronizar con el Sheet (en paralelo, no bloquea la UX)
+    syncEventToServer(event, photosToUpload);
+
+    // Copia congelada para el prompt de WhatsApp (mantiene base64 por si comparte archivo)
+    var eventForWA = JSON.parse(JSON.stringify(event));
+
+    if (status === 'delivered' && state.settings.promptWhatsApp) {
+      showWhatsAppPrompt(eventForWA);
     } else {
-      finalizeEvent._status = status;
-      finalizeEvent._recipient = recipient;
-      finalizeEvent._note = note;
-      finalizeEvent._isPickup = isPickup;
-      finalizeEvent(currentPhotos.slice(), signatureData, needSignature ? getSignatureColorHex() : null);
+      var verb = isPickup ? 'Recogida' : 'Entrega';
+      showToast(status === 'delivered' ? '✓ ' + verb + ' registrada' : '⚠ Novedad registrada');
     }
   }
 
+  async function syncEventToServer(event, photos) {
+    try {
+      var resp = await RutaXAPI.saveEvent(event, photos);
+      if (resp.ok && resp.photoUrls) {
+        var localEvt = state.events.find(function (e) { return e.id === event.id; });
+        if (localEvt) {
+          localEvt.photos = resp.photoUrls;
+          localEvt.photo = resp.photoUrls[0] || null;
+          localEvt.photoIds = resp.photoIds || [];
+          localEvt.synced = true;
+          saveMessengerData();
+          // Re-render si el detalle está abierto
+          if (eventCarouselState.evt && eventCarouselState.evt.id === event.id) {
+            eventCarouselState.photos = resp.photoUrls;
+            eventCarouselState.evt.photos = resp.photoUrls;
+            renderEventCarousel();
+          }
+          renderEvents();
+        }
+        showToast('☁ Sincronizado con el Sheet', 1800);
+      }
+    } catch (err) {
+      console.warn('Sync error:', err);
+      var localEvt2 = state.events.find(function (e) { return e.id === event.id; });
+      if (localEvt2) {
+        localEvt2.syncError = true;
+        saveMessengerData();
+      }
+      showToast('⚠ Sin conexión · guardado localmente', 2600);
+    }
+  }
   function finalizeEvent(photos, signatureData, color) {
     var pendingStatus = finalizeEvent._status || 'delivered';
     var recipient = finalizeEvent._recipient || '';
@@ -1845,19 +1961,22 @@
     if (type === 'pickup') btnP.classList.add('active', 'pickup-active');
     else btnD.classList.add('active');
   }
-  function confirmAddPackage() {
+   function confirmAddPackage() {
     var client = document.getElementById('addClient').value.trim();
     var address = document.getElementById('addAddress').value.trim();
     var phone = document.getElementById('addPhone').value.trim();
     var guide = document.getElementById('addGuide').value.trim();
     var note = document.getElementById('addNote').value.trim();
+
     if (!client) { showToast('⚠ Escribe el nombre del cliente'); return; }
     if (!address) { showToast('⚠ Escribe la dirección'); return; }
+
     var maxOrder = 0;
     for (var i = 0; i < state.route.length; i++) {
       if ((state.route[i].order || 0) > maxOrder) maxOrder = state.route[i].order;
     }
-    state.route.push({
+
+    var newPkg = {
       id: 'pkg-manual-' + Date.now(),
       order: maxOrder + 1,
       guide: guide || (addFormType === 'pickup' ? 'REC-' + (maxOrder + 1) : 'MAN-' + (maxOrder + 1)),
@@ -1868,11 +1987,20 @@
       manualNote: note,
       status: 'pending',
       fromManual: true
-    });
+    };
+
+    state.route.push(newPkg);
     saveMessengerData();
     renderRoute();
     closeAddPackage();
     showToast('✓ Agregado a tu ruta');
+
+    RutaXAPI.addPackages([newPkg]).catch(function (err) {
+      console.warn('Sync addPackage:', err);
+      newPkg.syncError = true;
+      saveMessengerData();
+      showToast('⚠ Quedó local · se sincronizará luego', 2600);
+    });
   }
 
   function normalizeQuery(s) {
@@ -2228,20 +2356,28 @@
     document.getElementById('settingsBtn').addEventListener('click', openSettings);
     document.getElementById('settingsBackBtn').addEventListener('click', closeSettings);
 
-    document.getElementById('toggleRecipient').addEventListener('click', function () {
+        document.getElementById('toggleRecipient').addEventListener('click', function () {
       state.settings.requireRecipient = !state.settings.requireRecipient;
-      saveMessengerData(); updateTogglesUI();
+      saveMessengerData();
+      updateTogglesUI();
       showToast(state.settings.requireRecipient ? 'Ajuste activado' : 'Ajuste desactivado', 1600);
+      RutaXAPI.saveSettings(state.settings).catch(function (e) { console.warn('sync settings', e); });
     });
+
     document.getElementById('toggleNoPhoto').addEventListener('click', function () {
       state.settings.allowNoPhoto = !state.settings.allowNoPhoto;
-      saveMessengerData(); updateTogglesUI();
+      saveMessengerData();
+      updateTogglesUI();
       showToast(state.settings.allowNoPhoto ? 'Ajuste activado' : 'Ajuste desactivado', 1600);
+      RutaXAPI.saveSettings(state.settings).catch(function (e) { console.warn('sync settings', e); });
     });
+
     document.getElementById('toggleWhatsApp').addEventListener('click', function () {
       state.settings.promptWhatsApp = !state.settings.promptWhatsApp;
-      saveMessengerData(); updateTogglesUI();
+      saveMessengerData();
+      updateTogglesUI();
       showToast(state.settings.promptWhatsApp ? 'Ajuste activado' : 'Ajuste desactivado', 1600);
+      RutaXAPI.saveSettings(state.settings).catch(function (e) { console.warn('sync settings', e); });
     });
     document.getElementById('toggleSignature').addEventListener('click', function () {
       state.settings.requireSignature = !state.settings.requireSignature;
@@ -2262,11 +2398,14 @@
       })(chips[c]);
     }
 
-    document.getElementById('changeMessengerBtn').addEventListener('click', function () {
+       document.getElementById('changeMessengerBtn').addEventListener('click', function () {
       closeSettings();
+      RutaXAPI.clearSession();
       localStorage.removeItem(CURRENT_KEY);
-      renderSplash();
       showSplash();
+      RutaXAPI.publicList()
+        .then(function (ms) { renderSplashFromAPI(ms); })
+        .catch(function () { renderSplash(); });
     });
     document.getElementById('resetRouteBtn').addEventListener('click', function () {
       if (!confirm('¿Reiniciar los datos de ' + state.messenger.name + '?')) return;
@@ -2359,17 +2498,175 @@
     setupSignatureEvents();
   }
 
-  function init() {
+
+  // ============================================================
+  // LOGIN CON PIN · Bloque 2B
+  // ============================================================
+
+  function openPinModal(code, name, zone) {
+    pinTarget = { code: code, name: name, zone: zone };
+    pinBuffer = '';
+    document.getElementById('pinAvatar').textContent = code;
+    document.getElementById('pinName').textContent = name;
+    document.getElementById('pinZone').textContent = zone || '—';
+    document.getElementById('pinError').textContent = '';
+    document.getElementById('pinError').style.color = '';
+    updatePinDots();
+    buildPinPad();
+    document.getElementById('pinOverlay').classList.add('active');
+  }
+
+  function closePinModal() {
+    document.getElementById('pinOverlay').classList.remove('active');
+    pinBuffer = '';
+  }
+
+  function updatePinDots() {
+    var dots = document.querySelectorAll('#pinDots span');
+    for (var i = 0; i < dots.length; i++) {
+      if (i < pinBuffer.length) dots[i].classList.add('filled');
+      else dots[i].classList.remove('filled');
+    }
+  }
+
+  function buildPinPad() {
+    var pad = document.getElementById('pinPad');
+    var html = '';
+    for (var i = 1; i <= 9; i++) {
+      html += '<button class="pin-key" data-num="' + i + '">' + i + '</button>';
+    }
+    html += '<button class="pin-key pin-key-empty" tabindex="-1"></button>';
+    html += '<button class="pin-key" data-num="0">0</button>';
+    html += '<button class="pin-key pin-key-del" data-action="del">⌫</button>';
+    pad.innerHTML = html;
+
+    pad.onclick = function (e) {
+      var btn = e.target.closest('.pin-key');
+      if (!btn) return;
+      var num = btn.getAttribute('data-num');
+      var action = btn.getAttribute('data-action');
+      if (num !== null) pinKey(num);
+      else if (action === 'del') pinDelete();
+    };
+  }
+
+  function pinKey(num) {
+    if (pinBuffer.length >= 4) return;
+    pinBuffer += num;
+    updatePinDots();
+    document.getElementById('pinError').textContent = '';
+    if (pinBuffer.length === 4) setTimeout(handlePinSubmit, 180);
+  }
+
+  function pinDelete() {
+    pinBuffer = pinBuffer.slice(0, -1);
+    updatePinDots();
+  }
+
+  function handlePinSubmit() {
+    if (pinBuffer.length !== 4) return;
+    var pin = pinBuffer;
+    var errEl = document.getElementById('pinError');
+    errEl.style.color = 'rgba(255,255,255,0.7)';
+    errEl.textContent = 'Verificando...';
+
+    RutaXAPI.login(pinTarget.code, pin).then(function (data) {
+      if (!data.ok) throw new Error(data.error || 'PIN incorrecto');
+
+      var info = data.messenger;
+      localStorage.setItem('rutax_info_' + info.code, JSON.stringify(info));
+      localStorage.setItem('rutax_current_v8', info.code);
+
+      state.messenger = info;
+      state.route = data.route || [];
+      state.events = data.events || [];
+      state.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || {});
+      state.route.forEach(function (p) {
+        if (!p.status) p.status = 'pending';
+        if (!p.type) p.type = 'delivery';
+      });
+      state.events.forEach(function (e) {
+        if (!e.messengerName || e.messengerName === info.code) e.messengerName = info.name;
+      });
+      saveMessengerData();
+
+      closePinModal();
+      renderHeader();
+      renderRoute();
+      renderEvents();
+      hideSplash();
+      updateFabVisibility();
+      showToast('Bienvenido, ' + info.name.split(' ')[0]);
+
+      // Si es admin, ofrecer panel (Bloque 3)
+      if (data.role === 'admin') {
+        showToast('👑 Sesión de admin — panel viene en Bloque 3', 3200);
+      }
+    }).catch(function (err) {
+      errEl.style.color = '#fca5a5';
+      errEl.textContent = err.message || 'Error de conexión';
+      pinBuffer = '';
+      updatePinDots();
+    });
+  }
+  
+    function init() {
     try {
-      renderSplash();
       setupPhotoInput();
       setupEventListeners();
-      var savedCode = localStorage.getItem(CURRENT_KEY);
-      if (savedCode && MESSENGERS[savedCode]) {
-        loadMessengerData(savedCode);
-        renderHeader(); renderRoute(); renderEvents();
-        hideSplash();
-        updateFabVisibility();
+
+      document.getElementById('pinBackBtn').addEventListener('click', closePinModal);
+
+      // 1. Cargar lista de mensajeros desde el Sheet
+      RutaXAPI.publicList()
+        .then(function (ms) { renderSplashFromAPI(ms); })
+        .catch(function (err) {
+          console.warn('API caída, usando fallback:', err);
+          renderSplash();
+        });
+
+      // 2. Intentar auto-login si hay token guardado
+      var savedCode = localStorage.getItem('rutax_current_v8');
+      if (savedCode && RutaXAPI.isLoggedIn()) {
+        RutaXAPI.pull().then(function (data) {
+          if (data.role !== 'messenger' && data.role !== 'admin') throw new Error('rol desconocido');
+
+          var info = null;
+          var infoRaw = localStorage.getItem('rutax_info_' + savedCode);
+          if (infoRaw) { try { info = JSON.parse(infoRaw); } catch (e) {} }
+
+          if (!info && MESSENGERS[savedCode]) {
+            info = { code: savedCode, name: MESSENGERS[savedCode].name, zone: MESSENGERS[savedCode].zone };
+          }
+          if (!info) throw new Error('sin info local');
+
+          state.messenger = info;
+          state.route = data.route || [];
+          state.events = data.events || [];
+          state.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || {});
+          state.route.forEach(function (p) { if (!p.status) p.status = 'pending'; if (!p.type) p.type = 'delivery'; });
+          state.events.forEach(function (e) { if (!e.messengerName || e.messengerName === info.code) e.messengerName = info.name; });
+          saveMessengerData();
+
+          renderHeader();
+          renderRoute();
+          renderEvents();
+          hideSplash();
+          updateFabVisibility();
+        }).catch(function (err) {
+          console.warn('Auto-login falló:', err);
+          // Fallback a local
+          if (localStorage.getItem(dataKey(savedCode, 'route'))) {
+            loadMessengerData(savedCode);
+            renderHeader();
+            renderRoute();
+            renderEvents();
+            hideSplash();
+            updateFabVisibility();
+          } else {
+            showSplash();
+          }
+        });
       } else {
         showSplash();
       }
@@ -2377,11 +2674,12 @@
       console.error('Ruta X init error:', e);
       var box = document.getElementById('messengerOptions');
       if (box) {
-        box.innerHTML = '<div style="background:#7f1d1d;border:1px solid #ef4444;border-radius:12px;padding:16px;font-size:13px;line-height:1.5;"><strong>Error al iniciar Ruta X</strong><br>' + e.message + '</div>';
+        box.innerHTML = '<div style="background:#7f1d1d;border:1px solid #ef4444;border-radius:12px;padding:16px;font-size:13px;line-height:1.5;">' +
+          '<strong>Error al iniciar Ruta X</strong><br>' + e.message +
+        '</div>';
       }
     }
   }
-
   document.addEventListener('DOMContentLoaded', init);
 })();
 </script>
