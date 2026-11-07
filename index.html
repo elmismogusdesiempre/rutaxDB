@@ -337,6 +337,28 @@
 
   .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--navy-deep); color: white; padding: 12px 20px; border-radius: 30px; font-size: 13px; font-weight: 600; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 200; max-width: 90%; text-align: center; box-shadow: 0 8px 20px rgba(10,31,68,0.3); }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ============================== */
+  /* PIN MODAL · Bloque 2B          */
+  /* ============================== */
+  .pin-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; background: linear-gradient(160deg, #0A1F44 0%, #0E3A6C 55%, #1E5BB8 100%); color: white; max-width: 480px; margin: 0 auto; position: relative; }
+  .pin-header { position: absolute; top: 16px; left: 16px; }
+  .pin-back { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; width: 40px; height: 40px; border-radius: 12px; font-size: 20px; cursor: pointer; }
+  .pin-avatar { width: 78px; height: 78px; border-radius: 50%; background: rgba(255,107,53,0.2); border: 2px solid #FF6B35; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; margin-bottom: 14px; }
+  .pin-name { font-size: 19px; font-weight: 800; text-align: center; }
+  .pin-zone { font-size: 13px; opacity: 0.75; margin-top: 3px; margin-bottom: 32px; }
+  .pin-title { font-size: 15px; opacity: 0.85; margin-bottom: 22px; }
+  .pin-dots { display: flex; gap: 16px; margin-bottom: 22px; }
+  .pin-dots span { width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.4); transition: all 0.15s; }
+  .pin-dots span.filled { background: #FF6B35; border-color: #FF6B35; transform: scale(1.1); }
+  .pin-error { min-height: 20px; font-size: 13px; font-weight: 600; color: #fca5a5; margin-bottom: 20px; text-align: center; }
+  .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 300px; }
+  .pin-key { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); border-radius: 16px; color: white; font-size: 24px; font-weight: 600; padding: 18px; cursor: pointer; font-family: inherit; transition: all 0.12s; }
+  .pin-key:active { transform: scale(0.94); background: rgba(255,255,255,0.22); }
+  .pin-key-empty { background: transparent; border: none; cursor: default; }
+  .pin-key-del { font-size: 20px; }
+
+
 </style>
 </head>
 <body>
