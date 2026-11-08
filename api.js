@@ -1,11 +1,10 @@
-  /**
- * Ruta X · Cliente de API · v12
- * Cambios v12: adminGetRoutes + adminAssignRoute
+/**
+ * Ruta X · Cliente de API
+ * v15 · Con anulación de entrega
  */
 (function () {
   'use strict';
 
-  // ⚠️ PEGA AQUÍ TU URL DE APPS SCRIPT (termina en /exec)
 var API_URL = 'https://script.google.com/macros/s/AKfycbwdKi0AopAS6V2ySrBhaYV4HuHNgRuhsYbHMOsJqK2D81WKvz2deD1faT61zYNDPwgNwQ/exec';
 
   var TOKEN_KEY = 'rutax_token';
@@ -67,7 +66,14 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbwdKi0AopAS6V2ySrBhaYV4Hu
   async function saveSettings(settings) { return call('saveSettings', { settings: settings }); }
   async function resetRoute() { return call('resetRoute', {}); }
 
-  // ADMIN
+  async function undoDelivery(eventId, reason) {
+    return call('undoDelivery', { eventId: eventId, reason: reason });
+  }
+
+  async function updatePackage(rutaId, estado) {
+    return call('updatePackage', { rutaId: rutaId, estado: estado });
+  }
+
   async function adminListMessengers() { return call('adminListMessengers', {}); }
   async function adminUpdateMessenger(mm) { return call('adminUpdateMessenger', { messenger: mm }); }
   async function adminAddMessenger(mm) { return call('adminAddMessenger', { messenger: mm }); }
@@ -105,6 +111,8 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbwdKi0AopAS6V2ySrBhaYV4Hu
     addPackages: addPackages,
     saveSettings: saveSettings,
     resetRoute: resetRoute,
+    undoDelivery: undoDelivery,
+    updatePackage: updatePackage,
     adminListMessengers: adminListMessengers,
     adminUpdateMessenger: adminUpdateMessenger,
     adminAddMessenger: adminAddMessenger,
