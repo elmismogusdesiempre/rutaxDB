@@ -420,8 +420,6 @@
   .ae-client { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 1px; }
   .ae-addr { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .ae-time { font-size: 10px; color: #9ca3af; margin-top: 3px; }
-
-  
 </style>
 <script src="api.js"></script>
 </head>
@@ -453,12 +451,11 @@
     <div class="splash-title">Bienvenido a tu ruta</div>
     <div class="splash-subtitle">Elige quién eres para empezar. Tu ruta y tus registros quedan guardados por separado.</div>
     <div class="messenger-options" id="messengerOptions"></div>
-<div style="text-align:center;margin-top:32px;">
-  <button id="adminAccessBtn" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;cursor:pointer;padding:12px;font-family:inherit;text-decoration:underline;">
-    Acceso administración
-  </button>
-</div>
-    
+    <div style="text-align:center;margin-top:32px;">
+      <button id="adminAccessBtn" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;cursor:pointer;padding:12px;font-family:inherit;text-decoration:underline;">
+        Acceso administración
+      </button>
+    </div>
   </div>
 </div>
 
@@ -713,7 +710,7 @@
         <button class="settings-btn danger" id="resetRouteBtn">Reiniciar mis datos</button>
       </div>
 
-      <div class="app-version">Ruta X · Demo local v0.10 · Conectado a Sheets</div>
+      <div class="app-version">Ruta X · Demo local v0.11 · Conectado a Sheets + Admin</div>
     </div>
   </div>
 </div>
@@ -821,7 +818,6 @@
   </div>
 </div>
 
-  
 <div id="pinOverlay" class="overlay">
   <div class="pin-screen">
     <div class="pin-header">
@@ -920,16 +916,6 @@
   var searchDebounceTimer = null;
   var addFormType = 'delivery';
 
-    // ---------- Estado de administración ----------
-  var adminState = {
-    messengers: [],
-    live: [],
-    liveSince: null,
-    liveUntil: null,
-    drillDown: null,
-    editingCode: null
-  };
-
   // ---------- Estado del login PIN ----------
   var pinTarget = { code: null, name: null, zone: null };
   var pinBuffer = '';
@@ -944,6 +930,16 @@
   var isDrawing = false;
   var signatureLastX = 0;
   var signatureLastY = 0;
+
+  // ---------- Estado de administración ----------
+  var adminState = {
+    messengers: [],
+    live: [],
+    liveSince: null,
+    liveUntil: null,
+    drillDown: null,
+    editingCode: null
+  };
 
   function saveMessengerData() {
     if (!state.messenger) return;
@@ -1494,6 +1490,7 @@
     document.getElementById('searchOverlay').classList.remove('active');
     document.getElementById('whatsappOverlay').classList.remove('active');
     document.getElementById('addPackageOverlay').classList.remove('active');
+    document.getElementById('adminOverlay').classList.remove('active');
     document.getElementById('splashOverlay').classList.add('active');
   }
   function hideSplash() {
@@ -1575,7 +1572,7 @@
       var statusText = e.status === 'delivered' ? '✓ Entregado' : '⚠ Novedad';
       var firstPhoto = photos[0];
       var photoCell;
-      var sigBadge = e.signature ? '<span class="sig-badge">✍️</span>' : '';
+      var sigBadge = (e.signature || e.signed) ? '<span class="sig-badge">✍️</span>' : '';
       if (firstPhoto) {
         photoCell = '<img src="' + firstPhoto + '" alt="foto" />' + (photos.length > 1 ? '<span class="photo-count-badge">+' + (photos.length - 1) + '</span>' : '') + sigBadge;
       } else {
@@ -1875,6 +1872,7 @@
         noPhoto: noPhotoSnapshot && !photos.length,
         signature: sigData,
         signatureColor: sigColor,
+        signed: !!sigData,
         note: note,
         gps: gpsSnapshot,
         messengerCode: state.messenger.code,
@@ -1898,10 +1896,8 @@
       renderRoute();
       renderEvents();
 
-      // ☁️ Sincronizar con el Sheet (en paralelo, no bloquea la UX)
       syncEventToServer(event, photosToUpload);
 
-      // Copia congelada para el prompt de WhatsApp (mantiene base64 por si comparte archivo)
       var eventForWA = JSON.parse(JSON.stringify(event));
 
       if (status === 'delivered' && state.settings.promptWhatsApp) {
@@ -1945,7 +1941,6 @@
           localEvt.photoIds = resp.photoIds || [];
           localEvt.synced = true;
           saveMessengerData();
-          // Re-render si el detalle está abierto
           if (eventCarouselState.evt && eventCarouselState.evt.id === event.id) {
             eventCarouselState.photos = resp.photoUrls;
             eventCarouselState.evt.photos = resp.photoUrls;
@@ -1963,56 +1958,6 @@
         saveMessengerData();
       }
       showToast('⚠ Sin conexión · guardado localmente', 2600);
-    }
-  }
-
-  function finalizeEvent(photos, signatureData, color) {
-    var pendingStatus = finalizeEvent._status || 'delivered';
-    var recipient = finalizeEvent._recipient || '';
-    var note = finalizeEvent._note || '';
-    var isPickup = finalizeEvent._isPickup || false;
-
-    var event = {
-      id: 'evt-' + Date.now(),
-      packageId: currentPackage.id,
-      guide: currentPackage.guide,
-      client: currentPackage.client,
-      address: currentPackage.address,
-      phone: currentPackage.phone || '',
-      recipient: recipient,
-      status: pendingStatus,
-      type: currentPackage.type || 'delivery',
-      photos: photos,
-      photo: photos[0] || null,
-      noPhoto: currentNoPhoto && !photos.length,
-      signature: signatureData,
-      signatureColor: color,
-      note: note,
-      gps: currentGPS,
-      messengerCode: state.messenger.code,
-      messengerName: state.messenger.name,
-      timestamp: Date.now()
-    };
-
-    state.events.push(event);
-
-    var pkg = null;
-    for (var i = 0; i < state.route.length; i++) {
-      if (state.route[i].id === currentPackage.id) { pkg = state.route[i]; break; }
-    }
-    if (pkg) pkg.status = pendingStatus === 'delivered' ? 'delivered' : 'issue';
-
-    saveMessengerData();
-    hideProcessing();
-    closeDetail();
-    renderRoute();
-    renderEvents();
-
-    if (pendingStatus === 'delivered' && state.settings.promptWhatsApp) {
-      showWhatsAppPrompt(event);
-    } else {
-      var verb = isPickup ? 'Recogida' : 'Entrega';
-      showToast(pendingStatus === 'delivered' ? '✓ ' + verb + ' registrada' : '⚠ Novedad registrada');
     }
   }
 
@@ -2091,7 +2036,7 @@
       '<div class="ev-block"><div class="ev-label">Mensajero</div><div class="ev-value" style="font-size:13px;">' + (evt.messengerName || state.messenger.name) + '<br><span style="color:var(--muted);font-weight:500;font-size:11px;">' + (evt.messengerCode || state.messenger.code) + '</span></div></div>' +
     '</div>';
     if (photos.length > 1) html += '<div class="ev-block"><div class="ev-label">Evidencias</div><div class="ev-value">' + photos.length + ' fotografías adjuntas</div></div>';
-        if (evt.signature) html += '<div class="ev-signature-img"><div class="ev-label">Firma del cliente</div><img src="' + evt.signature + '" alt="Firma" /></div>';
+    if (evt.signature) html += '<div class="ev-signature-img"><div class="ev-label">Firma del cliente</div><img src="' + evt.signature + '" alt="Firma" /></div>';
     else if (evt.signed) html += '<div class="ev-block"><div class="ev-label">Firma del cliente</div><div class="ev-value" style="font-size:13px;">✍️ Firmado por el cliente (grabada en la foto)</div></div>';
     if (evt.gps) {
       html += '<div class="ev-block"><div class="ev-label">Ubicación GPS</div><div class="ev-value" style="font-size:13px;">' + evt.gps.lat.toFixed(5) + ', ' + evt.gps.lng.toFixed(5) + (evt.gps.accuracy ? '<br><span style="color:var(--muted);font-weight:500;font-size:11px;">Precisión ±' + evt.gps.accuracy + ' m</span>' : '') + '</div></div>';
@@ -2279,7 +2224,7 @@
     if (photos.length) photoCell = '<img src="' + photos[0] + '" />' + (photos.length > 1 ? '<span class="photo-count-badge">+' + (photos.length - 1) + '</span>' : '');
     else if (e.noPhoto) photoCell = '🚫';
     else photoCell = '📋';
-    var sigIcon = e.signature ? ' · ✍️' : '';
+    var sigIcon = (e.signature || e.signed) ? ' · ✍️' : '';
     return '<div class="sr-card" data-type="event" data-id="' + e.id + '">' +
       '<div class="sr-photo">' + photoCell + '</div>' +
       '<div class="sr-body"><div class="sr-top"><span class="sr-guide">' + e.guide + '</span><span class="status-badge ' + e.status + '">' + statusText + '</span></div><div class="sr-title">' + (e.client || '—') + '</div><div class="sr-sub">' + (e.address || '') + '</div>' + (e.recipient ? '<div class="sr-sub">Recibió: ' + e.recipient + '</div>' : '') + '<div class="sr-date">🕒 ' + formatTime(e.timestamp) + (photos.length > 1 ? ' · 📷 ' + photos.length : '') + sigIcon + '</div></div>' +
@@ -2773,6 +2718,14 @@
       localStorage.setItem('rutax_current_v8', info.code);
 
       state.messenger = info;
+
+      if (data.role === 'admin') {
+        closePinModal();
+        hideSplash();
+        openAdminPanel();
+        return;
+      }
+
       state.route = data.route || [];
       state.events = data.events || [];
       state.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || {});
@@ -2785,104 +2738,19 @@
       });
       saveMessengerData();
 
-            closePinModal();
+      closePinModal();
+      renderHeader();
+      renderRoute();
+      renderEvents();
       hideSplash();
-
-      if (data.role === 'admin') {
-        state.messenger = info;
-        openAdminPanel();
-      } else {
-        renderHeader();
-        renderRoute();
-        renderEvents();
-        updateFabVisibility();
-        showToast('Bienvenido, ' + info.name.split(' ')[0]);
-      }
-      }
+      updateFabVisibility();
+      showToast('Bienvenido, ' + info.name.split(' ')[0]);
     }).catch(function (err) {
       errEl.style.color = '#fca5a5';
       errEl.textContent = err.message || 'Error de conexión';
       pinBuffer = '';
       updatePinDots();
     });
-  }
-
-  function init() {
-    try {
-      setupPhotoInput();
-      setupEventListeners();
-
-      document.getElementById('pinBackBtn').addEventListener('click', closePinModal);
-      setupAdminEvents();
-      RutaXAPI.publicList()
-        .then(function (ms) { renderSplashFromAPI(ms); })
-        .catch(function (err) {
-          console.warn('API caída, usando fallback:', err);
-          renderSplash();
-        });
-
-      var savedCode = localStorage.getItem('rutax_current_v8');
-      if (savedCode && RutaXAPI.isLoggedIn()) {
-              RutaXAPI.pull().then(function (data) {
-        if (data.role !== 'messenger' && data.role !== 'admin') throw new Error('rol desconocido');
-
-        var info = null;
-        var infoRaw = localStorage.getItem('rutax_info_' + savedCode);
-        if (infoRaw) { try { info = JSON.parse(infoRaw); } catch (e) {} }
-
-        if (!info && MESSENGERS[savedCode]) {
-          info = { code: savedCode, name: MESSENGERS[savedCode].name, zone: MESSENGERS[savedCode].zone };
-        }
-        if (!info && savedCode === 'ADMIN') {
-          info = { code: 'ADMIN', name: 'Administrador', zone: 'Administración' };
-        }
-        if (!info) throw new Error('sin info local');
-
-        state.messenger = info;
-
-        if (data.role === 'admin') {
-          hideSplash();
-          openAdminPanel();
-          return;
-        }
-
-        state.route = data.route || [];
-        state.events = data.events || [];
-        state.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || {});
-        state.route.forEach(function (p) { if (!p.status) p.status = 'pending'; if (!p.type) p.type = 'delivery'; });
-        state.events.forEach(function (e) { if (!e.messengerName || e.messengerName === info.code) e.messengerName = info.name; });
-        saveMessengerData();
-
-        renderHeader();
-        renderRoute();
-        renderEvents();
-        hideSplash();
-        updateFabVisibility();
-      }).catch(function (err) {
-        console.warn('Auto-login falló:', err);
-        if (localStorage.getItem(dataKey(savedCode, 'route'))) {
-          loadMessengerData(savedCode);
-          renderHeader();
-          renderRoute();
-          renderEvents();
-          hideSplash();
-          updateFabVisibility();
-        } else {
-          showSplash();
-        }
-      });
-      } else {
-        showSplash();
-      }
-    } catch (e) {
-      console.error('Ruta X init error:', e);
-      var box = document.getElementById('messengerOptions');
-      if (box) {
-        box.innerHTML = '<div style="background:#7f1d1d;border:1px solid #ef4444;border-radius:12px;padding:16px;font-size:13px;line-height:1.5;">' +
-          '<strong>Error al iniciar Ruta X</strong><br>' + e.message +
-        '</div>';
-      }
-    }
   }
 
   // ============================================================
@@ -3119,7 +2987,7 @@
       var m = adminState.live[i];
       var st = m.stats;
       var total = st.routeTotal || 1;
-      var pct = Math.round((st.delivered / total) * 100);
+      var pct = st.routeTotal ? Math.round((st.delivered / total) * 100) : 0;
       var statusClass = 'st-idle';
       var statusDot = '🔴';
       if (st.lastActivity) {
@@ -3283,7 +3151,84 @@
     });
   }
 
-  
+  function init() {
+    try {
+      setupPhotoInput();
+      setupEventListeners();
+      setupAdminEvents();
+
+      document.getElementById('pinBackBtn').addEventListener('click', closePinModal);
+
+      RutaXAPI.publicList()
+        .then(function (ms) { renderSplashFromAPI(ms); })
+        .catch(function (err) {
+          console.warn('API caída, usando fallback:', err);
+          renderSplash();
+        });
+
+      var savedCode = localStorage.getItem('rutax_current_v8');
+      if (savedCode && RutaXAPI.isLoggedIn()) {
+        RutaXAPI.pull().then(function (data) {
+          if (data.role !== 'messenger' && data.role !== 'admin') throw new Error('rol desconocido');
+
+          var info = null;
+          var infoRaw = localStorage.getItem('rutax_info_' + savedCode);
+          if (infoRaw) { try { info = JSON.parse(infoRaw); } catch (e) {} }
+
+          if (!info && MESSENGERS[savedCode]) {
+            info = { code: savedCode, name: MESSENGERS[savedCode].name, zone: MESSENGERS[savedCode].zone };
+          }
+          if (!info && savedCode === 'ADMIN') {
+            info = { code: 'ADMIN', name: 'Administrador', zone: 'Administración' };
+          }
+          if (!info) throw new Error('sin info local');
+
+          state.messenger = info;
+
+          if (data.role === 'admin') {
+            hideSplash();
+            openAdminPanel();
+            return;
+          }
+
+          state.route = data.route || [];
+          state.events = data.events || [];
+          state.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || {});
+          state.route.forEach(function (p) { if (!p.status) p.status = 'pending'; if (!p.type) p.type = 'delivery'; });
+          state.events.forEach(function (e) { if (!e.messengerName || e.messengerName === info.code) e.messengerName = info.name; });
+          saveMessengerData();
+
+          renderHeader();
+          renderRoute();
+          renderEvents();
+          hideSplash();
+          updateFabVisibility();
+        }).catch(function (err) {
+          console.warn('Auto-login falló:', err);
+          if (localStorage.getItem(dataKey(savedCode, 'route'))) {
+            loadMessengerData(savedCode);
+            renderHeader();
+            renderRoute();
+            renderEvents();
+            hideSplash();
+            updateFabVisibility();
+          } else {
+            showSplash();
+          }
+        });
+      } else {
+        showSplash();
+      }
+    } catch (e) {
+      console.error('Ruta X init error:', e);
+      var box = document.getElementById('messengerOptions');
+      if (box) {
+        box.innerHTML = '<div style="background:#7f1d1d;border:1px solid #ef4444;border-radius:12px;padding:16px;font-size:13px;line-height:1.5;">' +
+          '<strong>Error al iniciar Ruta X</strong><br>' + e.message +
+        '</div>';
+      }
+    }
+  }
   document.addEventListener('DOMContentLoaded', init);
 })();
 </script>
