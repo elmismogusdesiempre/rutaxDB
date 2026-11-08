@@ -9,18 +9,10 @@
 <title>Ruta X · Mensajero</title>
 <style>
   :root {
-    --navy-deep: #0A1F44;
-    --navy: #0E3A6C;
-    --navy-light: #1E5BB8;
-    --accent: #FF6B35;
-    --ink: #1f2937;
-    --muted: #6b7280;
-    --line: #e5e7eb;
-    --bg: #f4f6fa;
-    --green: #22c55e;
-    --green-dark: #16a34a;
-    --wa: #25D366;
-    --purple: #8b5cf6;
+    --navy-deep: #0A1F44; --navy: #0E3A6C; --navy-light: #1E5BB8;
+    --accent: #FF6B35; --ink: #1f2937; --muted: #6b7280; --line: #e5e7eb;
+    --bg: #f4f6fa; --green: #22c55e; --green-dark: #16a34a;
+    --wa: #25D366; --purple: #8b5cf6;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; -webkit-font-smoothing: antialiased; }
@@ -355,16 +347,13 @@
   .pin-key-empty { background: transparent; border: none; cursor: default; }
   .pin-key-del { font-size: 20px; }
 
-  /* ============================== */
-  /* ADMIN · Bloque 3               */
-  /* ============================== */
+  /* ADMIN MOBILE */
   .admin-screen { min-height: 100vh; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; background: var(--bg); }
   .admin-tabs { display: flex; background: white; border-bottom: 1px solid var(--line); }
   .admin-tab { flex: 1; padding: 14px; border: none; background: none; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; font-family: inherit; }
   .admin-tab.active { color: var(--navy); border-bottom-color: var(--accent); }
   .admin-view { display: none; padding: 16px; flex: 1; }
   .admin-view.active { display: block; }
-
   .ms-card { background: white; border-radius: 14px; padding: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; box-shadow: 0 1px 3px rgba(15,23,42,0.06); border-left: 4px solid var(--green); transition: transform 0.1s; }
   .ms-card.inactive { border-left-color: #d1d5db; background: #f9fafb; opacity: 0.75; }
   .ms-card:active { transform: scale(0.99); }
@@ -377,16 +366,13 @@
   .ms-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
   .ms-edit-btn { background: #f3f4f6; border: 1px solid var(--line); color: var(--ink); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
   .ms-edit-btn:active { background: #e5e7eb; }
-
   .admin-add-btn { width: 100%; background: white; border: 2px dashed #cbd5e1; border-radius: 14px; padding: 16px; font-size: 14px; font-weight: 700; color: var(--navy); cursor: pointer; margin-bottom: 14px; font-family: inherit; transition: all 0.15s; }
   .admin-add-btn:active { background: #f1f5f9; border-color: var(--navy); }
-
   .live-header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding: 0 2px; gap: 10px; }
   .live-date-label { font-size: 14px; font-weight: 700; color: var(--ink); }
   .live-date-input { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 13px; font-family: inherit; background: white; color: var(--ink); cursor: pointer; outline: none; }
   .live-refresh-btn { background: #eff6ff; color: var(--navy); border: none; border-radius: 8px; padding: 8px 12px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; }
   .live-refresh-btn:active { background: #dbeafe; }
-
   .live-card { background: white; border-radius: 14px; padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(15,23,42,0.06); cursor: pointer; transition: transform 0.1s; border-left: 4px solid #d1d5db; }
   .live-card:active { transform: scale(0.99); }
   .live-card.st-fresh { border-left-color: var(--green); }
@@ -400,15 +386,11 @@
   .live-progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--green-dark)); transition: width 0.4s ease; }
   .live-progress-text { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
   .live-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; color: #9ca3af; }
-  .live-meta strong { color: var(--ink); font-weight: 700; }
   .live-sig-count { color: var(--green-dark); font-weight: 700; }
-
   .admin-live-empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 14px; }
-
   .admin-drill-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
   .admin-drill-back { background: white; border: 1px solid var(--line); color: var(--ink); width: 36px; height: 36px; border-radius: 10px; font-size: 16px; cursor: pointer; font-family: inherit; }
   .admin-drill-title { font-size: 15px; font-weight: 700; color: var(--ink); }
-
   .ae-card { background: white; border-radius: 12px; padding: 10px; margin-bottom: 8px; display: flex; gap: 10px; box-shadow: 0 1px 2px rgba(15,23,42,0.05); cursor: pointer; align-items: center; transition: transform 0.1s; }
   .ae-card:active { transform: scale(0.99); }
   .ae-photo { width: 50px; height: 50px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: #f3f4f6; display: flex; align-items: center; justify-content: center; font-size: 18px; position: relative; }
@@ -420,6 +402,109 @@
   .ae-client { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 1px; }
   .ae-addr { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .ae-time { font-size: 10px; color: #9ca3af; margin-top: 3px; }
+
+  /* ADMIN DESKTOP */
+  .admin-desktop-overlay { position: fixed; inset: 0; background: #0f172a; z-index: 200; display: none; flex-direction: column; }
+  .admin-desktop-overlay.active { display: flex; }
+  .ad-topbar { height: 64px; background: linear-gradient(90deg, #0A1F44 0%, #0E3A6C 50%, #1E5BB8 100%); display: flex; align-items: center; padding: 0 28px; gap: 24px; color: white; box-shadow: 0 4px 16px rgba(0,0,0,0.3); flex-shrink: 0; }
+  .ad-brand { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; }
+  .ad-brand .x { color: var(--accent); }
+  .ad-tabs { display: flex; gap: 4px; flex: 1; }
+  .ad-tab { background: rgba(255,255,255,0.08); border: none; color: rgba(255,255,255,0.75); padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+  .ad-tab:hover { background: rgba(255,255,255,0.15); color: white; }
+  .ad-tab.active { background: var(--accent); color: white; }
+  .ad-topbar-actions { display: flex; gap: 8px; }
+  .ad-action-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: white; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background 0.15s; }
+  .ad-action-btn:hover { background: rgba(255,255,255,0.2); }
+  .ad-body { display: grid; grid-template-columns: 280px 1fr; flex: 1; overflow: hidden; }
+  .ad-sidebar { background: white; display: flex; flex-direction: column; overflow: hidden; border-right: 1px solid var(--line); }
+  .ad-search { padding: 14px; border-bottom: 1px solid var(--line); }
+  .ad-search input { width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: 13px; font-family: inherit; outline: none; background: #f9fafb; }
+  .ad-search input:focus { border-color: var(--navy); background: white; }
+  .ad-msg-list { flex: 1; overflow-y: auto; padding: 8px; }
+  .ad-msg-item { padding: 10px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 10px; margin-bottom: 4px; transition: background 0.1s; }
+  .ad-msg-item:hover { background: #f3f4f6; }
+  .ad-msg-item.active { background: #eff6ff; }
+  .ad-mini-avatar { width: 32px; height: 32px; border-radius: 50%; background: #eff6ff; color: var(--navy); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; flex-shrink: 0; }
+  .ad-msg-item.inactive .ad-mini-avatar { background: #f3f4f6; color: var(--muted); }
+  .ad-mini-info { flex: 1; min-width: 0; }
+  .ad-mini-name { font-size: 13px; font-weight: 600; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ad-msg-item.inactive .ad-mini-name { color: var(--muted); }
+  .ad-mini-zone { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ad-dot { width: 8px; height: 8px; border-radius: 50%; background: #d1d5db; flex-shrink: 0; }
+  .ad-dot.on { background: var(--green); }
+  .ad-main { overflow-y: auto; padding: 28px; background: #f4f6fa; }
+  .ad-detail-card { background: white; border-radius: 14px; padding: 24px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(15,23,42,0.06); }
+  .ad-detail-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 22px; flex-wrap: wrap; }
+  .ad-detail-name { font-size: 24px; font-weight: 800; color: var(--ink); margin-bottom: 4px; letter-spacing: -0.4px; }
+  .ad-detail-meta { font-size: 13px; color: var(--muted); }
+  .ad-detail-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .ad-btn { padding: 10px 16px; border-radius: 8px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+  .ad-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .ad-btn.primary { background: var(--navy); color: white; }
+  .ad-btn.primary:hover:not(:disabled) { background: var(--navy-light); }
+  .ad-btn.accent { background: var(--accent); color: white; }
+  .ad-btn.accent:hover:not(:disabled) { background: #e55a28; }
+  .ad-btn.secondary { background: #f3f4f6; color: var(--ink); border: 1px solid var(--line); }
+  .ad-btn.secondary:hover:not(:disabled) { background: #e5e7eb; }
+  .ad-btn.danger { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .ad-btn.danger:hover:not(:disabled) { background: #fee2e2; }
+  .ad-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; }
+  .ad-stat { background: #f8fafc; border-radius: 10px; padding: 14px; }
+  .ad-stat-value { font-size: 24px; font-weight: 800; color: var(--ink); margin-bottom: 2px; line-height: 1; }
+  .ad-stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.3px; }
+  .ad-section-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: baseline; }
+  .ad-table-wrap { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(15,23,42,0.06); border: 1px solid var(--line); }
+  .ad-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .ad-table th { text-align: left; padding: 12px 14px; background: #f8fafc; border-bottom: 1px solid var(--line); font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 700; letter-spacing: 0.3px; }
+  .ad-table td { padding: 12px 14px; border-bottom: 1px solid #f3f4f6; color: var(--ink); }
+  .ad-table tr:last-child td { border-bottom: none; }
+  .ad-table tr:hover td { background: #f9fafb; }
+  .ad-empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .ad-empty-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.4; }
+  .ad-live-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .ad-live-card { background: white; border-radius: 14px; padding: 18px; box-shadow: 0 1px 3px rgba(15,23,42,0.06); border-left: 4px solid #d1d5db; cursor: pointer; transition: transform 0.1s; }
+  .ad-live-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(15,23,42,0.1); }
+  .ad-live-card.st-fresh { border-left-color: var(--green); }
+  .ad-live-card.st-paused { border-left-color: #f59e0b; }
+  .ad-live-card.st-idle { border-left-color: #ef4444; }
+  .ad-live-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; }
+  .ad-live-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .ad-live-zone { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .ad-live-dot { font-size: 18px; flex-shrink: 0; }
+  .ad-live-progress { height: 8px; background: #eef2f7; border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+  .ad-live-progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--green-dark)); transition: width 0.4s; }
+  .ad-live-text { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
+  .ad-live-meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: 11px; color: #9ca3af; }
+  .ad-live-meta strong { color: var(--ink); font-weight: 700; }
+  .ad-csv-modal { position: fixed; inset: 0; background: rgba(15,23,42,0.6); z-index: 250; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .ad-csv-modal.active { display: flex; }
+  .ad-csv-dialog { background: white; border-radius: 16px; width: 100%; max-width: 680px; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+  .ad-csv-header { padding: 20px 24px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+  .ad-csv-title { font-size: 18px; font-weight: 800; color: var(--ink); }
+  .ad-csv-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+  .ad-csv-footer { padding: 16px 24px; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 10px; background: #f9fafb; }
+  .ad-csv-dropzone { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 36px 24px; text-align: center; cursor: pointer; transition: all 0.15s; background: #f9fafb; }
+  .ad-csv-dropzone:hover { border-color: var(--navy); background: #eff6ff; }
+  .ad-csv-preview { max-height: 260px; overflow-y: auto; border: 1px solid var(--line); border-radius: 8px; background: #f9fafb; }
+  .ad-csv-preview-row { padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 12px; }
+  .ad-csv-preview-row:last-child { border-bottom: none; }
+  .ad-csv-preview-row .g { font-weight: 700; color: var(--navy); }
+  .ad-csv-preview-row .a { color: var(--muted); margin-top: 2px; }
+  .ad-csv-mode { display: flex; gap: 10px; }
+  .ad-csv-mode-option { flex: 1; padding: 14px; border: 2px solid var(--line); border-radius: 10px; cursor: pointer; background: white; text-align: left; font-family: inherit; transition: all 0.15s; }
+  .ad-csv-mode-option:hover { border-color: #cbd5e1; }
+  .ad-csv-mode-option.active { border-color: var(--navy); background: #eff6ff; }
+  .ad-csv-mode-option strong { display: block; font-size: 13px; color: var(--ink); margin-bottom: 2px; }
+  .ad-csv-mode-option span { font-size: 12px; color: var(--muted); line-height: 1.3; }
+  @media (max-width: 900px) {
+    .ad-body { grid-template-columns: 1fr; }
+    .ad-sidebar { max-height: 190px; border-right: none; border-bottom: 1px solid var(--line); }
+    .ad-msg-list { display: flex; flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 8px; }
+    .ad-msg-item { flex-shrink: 0; min-width: 150px; }
+    .ad-stats-row { grid-template-columns: repeat(2, 1fr); }
+    .ad-csv-mode { flex-direction: column; }
+  }
 </style>
 <script src="api.js"></script>
 </head>
@@ -430,31 +515,20 @@
     <div class="splash-brand">
       <span class="logo-mark" aria-hidden="true">
         <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="rxLogoGradS" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#1E5BB8"/>
-              <stop offset="1" stop-color="#0A1F44"/>
-            </linearGradient>
-          </defs>
+          <defs><linearGradient id="rxLogoGradS" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1E5BB8"/><stop offset="1" stop-color="#0A1F44"/></linearGradient></defs>
           <rect width="40" height="40" rx="12" fill="url(#rxLogoGradS)"/>
           <path d="M13 13 L27 27 M27 13 L13 27" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-          <circle cx="13" cy="13" r="1.9" fill="#FF6B35"/>
-          <circle cx="27" cy="13" r="1.9" fill="#FF6B35"/>
-          <circle cx="13" cy="27" r="1.9" fill="#FF6B35"/>
-          <circle cx="27" cy="27" r="1.9" fill="#FF6B35"/>
+          <circle cx="13" cy="13" r="1.9" fill="#FF6B35"/><circle cx="27" cy="13" r="1.9" fill="#FF6B35"/>
+          <circle cx="13" cy="27" r="1.9" fill="#FF6B35"/><circle cx="27" cy="27" r="1.9" fill="#FF6B35"/>
         </svg>
       </span>
-      <span class="wordmark">
-        <span class="wm-ruta">Ruta</span><span class="wm-x">X</span>
-      </span>
+      <span class="wordmark"><span class="wm-ruta">Ruta</span><span class="wm-x">X</span></span>
     </div>
     <div class="splash-title">Bienvenido a tu ruta</div>
     <div class="splash-subtitle">Elige quién eres para empezar. Tu ruta y tus registros quedan guardados por separado.</div>
     <div class="messenger-options" id="messengerOptions"></div>
     <div style="text-align:center;margin-top:32px;">
-      <button id="adminAccessBtn" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;cursor:pointer;padding:12px;font-family:inherit;text-decoration:underline;">
-        Acceso administración
-      </button>
+      <button id="adminAccessBtn" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:12px;font-weight:600;cursor:pointer;padding:12px;font-family:inherit;text-decoration:underline;">Acceso administración</button>
     </div>
   </div>
 </div>
@@ -465,23 +539,14 @@
       <div class="brand">
         <span class="logo-mark" aria-hidden="true">
           <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="rxLogoGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#1E5BB8"/>
-                <stop offset="1" stop-color="#0A1F44"/>
-              </linearGradient>
-            </defs>
+            <defs><linearGradient id="rxLogoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1E5BB8"/><stop offset="1" stop-color="#0A1F44"/></linearGradient></defs>
             <rect width="40" height="40" rx="12" fill="url(#rxLogoGrad)"/>
             <path d="M13 13 L27 27 M27 13 L13 27" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-            <circle cx="13" cy="13" r="1.9" fill="#FF6B35"/>
-            <circle cx="27" cy="13" r="1.9" fill="#FF6B35"/>
-            <circle cx="13" cy="27" r="1.9" fill="#FF6B35"/>
-            <circle cx="27" cy="27" r="1.9" fill="#FF6B35"/>
+            <circle cx="13" cy="13" r="1.9" fill="#FF6B35"/><circle cx="27" cy="13" r="1.9" fill="#FF6B35"/>
+            <circle cx="13" cy="27" r="1.9" fill="#FF6B35"/><circle cx="27" cy="27" r="1.9" fill="#FF6B35"/>
           </svg>
         </span>
-        <span class="wordmark">
-          <span class="wm-ruta">Ruta</span><span class="wm-x">X</span>
-        </span>
+        <span class="wordmark"><span class="wm-ruta">Ruta</span><span class="wm-x">X</span></span>
       </div>
       <button class="icon-btn" id="settingsBtn" title="Ajustes" aria-label="Ajustes">⚙</button>
     </div>
@@ -493,12 +558,7 @@
       </div>
     </div>
     <div class="search-trigger" id="searchTrigger">
-      <span class="search-trigger-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="11" cy="11" r="7"/>
-          <path d="M20 20 L16.5 16.5"/>
-        </svg>
-      </span>
+      <span class="search-trigger-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"/><path d="M20 20 L16.5 16.5"/></svg></span>
       <span class="search-trigger-text">Buscar cliente, guía o fecha...</span>
     </div>
   </header>
@@ -516,7 +576,6 @@
 
   <main id="viewRuta" class="view active"><div id="routeList" class="route-list"></div></main>
   <main id="viewRegistro" class="view"><div id="eventsTable"></div></main>
-
   <button class="fab" id="addManualFab" title="Agregar a la ruta">+</button>
 </div>
 
@@ -524,10 +583,7 @@
   <div class="detail-screen">
     <div class="detail-header">
       <button class="back-btn" id="backBtn">←</button>
-      <div>
-        <div class="detail-title" id="detailTitle">Registrar evidencia</div>
-        <div class="detail-sub" id="detailGuide">Guía —</div>
-      </div>
+      <div><div class="detail-title" id="detailTitle">Registrar evidencia</div><div class="detail-sub" id="detailGuide">Guía —</div></div>
     </div>
     <div class="detail-body">
       <div class="info-card">
@@ -535,27 +591,14 @@
         <div class="info-row"><span class="label">Dirección</span><span id="detailAddress">—</span></div>
         <div class="info-row"><span class="label">Teléfono</span><span id="detailPhone">—</span></div>
       </div>
-
       <div id="recipientFieldWrap" class="hidden">
         <div class="section-label">Nombre de quien recibe</div>
         <input type="text" id="recipientInput" class="text-input" placeholder="Ej: María Fernández" autocomplete="off" />
       </div>
-
-      <div class="section-label">
-        <span>Fotografías de evidencia</span>
-        <span class="photo-count-label hidden" id="photoCountLabel"></span>
-      </div>
+      <div class="section-label"><span>Fotografías de evidencia</span><span class="photo-count-label hidden" id="photoCountLabel"></span></div>
       <div class="photo-area" id="photoArea">
-        <div class="photo-placeholder" id="photoPlaceholder">
-          <div class="camera-icon">📷</div>
-          <div>Toca para tomar foto</div>
-          <div class="hint">Paquete entregado + fachada</div>
-        </div>
-        <div class="no-photo-mode-content hidden" id="noPhotoModeContent">
-          <div class="no-photo-icon">🚫📷</div>
-          <div class="label">Entrega sin foto</div>
-          <div class="hint">No se adjuntará imagen</div>
-        </div>
+        <div class="photo-placeholder" id="photoPlaceholder"><div class="camera-icon">📷</div><div>Toca para tomar foto</div><div class="hint">Paquete entregado + fachada</div></div>
+        <div class="no-photo-mode-content hidden" id="noPhotoModeContent"><div class="no-photo-icon">🚫📷</div><div class="label">Entrega sin foto</div><div class="hint">No se adjuntará imagen</div></div>
         <img id="photoPreview" class="photo-preview hidden" alt="evidencia" />
         <div class="photo-pos-indicator hidden" id="photoPosIndicator"></div>
         <input type="file" accept="image/*" capture="environment" id="photoInput" class="hidden" />
@@ -565,14 +608,9 @@
       <button class="no-photo-btn hidden" id="noPhotoBtn">📷 Marcar entrega sin foto</button>
 
       <div id="signatureSection" class="hidden">
-        <div class="section-label">
-          <span>Firma de quien recibe</span>
-        </div>
+        <div class="section-label"><span>Firma de quien recibe</span></div>
         <div class="signature-wrap" id="signatureWrap">
-          <div class="signature-hint" id="signatureHint">
-            <div class="hint-icon">✍️</div>
-            <div>Firme aquí con el dedo</div>
-          </div>
+          <div class="signature-hint" id="signatureHint"><div class="hint-icon">✍️</div><div>Firme aquí con el dedo</div></div>
           <div class="signature-baseline"></div>
           <canvas id="signatureCanvas" class="signature-canvas"></canvas>
         </div>
@@ -583,11 +621,7 @@
       </div>
 
       <div class="section-label">Ubicación GPS</div>
-      <div class="gps-box" id="gpsBox">
-        <div class="gps-icon">📍</div>
-        <div class="gps-text" id="gpsText">Buscando ubicación...</div>
-      </div>
-
+      <div class="gps-box" id="gpsBox"><div class="gps-icon">📍</div><div class="gps-text" id="gpsText">Buscando ubicación...</div></div>
       <div class="section-label">Nota (opcional)</div>
       <textarea id="noteInput" class="note-input" placeholder="Ej: entregado a la señora, recibido por el vecino..."></textarea>
     </div>
@@ -602,10 +636,7 @@
   <div class="event-detail-screen">
     <div class="detail-header">
       <button class="back-btn" id="eventBackBtn">←</button>
-      <div>
-        <div class="detail-title">Detalle del registro</div>
-        <div class="detail-sub" id="eventDetailGuide">Guía —</div>
-      </div>
+      <div><div class="detail-title">Detalle del registro</div><div class="detail-sub" id="eventDetailGuide">Guía —</div></div>
     </div>
     <div class="carousel-wrap" id="eventCarouselWrap"></div>
     <div class="event-detail-body" id="eventDetailBody"></div>
@@ -630,34 +661,21 @@
   <div class="settings-screen">
     <div class="detail-header">
       <button class="back-btn" id="settingsBackBtn">←</button>
-      <div>
-        <div class="detail-title">Ajustes</div>
-        <div class="detail-sub">Configuración de Ruta X</div>
-      </div>
+      <div><div class="detail-title">Ajustes</div><div class="detail-sub">Configuración de Ruta X</div></div>
     </div>
     <div class="settings-body">
-
       <div class="settings-section">
         <h3>🎯 Preferencias de captura</h3>
         <div class="toggle-row">
-          <div class="toggle-label">
-            <strong>Pedir nombre de quien recibe</strong>
-            <span>Si está activo, se pide el nombre al marcar Entregado</span>
-          </div>
+          <div class="toggle-label"><strong>Pedir nombre de quien recibe</strong><span>Si está activo, se pide el nombre al marcar Entregado</span></div>
           <button class="toggle-switch" id="toggleRecipient" role="switch" aria-checked="false"></button>
         </div>
         <div class="toggle-row">
-          <div class="toggle-label">
-            <strong>Permitir entregas sin foto</strong>
-            <span>Muestra la opción "Sin foto" para casos que no ameritan</span>
-          </div>
+          <div class="toggle-label"><strong>Permitir entregas sin foto</strong><span>Muestra la opción "Sin foto" para casos que no ameritan</span></div>
           <button class="toggle-switch" id="toggleNoPhoto" role="switch" aria-checked="false"></button>
         </div>
         <div class="toggle-row">
-          <div class="toggle-label">
-            <strong>Preguntar WhatsApp al entregar</strong>
-            <span>Después de entregar, ofrece avisar al cliente con la evidencia</span>
-          </div>
+          <div class="toggle-label"><strong>Preguntar WhatsApp al entregar</strong><span>Después de entregar, ofrece avisar al cliente con la evidencia</span></div>
           <button class="toggle-switch" id="toggleWhatsApp" role="switch" aria-checked="true"></button>
         </div>
       </div>
@@ -665,35 +683,32 @@
       <div class="settings-section">
         <h3>✍️ Firma del cliente</h3>
         <div class="toggle-row">
-          <div class="toggle-label">
-            <strong>Pedir firma al entregar</strong>
-            <span>El cliente firma con el dedo y queda como marca de agua en las fotos</span>
-          </div>
+          <div class="toggle-label"><strong>Pedir firma al entregar</strong><span>El cliente firma con el dedo y queda como marca de agua en las fotos</span></div>
           <button class="toggle-switch on" id="toggleSignature" role="switch" aria-checked="true"></button>
         </div>
         <div id="signatureColorWrap">
-          <div style="margin-top: 16px; margin-bottom: 10px; font-size: 13px; font-weight: 700; color: var(--ink);">Color de la firma</div>
+          <div style="margin-top:16px;margin-bottom:10px;font-size:13px;font-weight:700;color:var(--ink);">Color de la firma</div>
           <div class="color-picker" id="colorPicker">
-            <button class="color-chip" data-color="#a3e635" style="background: #a3e635;" title="Lima"></button>
-            <button class="color-chip" data-color="#22d3ee" style="background: #22d3ee;" title="Cian"></button>
-            <button class="color-chip" data-color="#fb923c" style="background: #fb923c;" title="Naranja"></button>
-            <button class="color-chip" data-color="#f472b6" style="background: #f472b6;" title="Rosa"></button>
-            <button class="color-chip" data-color="#ffffff" style="background: #ffffff; border: 1px solid #d1d5db;" title="Blanco"></button>
+            <button class="color-chip" data-color="#a3e635" style="background:#a3e635;" title="Lima"></button>
+            <button class="color-chip" data-color="#22d3ee" style="background:#22d3ee;" title="Cian"></button>
+            <button class="color-chip" data-color="#fb923c" style="background:#fb923c;" title="Naranja"></button>
+            <button class="color-chip" data-color="#f472b6" style="background:#f472b6;" title="Rosa"></button>
+            <button class="color-chip" data-color="#ffffff" style="background:#ffffff;border:1px solid #d1d5db;" title="Blanco"></button>
           </div>
         </div>
       </div>
 
       <div class="settings-section">
         <h3>📁 Cargar ruta desde archivo</h3>
-        <p>Si la oficina no cargó tu ruta o te entregan más paquetes en el camino, sube un archivo CSV. Los nuevos destinos se agregan al final de tu ruta actual.</p>
+        <p>Si la oficina no cargó tu ruta o te entregan más paquetes en el camino, sube un archivo CSV.</p>
         <span class="csv-info-badge">Formato: guia, cliente, direccion, telefono, tipo</span>
         <button class="settings-btn primary" id="csvSelectBtn">Seleccionar archivo CSV</button>
         <input type="file" id="csvInput" accept=".csv,text/csv,text/plain" class="hidden" />
         <div id="csvPreviewBox" class="hidden">
           <div class="csv-preview" id="csvPreview"></div>
-          <div style="display: flex; gap: 8px; margin-top: 10px;">
-            <button class="settings-btn secondary" id="csvCancelBtn" style="flex: 1; margin-bottom: 0;">Cancelar</button>
-            <button class="settings-btn primary" id="csvConfirmBtn" style="flex: 1; margin-bottom: 0;">Agregar a mi ruta</button>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <button class="settings-btn secondary" id="csvCancelBtn" style="flex:1;margin-bottom:0;">Cancelar</button>
+            <button class="settings-btn primary" id="csvConfirmBtn" style="flex:1;margin-bottom:0;">Agregar a mi ruta</button>
           </div>
         </div>
       </div>
@@ -706,11 +721,11 @@
 
       <div class="settings-section">
         <h3>🗑️ Reiniciar mi ruta</h3>
-        <p>Borra tus registros y vuelve a la ruta inicial de demostración. Solo afecta a tu usuario.</p>
+        <p>Borra tus registros y vuelve a la ruta inicial. Solo afecta a tu usuario.</p>
         <button class="settings-btn danger" id="resetRouteBtn">Reiniciar mis datos</button>
       </div>
 
-      <div class="app-version">Ruta X · Demo local v0.11 · Conectado a Sheets + Admin</div>
+      <div class="app-version">Ruta X · v0.12 · Escritorio + CSV admin</div>
     </div>
   </div>
 </div>
@@ -737,28 +752,21 @@
   <div class="whatsapp-sheet add-package-sheet">
     <div class="add-package-title">Agregar a la ruta</div>
     <div class="add-package-sub">Registra un nuevo destino sobre la marcha</div>
-
     <label class="add-form-label">Tipo</label>
     <div class="type-selector">
       <button class="type-option active" id="typeDelivery" data-type="delivery">📦 Entrega</button>
       <button class="type-option" id="typePickup" data-type="pickup">📤 Recogida</button>
     </div>
-
     <label class="add-form-label">Cliente *</label>
     <input type="text" id="addClient" class="add-text-input" placeholder="Nombre del cliente" autocomplete="off" />
-
     <label class="add-form-label">Dirección *</label>
     <input type="text" id="addAddress" class="add-text-input" placeholder="Dirección de la visita" autocomplete="off" />
-
     <label class="add-form-label">Teléfono (opcional)</label>
     <input type="tel" id="addPhone" class="add-text-input" placeholder="Ej: 310 555 0101" autocomplete="off" />
-
     <label class="add-form-label">Guía (opcional)</label>
     <input type="text" id="addGuide" class="add-text-input" placeholder="Número de guía" autocomplete="off" />
-
     <label class="add-form-label">Nota (opcional)</label>
     <input type="text" id="addNote" class="add-text-input" placeholder="Ej: recoger sobre firmado" autocomplete="off" />
-
     <div class="add-form-actions">
       <button class="add-form-btn cancel" id="addCancelBtn">Cancelar</button>
       <button class="add-form-btn confirm" id="addConfirmBtn">Agregar</button>
@@ -777,13 +785,9 @@
   <div class="admin-screen">
     <div class="detail-header">
       <button class="back-btn" id="adminBackBtn">←</button>
-      <div style="flex:1;">
-        <div class="detail-title">Administración</div>
-        <div class="detail-sub" id="adminSubtitle">—</div>
-      </div>
-      <button id="adminLogoutBtn" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">
-        Salir
-      </button>
+      <div style="flex:1;"><div class="detail-title">Administración</div><div class="detail-sub" id="adminSubtitle">—</div></div>
+      <button id="adminDesktopBtn" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-right:6px;">💻 Escritorio</button>
+      <button id="adminLogoutBtn" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">Salir</button>
     </div>
     <div class="admin-tabs">
       <button class="admin-tab active" data-atab="mensajeros">👥 Mensajeros</button>
@@ -798,19 +802,14 @@
   <div class="whatsapp-sheet add-package-sheet">
     <div class="add-package-title" id="editMessengerTitle">Editar mensajero</div>
     <div class="add-package-sub" id="editMessengerSub">—</div>
-
     <label class="add-form-label">Código</label>
     <input type="text" id="editMsCode" class="add-text-input" disabled style="background:#f3f4f6;color:#6b7280;" />
-
     <label class="add-form-label">Nombre *</label>
     <input type="text" id="editMsName" class="add-text-input" placeholder="Ej: Juan Pérez" autocomplete="off" />
-
     <label class="add-form-label">Zona</label>
     <input type="text" id="editMsZone" class="add-text-input" placeholder="Ej: Ruta Sur" autocomplete="off" />
-
     <label class="add-form-label">PIN (4 dígitos)</label>
     <input type="tel" id="editMsPin" class="add-text-input" placeholder="1234" maxlength="4" inputmode="numeric" autocomplete="off" />
-
     <div class="add-form-actions">
       <button class="add-form-btn cancel" id="editMsCancelBtn">Cancelar</button>
       <button class="add-form-btn confirm" id="editMsConfirmBtn">Guardar</button>
@@ -818,18 +817,76 @@
   </div>
 </div>
 
+<div id="adminDesktopOverlay" class="admin-desktop-overlay">
+  <div class="ad-topbar">
+    <div class="ad-brand"><span style="color:var(--accent);">◈</span> Ruta X <span class="x">Admin</span></div>
+    <nav class="ad-tabs">
+      <button class="ad-tab active" data-dtab="mensajeros">👥 Mensajeros</button>
+      <button class="ad-tab" data-dtab="vivo">📊 En vivo</button>
+    </nav>
+    <div class="ad-topbar-actions">
+      <button class="ad-action-btn" id="desktopBackMobile">📱 Volver a móvil</button>
+      <button class="ad-action-btn" id="desktopLogoutBtn">Salir</button>
+    </div>
+  </div>
+  <div class="ad-body">
+    <aside class="ad-sidebar">
+      <div class="ad-search"><input type="text" id="adSearchInput" placeholder="Buscar mensajero..." autocomplete="off" /></div>
+      <div class="ad-msg-list" id="adMsgList"></div>
+    </aside>
+    <main class="ad-main" id="adMain"></main>
+  </div>
+</div>
+
+<div id="adCsvModal" class="ad-csv-modal">
+  <div class="ad-csv-dialog">
+    <div class="ad-csv-header">
+      <div><div class="ad-csv-title" id="adCsvTitle">Asignar ruta CSV</div><div style="font-size:12px;color:var(--muted);margin-top:2px;" id="adCsvSubtitle">—</div></div>
+      <button id="adCsvCloseBtn" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);padding:4px 8px;font-family:inherit;">✕</button>
+    </div>
+    <div class="ad-csv-body">
+      <div id="adCsvStep1">
+        <div class="ad-csv-dropzone" id="adCsvDropzone">
+          <div style="font-size:48px;margin-bottom:12px;">📁</div>
+          <div style="font-weight:700;color:var(--ink);margin-bottom:4px;font-size:15px;">Haz clic para elegir un archivo CSV</div>
+          <div style="font-size:12px;color:var(--muted);">Formato: guia, cliente, direccion, telefono, tipo</div>
+        </div>
+        <input type="file" id="adCsvFileInput" accept=".csv,text/csv,text/plain" style="display:none" />
+      </div>
+      <div id="adCsvStep2" class="hidden">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
+          <div style="font-weight:700;color:var(--ink);" id="adCsvCount"></div>
+          <button class="ad-btn secondary" id="adCsvChangeFile" style="padding:6px 12px;font-size:12px;">Cambiar archivo</button>
+        </div>
+        <div class="ad-csv-preview" id="adCsvPreview"></div>
+        <div style="font-weight:700;margin:18px 0 10px;color:var(--ink);">¿Qué hacer con la ruta actual?</div>
+        <div class="ad-csv-mode">
+          <button class="ad-csv-mode-option active" data-mode="append">
+            <strong>➕ Agregar al final</strong>
+            <span>Los nuevos ítems se suman después de los pendientes</span>
+          </button>
+          <button class="ad-csv-mode-option" data-mode="replace">
+            <strong>🔄 Reemplazar pendientes</strong>
+            <span>Borra pendientes y pone estos (entregas históricas intactas)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="ad-csv-footer">
+      <button class="ad-btn secondary" id="adCsvCancelBtn">Cancelar</button>
+      <button class="ad-btn accent hidden" id="adCsvConfirmBtn">Asignar ruta</button>
+    </div>
+  </div>
+</div>
+
 <div id="pinOverlay" class="overlay">
   <div class="pin-screen">
-    <div class="pin-header">
-      <button class="pin-back" id="pinBackBtn" aria-label="Volver">←</button>
-    </div>
+    <div class="pin-header"><button class="pin-back" id="pinBackBtn" aria-label="Volver">←</button></div>
     <div class="pin-avatar" id="pinAvatar">M01</div>
     <div class="pin-name" id="pinName">Mensajero</div>
     <div class="pin-zone" id="pinZone">—</div>
     <div class="pin-title">Ingresa tu PIN</div>
-    <div class="pin-dots" id="pinDots">
-      <span></span><span></span><span></span><span></span>
-    </div>
+    <div class="pin-dots" id="pinDots"><span></span><span></span><span></span><span></span></div>
     <div class="pin-error" id="pinError"></div>
     <div class="pin-pad" id="pinPad"></div>
   </div>
@@ -841,68 +898,13 @@
 (function () {
   'use strict';
 
-  var MESSENGERS = {
-    JPK: {
-      code: 'JPK', name: 'Julián Rodolfo Guevara', zone: 'Ruta Sur',
-      route: []
-    },
-    CMA: {
-      code: 'CMA', name: 'Carlos Mendoza', zone: 'Ruta Norte',
-      route: [
-        { id: 'cma-1',  order: 1,  guide: 'CLL-3501', client: 'Carolina Vélez',    address: 'Calle 70N # 5-25, La Flora',          phone: '320 555 0201' },
-        { id: 'cma-2',  order: 2,  guide: 'CLL-3502', client: 'Mauricio Gómez',    address: 'Avenida 2N # 24-50, Santa Mónica',    phone: '315 555 0202' },
-        { id: 'cma-3',  order: 3,  guide: 'CLL-3503', client: 'Valentina Ríos',    address: 'Calle 44N # 6A-30, La Merced Norte',  phone: '317 555 0203' },
-        { id: 'cma-4',  order: 4,  guide: 'CLL-3504', client: 'Sebastián Mejía',   address: 'Carrera 35 # 5A-15, El Peñón',        phone: '312 555 0204' },
-        { id: 'cma-5',  order: 5,  guide: 'CLL-3505', client: 'Tatiana Herrera',   address: 'Calle 34N # 8-22, San Vicente',       phone: '310 555 0205' },
-        { id: 'cma-6',  order: 6,  guide: 'CLL-3506', client: 'Diego Acosta',      address: 'Avenida 6N # 42-15, Centenario Norte', phone: '318 555 0206' },
-        { id: 'cma-7',  order: 7,  guide: 'CLL-3507', client: 'Lorena Jaramillo',  address: 'Calle 23N # 5-40, Granada Norte',     phone: '311 555 0207' },
-        { id: 'cma-8',  order: 8,  guide: 'CLL-3508', client: 'Cristian Ospina',   address: 'Carrera 25 # 12-33, Arboledas',       phone: '316 555 0208' },
-        { id: 'cma-9',  order: 9,  guide: 'CLL-3509', client: 'Natalia Arango',    address: 'Calle 51N # 3B-60, Vipasa',           phone: '313 555 0209' },
-        { id: 'cma-10', order: 10, guide: 'CLL-3510', client: 'Juan Esteban Ruiz', address: 'Carrera 5 # 65-15, San Antonio',      phone: '319 555 0210' }
-      ]
-    },
-    PRA: {
-      code: 'PRA', name: 'Pedro Ramírez', zone: 'Ruta Oriente',
-      route: [
-        { id: 'pra-1',  order: 1,  guide: 'CLL-4521', client: 'Isabella Castaño',     address: 'Calle 25 # 80-45, El Poblado',       phone: '312 555 0301' },
-        { id: 'pra-2',  order: 2,  guide: 'CLL-4522', client: 'Alejandro Narváez',    address: 'Carrera 80 # 13-30, Ciudad Córdoba', phone: '320 555 0302' },
-        { id: 'pra-3',  order: 3,  guide: 'CLL-4523', client: 'Manuela Zapata',       address: 'Calle 48 # 72-15, Salomia',          phone: '315 555 0303' },
-        { id: 'pra-4',  order: 4,  guide: 'CLL-4524', client: 'Nicolás Bedoya',       address: 'Avenida 3E # 55-22, Calima',         phone: '311 555 0304' },
-        { id: 'pra-5',  order: 5,  guide: 'CLL-4525', client: 'Laura Restrepo',       address: 'Carrera 100 # 5-10, Cañaveralejo',   phone: '318 555 0305' },
-        { id: 'pra-6',  order: 6,  guide: 'CLL-4526', client: 'Santiago Henao',       address: 'Calle 15 # 90-45, Meléndez',         phone: '313 555 0306' },
-        { id: 'pra-7',  order: 7,  guide: 'CLL-4527', client: 'Daniela Cardona',      address: 'Avenida 5N # 60-80, La Campiña',     phone: '316 555 0307' },
-        { id: 'pra-8',  order: 8,  guide: 'CLL-4528', client: 'Andrés Montoya',       address: 'Calle 70 # 100-25, Pance',           phone: '314 555 0308' },
-        { id: 'pra-9',  order: 9,  guide: 'CLL-4529', client: 'Catalina Aristizábal', address: 'Carrera 56 # 8-45, El Retiro',       phone: '319 555 0309' },
-        { id: 'pra-10', order: 10, guide: 'CLL-4530', client: 'Camilo Betancur',      address: 'Calle 13 # 66-20, Champagnat',       phone: '321 555 0310' }
-      ]
-    },
-    ATO: {
-      code: 'ATO', name: 'Andrea Torres', zone: 'Ruta Centro',
-      route: [
-        { id: 'ato-1',  order: 1,  guide: 'CLL-5601', client: 'Marcela Sáenz',        address: 'Calle 12 # 5-40, Centro Histórico',  phone: '310 555 0401' },
-        { id: 'ato-2',  order: 2,  guide: 'CLL-5602', client: 'Juan Camilo Londoño',  address: 'Carrera 7 # 10-22, El Calvario',     phone: '315 555 0402' },
-        { id: 'ato-3',  order: 3,  guide: 'CLL-5603', client: 'Estefanía Gil',        address: 'Avenida 4 # 11-60, San Pedro',       phone: '318 555 0403' },
-        { id: 'ato-4',  order: 4,  guide: 'CLL-5604', client: 'Mateo Quintero',       address: 'Calle 13 # 8-15, El Peñón Centro',   phone: '311 555 0404' },
-        { id: 'ato-5',  order: 5,  guide: 'CLL-5605', client: 'Juliana Osorio',       address: 'Carrera 10 # 20-35, Los Cristales',  phone: '313 555 0405' },
-        { id: 'ato-6',  order: 6,  guide: 'CLL-5606', client: 'Samuel Villa',         address: 'Calle 6 # 15-25, San Cayetano',      phone: '316 555 0406' },
-        { id: 'ato-7',  order: 7,  guide: 'CLL-5607', client: 'Daniela Chamorro',     address: 'Carrera 42 # 5-60, Tequendama Centro', phone: '320 555 0407' },
-        { id: 'ato-8',  order: 8,  guide: 'CLL-5608', client: 'José David Muñoz',     address: 'Calle 18 # 30-15, Santa Fe',         phone: '312 555 0408' },
-        { id: 'ato-9',  order: 9,  guide: 'CLL-5609', client: 'Vanessa Caicedo',      address: 'Avenida 6 # 12-40, Bretaña Centro',  phone: '317 555 0409' },
-        { id: 'ato-10', order: 10, guide: 'CLL-5610', client: 'Andrés Felipe Pardo',  address: 'Calle 3 # 22-50, San Fernando Norte', phone: '319 555 0410' }
-      ]
-    }
-  };
+  var MESSENGERS = {};
 
   var CURRENT_KEY = 'rutax_current_v10';
   function dataKey(code, type) { return 'rutax_' + code + '_' + type + '_v10'; }
   var DEFAULT_SETTINGS = { requireRecipient: false, allowNoPhoto: false, promptWhatsApp: true, requireSignature: true, signatureColor: '#a3e635' };
 
-  var state = {
-    messenger: null,
-    route: [],
-    events: [],
-    settings: Object.assign({}, DEFAULT_SETTINGS)
-  };
+  var state = { messenger: null, route: [], events: [], settings: Object.assign({}, DEFAULT_SETTINGS) };
 
   var currentPackage = null;
   var currentPhotos = [];
@@ -916,11 +918,9 @@
   var searchDebounceTimer = null;
   var addFormType = 'delivery';
 
-  // ---------- Estado del login PIN ----------
   var pinTarget = { code: null, name: null, zone: null };
   var pinBuffer = '';
 
-  // ---------- Estado de firma ----------
   var signatureCanvas = null;
   var signatureCtx = null;
   var signatureDpr = 1;
@@ -931,14 +931,12 @@
   var signatureLastX = 0;
   var signatureLastY = 0;
 
-  // ---------- Estado de administración ----------
-  var adminState = {
-    messengers: [],
-    live: [],
-    liveSince: null,
-    liveUntil: null,
-    drillDown: null,
-    editingCode: null
+  var adminState = { messengers: [], live: [], liveSince: null, liveUntil: null, drillDown: null, editingCode: null };
+
+  var desktopAdminState = {
+    activeTab: 'mensajeros', messengers: [], selectedCode: null, selectedRoutes: [],
+    live: [], liveSince: null, liveUntil: null, filter: '',
+    csvTarget: null, csvItems: null, csvMode: 'append'
   };
 
   function saveMessengerData() {
@@ -947,43 +945,10 @@
       localStorage.setItem(dataKey(state.messenger.code, 'route'), JSON.stringify(state.route));
       localStorage.setItem(dataKey(state.messenger.code, 'events'), JSON.stringify(state.events));
       localStorage.setItem(dataKey(state.messenger.code, 'settings'), JSON.stringify(state.settings));
-    } catch (e) {
-      showToast('⚠ Almacenamiento lleno.');
-    }
+    } catch (e) { showToast('⚠ Almacenamiento lleno.'); }
   }
 
-  function loadMessengerData(code) {
-    var def = MESSENGERS[code];
-    if (!def) return;
-    state.messenger = { code: def.code, name: def.name, zone: def.zone };
-
-    var savedRoute = localStorage.getItem(dataKey(code, 'route'));
-    var savedEvents = localStorage.getItem(dataKey(code, 'events'));
-    var savedSettings = localStorage.getItem(dataKey(code, 'settings'));
-
-    state.route = savedRoute ? safeParse(savedRoute, freshRoute(def)) : freshRoute(def);
-    state.events = savedEvents ? safeParse(savedEvents, []) : [];
-    state.settings = Object.assign({}, DEFAULT_SETTINGS, savedSettings ? safeParse(savedSettings, {}) : {});
-
-    state.route.forEach(function (p) {
-      if (!p.status) p.status = 'pending';
-      if (!p.type) p.type = 'delivery';
-    });
-    saveMessengerData();
-  }
-
-  function safeParse(str, fallback) {
-    try { return JSON.parse(str); } catch (e) { return fallback; }
-  }
-
-  function freshRoute(def) {
-    return def.route.map(function (p) {
-      return {
-        id: p.id, order: p.order, guide: p.guide, client: p.client,
-        address: p.address, phone: p.phone, status: 'pending', type: 'delivery'
-      };
-    });
-  }
+  function safeParse(str, fallback) { try { return JSON.parse(str); } catch (e) { return fallback; } }
 
   function showToast(msg, duration) {
     duration = duration || 2400;
@@ -997,47 +962,41 @@
   function formatTime(ts) {
     var d = new Date(ts);
     var months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-    var day = String(d.getDate()).padStart(2, '0');
-    var hh = String(d.getHours()).padStart(2, '0');
-    var mm = String(d.getMinutes()).padStart(2, '0');
-    return day + ' ' + months[d.getMonth()] + ' · ' + hh + ':' + mm;
+    return String(d.getDate()).padStart(2, '0') + ' ' + months[d.getMonth()] + ' · ' +
+      String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
   }
 
   function formatFullDate(ts) {
     var d = new Date(ts);
     var days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
     var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-    var hh = String(d.getHours()).padStart(2, '0');
-    var mm = String(d.getMinutes()).padStart(2, '0');
-    return days[d.getDay()] + ' ' + d.getDate() + ' de ' + months[d.getMonth()] + ' · ' + hh + ':' + mm;
+    return days[d.getDay()] + ' ' + d.getDate() + ' de ' + months[d.getMonth()] + ' · ' +
+      String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
   }
 
   function formatShortDateTime(ts) {
     var d = new Date(ts);
     var months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-    var day = d.getDate();
-    var hh = String(d.getHours()).padStart(2, '0');
-    var mm = String(d.getMinutes()).padStart(2, '0');
-    return day + ' ' + months[d.getMonth()] + ' · ' + hh + ':' + mm;
+    return d.getDate() + ' ' + months[d.getMonth()] + ' · ' +
+      String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  }
+
+  function formatDateInput(ts) {
+    var d = new Date(ts);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   }
 
   function compressImage(file, maxWidth, quality) {
-    maxWidth = maxWidth || 640;
-    quality = quality || 0.5;
+    maxWidth = maxWidth || 640; quality = quality || 0.5;
     return new Promise(function (resolve, reject) {
       var img = new Image();
       var url = URL.createObjectURL(file);
       img.onload = function () {
         URL.revokeObjectURL(url);
         var canvas = document.createElement('canvas');
-        var width = img.width;
-        var height = img.height;
-        if (width > maxWidth) {
-          height = Math.round((height * maxWidth) / width);
-          width = maxWidth;
-        }
-        canvas.width = width;
-        canvas.height = height;
+        var width = img.width, height = img.height;
+        if (width > maxWidth) { height = Math.round((height * maxWidth) / width); width = maxWidth; }
+        canvas.width = width; canvas.height = height;
         canvas.getContext('2d').drawImage(img, 0, 0, width, height);
         resolve(canvas.toDataURL('image/jpeg', quality));
       };
@@ -1052,40 +1011,25 @@
     return [];
   }
 
-  // ============================================================
-  // FIRMA · capture, recolor, reuse
-  // ============================================================
-  function getSignatureColorHex() {
-    return state.settings.signatureColor || '#a3e635';
-  }
+  function getSignatureColorHex() { return state.settings.signatureColor || '#a3e635'; }
 
   function setupSignatureCanvas() {
     var canvas = document.getElementById('signatureCanvas');
     var wrap = document.getElementById('signatureWrap');
     if (!canvas) return;
-
     signatureCanvas = canvas;
     signatureDpr = window.devicePixelRatio || 1;
     var rect = canvas.getBoundingClientRect();
     if (rect.width === 0) return;
-
-    signatureLogicalW = rect.width;
-    signatureLogicalH = rect.height;
-
+    signatureLogicalW = rect.width; signatureLogicalH = rect.height;
     canvas.width = Math.round(rect.width * signatureDpr);
     canvas.height = Math.round(rect.height * signatureDpr);
-    canvas.style.width = rect.width + 'px';
-    canvas.style.height = rect.height + 'px';
-
+    canvas.style.width = rect.width + 'px'; canvas.style.height = rect.height + 'px';
     signatureCtx = canvas.getContext('2d');
     signatureCtx.scale(signatureDpr, signatureDpr);
-    signatureCtx.lineWidth = 2.5;
-    signatureCtx.lineCap = 'round';
-    signatureCtx.lineJoin = 'round';
+    signatureCtx.lineWidth = 2.5; signatureCtx.lineCap = 'round'; signatureCtx.lineJoin = 'round';
     signatureCtx.strokeStyle = getSignatureColorHex();
-
-    hasSignatureStrokes = false;
-    isDrawing = false;
+    hasSignatureStrokes = false; isDrawing = false;
     wrap.classList.remove('signed');
     document.getElementById('signatureHint').classList.remove('hidden');
   }
@@ -1101,8 +1045,7 @@
     try { signatureCanvas.setPointerCapture(e.pointerId); } catch (err) {}
     isDrawing = true;
     var pos = getCanvasPos(e);
-    signatureLastX = pos.x;
-    signatureLastY = pos.y;
+    signatureLastX = pos.x; signatureLastY = pos.y;
     signatureCtx.beginPath();
     signatureCtx.arc(pos.x, pos.y, 1.2, 0, Math.PI * 2);
     signatureCtx.fillStyle = signatureCtx.strokeStyle;
@@ -1122,8 +1065,7 @@
     signatureCtx.moveTo(signatureLastX, signatureLastY);
     signatureCtx.lineTo(pos.x, pos.y);
     signatureCtx.stroke();
-    signatureLastX = pos.x;
-    signatureLastY = pos.y;
+    signatureLastX = pos.x; signatureLastY = pos.y;
   }
 
   function onSigEnd(e) {
@@ -1141,8 +1083,7 @@
 
   function findPreviousSignature(clientName) {
     for (var i = state.events.length - 1; i >= 0; i--) {
-      var e = state.events[i];
-      if (e.client === clientName && e.signature) return e.signature;
+      if (state.events[i].client === clientName && state.events[i].signature) return state.events[i].signature;
     }
     return null;
   }
@@ -1151,8 +1092,7 @@
     if (!currentPackage) return;
     var reuseBtn = document.getElementById('sigReuseBtn');
     if (!reuseBtn) return;
-    var prev = findPreviousSignature(currentPackage.client);
-    if (prev) reuseBtn.classList.remove('hidden');
+    if (findPreviousSignature(currentPackage.client)) reuseBtn.classList.remove('hidden');
     else reuseBtn.classList.add('hidden');
   }
 
@@ -1164,24 +1104,18 @@
     var img = new Image();
     img.onload = function () {
       var tempCanvas = document.createElement('canvas');
-      tempCanvas.width = img.width;
-      tempCanvas.height = img.height;
+      tempCanvas.width = img.width; tempCanvas.height = img.height;
       var tempCtx = tempCanvas.getContext('2d');
       tempCtx.drawImage(img, 0, 0);
       tempCtx.globalCompositeOperation = 'source-in';
       tempCtx.fillStyle = getSignatureColorHex();
       tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-
       var aspect = tempCanvas.width / tempCanvas.height;
       var drawW = signatureLogicalW * 0.85;
       var drawH = drawW / aspect;
-      if (drawH > signatureLogicalH * 0.75) {
-        drawH = signatureLogicalH * 0.75;
-        drawW = drawH * aspect;
-      }
+      if (drawH > signatureLogicalH * 0.75) { drawH = signatureLogicalH * 0.75; drawW = drawH * aspect; }
       var drawX = (signatureLogicalW - drawW) / 2;
       var drawY = (signatureLogicalH - drawH) / 2;
-
       signatureCtx.drawImage(tempCanvas, drawX, drawY, drawW, drawH);
       hasSignatureStrokes = true;
       document.getElementById('signatureHint').classList.add('hidden');
@@ -1194,9 +1128,7 @@
   function truncateText(ctx, text, maxWidth) {
     if (ctx.measureText(text).width <= maxWidth) return text;
     var t = text;
-    while (t.length > 0 && ctx.measureText(t + '…').width > maxWidth) {
-      t = t.slice(0, -1);
-    }
+    while (t.length > 0 && ctx.measureText(t + '…').width > maxWidth) t = t.slice(0, -1);
     return t + '…';
   }
 
@@ -1204,89 +1136,61 @@
     return new Promise(function (resolve) {
       var img = new Image();
       img.onload = function () {
-        var W = img.width;
-        var H = img.height;
+        var W = img.width, H = img.height;
         var canvas = document.createElement('canvas');
-        canvas.width = W;
-        canvas.height = H;
+        canvas.width = W; canvas.height = H;
         var ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, W, H);
-
         var bandHeight = Math.max(90, Math.min(140, Math.round(H * 0.19)));
         var bandY = H - bandHeight;
-
         var grad = ctx.createLinearGradient(0, bandY, 0, H);
-        grad.addColorStop(0, 'rgba(10, 31, 68, 0.60)');
-        grad.addColorStop(0.5, 'rgba(10, 31, 68, 0.85)');
-        grad.addColorStop(1, 'rgba(10, 31, 68, 0.95)');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, bandY, W, bandHeight);
-
+        grad.addColorStop(0, 'rgba(10,31,68,0.60)');
+        grad.addColorStop(0.5, 'rgba(10,31,68,0.85)');
+        grad.addColorStop(1, 'rgba(10,31,68,0.95)');
+        ctx.fillStyle = grad; ctx.fillRect(0, bandY, W, bandHeight);
         ctx.fillStyle = '#FF6B35';
         ctx.fillRect(0, bandY, W, Math.max(2, Math.round(H * 0.004)));
-
         var sigTargetW = Math.round(W * 0.28);
         var sigTargetH = Math.round(bandHeight * 0.74);
         var sigX = Math.round(W * 0.03);
         var sigY = bandY + Math.round((bandHeight - sigTargetH) / 2);
-
         var drawTextAndFinish = function () {
           var textX = sigX + sigTargetW + Math.round(W * 0.03);
           var textMaxW = W - textX - Math.round(W * 0.15);
           var fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif';
-
           var recipientSize = Math.max(14, Math.round(W * 0.030));
           ctx.font = '700 ' + recipientSize + 'px ' + fontFamily;
-          ctx.fillStyle = '#ffffff';
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'middle';
+          ctx.fillStyle = '#ffffff'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
           var recipientText = 'Recibido por: ' + (recipientName || 'Cliente');
-          recipientText = truncateText(ctx, recipientText, textMaxW);
-          var recipientY = bandY + bandHeight * 0.40;
-          ctx.fillText(recipientText, textX, recipientY);
-
+          ctx.fillText(truncateText(ctx, recipientText, textMaxW), textX, bandY + bandHeight * 0.40);
           var dateSize = Math.max(11, Math.round(W * 0.022));
           ctx.font = '500 ' + dateSize + 'px ' + fontFamily;
           ctx.fillStyle = 'rgba(255,255,255,0.78)';
           ctx.fillText(formatShortDateTime(timestamp), textX, bandY + bandHeight * 0.72);
-
           var logoSize = Math.max(12, Math.round(W * 0.022));
           var logoY = bandY + bandHeight * 0.55;
           var rightPad = Math.round(W * 0.03);
-
-          ctx.textAlign = 'right';
-          ctx.textBaseline = 'middle';
+          ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
           ctx.font = '800 ' + Math.round(logoSize * 1.15) + 'px ' + fontFamily;
-          ctx.fillStyle = '#FF6B35';
-          ctx.fillText('X', W - rightPad, logoY);
+          ctx.fillStyle = '#FF6B35'; ctx.fillText('X', W - rightPad, logoY);
           var xWidth = ctx.measureText('X').width;
           ctx.font = '600 ' + logoSize + 'px ' + fontFamily;
           ctx.fillStyle = 'rgba(255,255,255,0.85)';
           ctx.fillText('Ruta', W - rightPad - xWidth - 2, logoY);
-
           resolve(canvas.toDataURL('image/jpeg', 0.75));
         };
-
         if (signatureDataURL) {
           var sigImg = new Image();
           sigImg.onload = function () {
             var sigAspect = sigImg.width / sigImg.height;
-            var drawW = sigTargetW;
-            var drawH = drawW / sigAspect;
-            if (drawH > sigTargetH) {
-              drawH = sigTargetH;
-              drawW = drawH * sigAspect;
-            }
-            var drawX = sigX + (sigTargetW - drawW) / 2;
-            var drawY = sigY + (sigTargetH - drawH) / 2;
-            ctx.drawImage(sigImg, drawX, drawY, drawW, drawH);
+            var drawW = sigTargetW, drawH = drawW / sigAspect;
+            if (drawH > sigTargetH) { drawH = sigTargetH; drawW = drawH * sigAspect; }
+            ctx.drawImage(sigImg, sigX + (sigTargetW - drawW) / 2, sigY + (sigTargetH - drawH) / 2, drawW, drawH);
             drawTextAndFinish();
           };
           sigImg.onerror = drawTextAndFinish;
           sigImg.src = signatureDataURL;
-        } else {
-          drawTextAndFinish();
-        }
+        } else drawTextAndFinish();
       };
       img.onerror = function () { resolve(photoDataURL); };
       img.src = photoDataURL;
@@ -1304,9 +1208,6 @@
     if (ov) ov.classList.remove('active');
   }
 
-  // ============================================================
-  // WhatsApp
-  // ============================================================
   function normalizePhone(phone) {
     if (!phone) return '';
     var p = String(phone).replace(/[^\d]/g, '');
@@ -1317,20 +1218,13 @@
   }
 
   function buildWhatsAppMessage(evt) {
-    var clientName = evt.client || 'cliente';
-    var fecha = formatFullDate(evt.timestamp);
-    var msg = 'Hola ' + clientName + ', le confirmamos la entrega de su paquete ';
-    msg += (evt.guide || '') + ' el ' + fecha + '.';
+    var msg = 'Hola ' + (evt.client || 'cliente') + ', le confirmamos la entrega de su paquete ';
+    msg += (evt.guide || '') + ' el ' + formatFullDate(evt.timestamp) + '.';
     if (evt.recipient) msg += '\nRecibido por: ' + evt.recipient + '.';
-
     var photos = getEventPhotos(evt);
     var urlPhotos = photos.filter(function (p) { return p && p.indexOf('http') === 0; });
-    if (urlPhotos.length) {
-      msg += '\n\nEvidencia fotográfica:';
-      for (var i = 0; i < urlPhotos.length; i++) msg += '\n' + urlPhotos[i];
-    } else {
-      msg += '\n\nAdjuntamos la evidencia fotográfica firmada de la entrega.';
-    }
+    if (urlPhotos.length) { msg += '\n\nEvidencia:'; for (var i = 0; i < urlPhotos.length; i++) msg += '\n' + urlPhotos[i]; }
+    else msg += '\n\nAdjuntamos la evidencia fotográfica firmada.';
     msg += '\n— Ruta X';
     return msg;
   }
@@ -1348,28 +1242,16 @@
   function sendWhatsAppDirect(evt) {
     var phone = normalizePhone(evt.phone || '');
     if (!phone) { showToast('⚠ No hay teléfono registrado'); return; }
-    var msg = buildWhatsAppMessage(evt);
-    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(buildWhatsAppMessage(evt)), '_blank');
   }
 
   function shareWhatsAppWithPhotos(evt) {
     var photos = getEventPhotos(evt);
     var phone = normalizePhone(evt.phone || '');
     var hasLocal = photos.some(function (p) { return p && p.indexOf('data:') === 0; });
-
-    if (!hasLocal) {
-      if (phone) sendWhatsAppDirect(evt);
-      else showToast('Las fotos ya están en Drive · compártelas desde allí');
-      return;
-    }
-
+    if (!hasLocal) { if (phone) sendWhatsAppDirect(evt); else showToast('Las fotos ya están en Drive'); return; }
     var msg = buildWhatsAppMessage(evt);
-    if (!photos.length || !navigator.share) {
-      if (phone) sendWhatsAppDirect(evt);
-      else showToast('No se puede compartir');
-      return;
-    }
-
+    if (!photos.length || !navigator.share) { if (phone) sendWhatsAppDirect(evt); else showToast('No se puede compartir'); return; }
     var tryShare = function () {
       var files = [];
       for (var i = 0; i < photos.length && i < 5; i++) {
@@ -1380,9 +1262,8 @@
       }
       if (!files.length) return Promise.reject();
       if (navigator.canShare && !navigator.canShare({ files: files })) return Promise.reject();
-      return navigator.share({ files: files, text: msg, title: 'Confirmación de entrega firmada' });
+      return navigator.share({ files: files, text: msg, title: 'Confirmación' });
     };
-
     tryShare().catch(function (e) {
       if (e && e.name === 'AbortError') return;
       if (phone) sendWhatsAppDirect(evt);
@@ -1394,25 +1275,21 @@
     var photos = getEventPhotos(evt);
     var phone = normalizePhone(evt.phone || '');
     document.getElementById('waClientName').textContent = evt.client || 'el cliente';
-    document.getElementById('waClientPhone').textContent = phone ? '📱 +' + phone : '(sin teléfono registrado)';
+    document.getElementById('waClientPhone').textContent = phone ? '📱 +' + phone : '(sin teléfono)';
     var directBtn = document.getElementById('waDirectBtn');
     var directLabel = document.getElementById('waDirectBtnLabel');
     var photoBtn = document.getElementById('waSharePhotoBtn');
     var subLabel = document.getElementById('waSheetSub');
     if (phone) {
-      directBtn.classList.remove('hidden');
-      directLabel.textContent = 'Enviar mensaje al cliente';
-      if (photos.length) { photoBtn.classList.remove('hidden'); subLabel.textContent = 'Elige cómo avisar al cliente'; }
-      else { photoBtn.classList.add('hidden'); subLabel.textContent = 'Enviar mensaje directo al cliente'; }
+      directBtn.classList.remove('hidden'); directLabel.textContent = 'Enviar mensaje al cliente';
+      if (photos.length) { photoBtn.classList.remove('hidden'); subLabel.textContent = 'Elige cómo avisar'; }
+      else { photoBtn.classList.add('hidden'); subLabel.textContent = 'Enviar mensaje directo'; }
     } else if (photos.length) {
-      directBtn.classList.remove('hidden');
-      directLabel.textContent = 'Compartir con foto';
-      photoBtn.classList.add('hidden');
-      subLabel.textContent = 'Sin teléfono guardado: comparte manualmente';
+      directBtn.classList.remove('hidden'); directLabel.textContent = 'Compartir con foto';
+      photoBtn.classList.add('hidden'); subLabel.textContent = 'Sin teléfono: comparte manualmente';
     } else {
-      directBtn.classList.add('hidden');
-      photoBtn.classList.add('hidden');
-      subLabel.textContent = 'Sin teléfono ni foto: no se puede avisar';
+      directBtn.classList.add('hidden'); photoBtn.classList.add('hidden');
+      subLabel.textContent = 'Sin teléfono ni foto';
     }
     document.getElementById('whatsappOverlay').classList.add('active');
   }
@@ -1422,34 +1299,14 @@
     pendingWhatsAppEvent = null;
   }
 
-  // ============================================================
-  // Splash
-  // ============================================================
   function renderSplash() {
-    var box = document.getElementById('messengerOptions');
-    var html = '';
-    var codes = Object.keys(MESSENGERS);
-    for (var i = 0; i < codes.length; i++) {
-      var m = MESSENGERS[codes[i]];
-      html += '<button class="messenger-option" data-code="' + m.code + '" data-name="' + m.name + '" data-zone="' + m.zone + '">' +
-        '<span class="messenger-option-avatar">' + m.code + '</span>' +
-        '<span class="messenger-option-info">' +
-          '<div class="messenger-option-name">' + m.name + '</div>' +
-          '<div class="messenger-option-zone">' + m.zone + '</div>' +
-        '</span>' +
-        '<span class="messenger-option-arrow">›</span>' +
-      '</button>';
-    }
-    box.innerHTML = html;
-    attachSplashHandlers(box);
+    document.getElementById('messengerOptions').innerHTML = '<div style="text-align:center;padding:22px;color:#fff;opacity:.75;font-size:14px;">Sin conexión al servidor</div>';
   }
 
   function renderSplashFromAPI(messengers) {
     var box = document.getElementById('messengerOptions');
     if (!messengers || !messengers.length) {
-      box.innerHTML = '<div style="text-align:center;padding:22px;color:#fff;opacity:.75;font-size:14px;line-height:1.5;">' +
-        'No hay mensajeros activos.<br><span style="font-size:12px;opacity:.7;">Pídele al admin que habilite al menos uno.</span>' +
-        '</div>';
+      box.innerHTML = '<div style="text-align:center;padding:22px;color:#fff;opacity:.75;font-size:14px;line-height:1.5;">No hay mensajeros activos.<br><span style="font-size:12px;opacity:.7;">Pídele al admin que habilite al menos uno.</span></div>';
       return;
     }
     var html = '';
@@ -1460,9 +1317,7 @@
         '<span class="messenger-option-info">' +
           '<div class="messenger-option-name">' + m.name + '</div>' +
           '<div class="messenger-option-zone">' + (m.zone || 'Sin zona') + '</div>' +
-        '</span>' +
-        '<span class="messenger-option-arrow">›</span>' +
-      '</button>';
+        '</span><span class="messenger-option-arrow">›</span></button>';
     }
     box.innerHTML = html;
     attachSplashHandlers(box);
@@ -1473,29 +1328,19 @@
     for (var j = 0; j < btns.length; j++) {
       (function (btn) {
         btn.addEventListener('click', function () {
-          openPinModal(
-            btn.getAttribute('data-code'),
-            btn.getAttribute('data-name'),
-            btn.getAttribute('data-zone')
-          );
+          openPinModal(btn.getAttribute('data-code'), btn.getAttribute('data-name'), btn.getAttribute('data-zone'));
         });
       })(btns[j]);
     }
   }
 
   function showSplash() {
-    document.getElementById('detailOverlay').classList.remove('active');
-    document.getElementById('eventOverlay').classList.remove('active');
-    document.getElementById('settingsOverlay').classList.remove('active');
-    document.getElementById('searchOverlay').classList.remove('active');
-    document.getElementById('whatsappOverlay').classList.remove('active');
-    document.getElementById('addPackageOverlay').classList.remove('active');
-    document.getElementById('adminOverlay').classList.remove('active');
+    ['detailOverlay','eventOverlay','settingsOverlay','searchOverlay','whatsappOverlay','addPackageOverlay','adminOverlay','adminDesktopOverlay'].forEach(function (id) {
+      document.getElementById(id).classList.remove('active');
+    });
     document.getElementById('splashOverlay').classList.add('active');
   }
-  function hideSplash() {
-    document.getElementById('splashOverlay').classList.remove('active');
-  }
+  function hideSplash() { document.getElementById('splashOverlay').classList.remove('active'); }
 
   function renderHeader() {
     if (!state.messenger) return;
@@ -1510,7 +1355,7 @@
     if (!state.route.length) {
       list.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><div class="empty-title">No hay paquetes en la ruta</div><div>Toca el botón ➕ para agregar uno manualmente.</div></div>';
     } else if (!visible.length) {
-      list.innerHTML = '<div class="empty celebrate"><div class="empty-icon">🎉</div><div class="empty-title">¡Todo entregado!</div><div>Revisa la pestaña Registro para ver el historial completo.</div></div>';
+      list.innerHTML = '<div class="empty celebrate"><div class="empty-icon">🎉</div><div class="empty-title">¡Todo entregado!</div><div>Revisa la pestaña Registro.</div></div>';
     } else {
       var html = '';
       for (var i = 0; i < visible.length; i++) {
@@ -1523,45 +1368,30 @@
         html += '<div class="package-card ' + cardClass + '" data-id="' + p.id + '">' +
           '<div class="order-badge">' + p.order + '</div>' +
           '<div class="package-info">' +
-            '<div class="package-top">' +
-              '<span class="guide">' + (p.guide || (isPickup ? 'RECOGIDA' : '—')) + '</span>' +
-              '<div class="badges-wrap">' +
-                (isPickup ? '<span class="status-badge pickup-badge">📤 Recoger</span>' : '') +
-                '<span class="status-badge ' + p.status + '">' + icon + ' ' + label + '</span>' +
-              '</div>' +
-            '</div>' +
-            '<div class="client">' + p.client + '</div>' +
-            '<div class="address">' + p.address + '</div>' +
-            (issues > 0 ? '<div class="issue-count">⚠ ' + issues + ' novedad' + (issues > 1 ? 'es' : '') + ' previa' + (issues > 1 ? 's' : '') + '</div>' : '') +
-          '</div>' +
-          '<div class="chevron">›</div>' +
-        '</div>';
+            '<div class="package-top"><span class="guide">' + (p.guide || (isPickup ? 'RECOGIDA' : '—')) + '</span>' +
+              '<div class="badges-wrap">' + (isPickup ? '<span class="status-badge pickup-badge">📤 Recoger</span>' : '') +
+              '<span class="status-badge ' + p.status + '">' + icon + ' ' + label + '</span></div></div>' +
+            '<div class="client">' + p.client + '</div><div class="address">' + p.address + '</div>' +
+            (issues > 0 ? '<div class="issue-count">⚠ ' + issues + ' novedad previa</div>' : '') +
+          '</div><div class="chevron">›</div></div>';
       }
       list.innerHTML = html;
-      var cards = list.querySelectorAll('.package-card');
-      for (var k = 0; k < cards.length; k++) {
-        (function (card) {
-          card.addEventListener('click', function () {
-            var id = card.getAttribute('data-id');
-            var pkg = null;
-            for (var m = 0; m < state.route.length; m++) {
-              if (state.route[m].id === id) { pkg = state.route[m]; break; }
-            }
-            if (pkg) openDetail(pkg);
-          });
-        })(cards[k]);
-      }
+      list.querySelectorAll('.package-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+          var pkg = state.route.find(function (p) { return p.id === card.getAttribute('data-id'); });
+          if (pkg) openDetail(pkg);
+        });
+      });
     }
-    var total = state.route.length || 1;
     var done = state.route.filter(function (p) { return p.status === 'delivered'; }).length;
     document.getElementById('progressText').textContent = done + ' de ' + state.route.length + ' entregados';
-    document.getElementById('progressFill').style.width = ((done / total) * 100) + '%';
+    document.getElementById('progressFill').style.width = ((done / (state.route.length || 1)) * 100) + '%';
   }
 
   function renderEvents() {
     var box = document.getElementById('eventsTable');
     if (!state.events.length) {
-      box.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">Aún no hay registros</div><div>Comienza a entregar paquetes para ver aquí tu historial.</div></div>';
+      box.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">Aún no hay registros</div><div>Comienza a entregar para ver tu historial.</div></div>';
       return;
     }
     var sorted = state.events.slice().sort(function (a, b) { return b.timestamp - a.timestamp; });
@@ -1570,14 +1400,11 @@
       var e = sorted[i];
       var photos = getEventPhotos(e);
       var statusText = e.status === 'delivered' ? '✓ Entregado' : '⚠ Novedad';
-      var firstPhoto = photos[0];
       var photoCell;
       var sigBadge = (e.signature || e.signed) ? '<span class="sig-badge">✍️</span>' : '';
-      if (firstPhoto) {
-        photoCell = '<img src="' + firstPhoto + '" alt="foto" />' + (photos.length > 1 ? '<span class="photo-count-badge">+' + (photos.length - 1) + '</span>' : '') + sigBadge;
-      } else {
-        photoCell = '<div class="no-photo">Sin foto</div>' + sigBadge;
-      }
+      if (photos[0]) {
+        photoCell = '<img src="' + photos[0] + '" />' + (photos.length > 1 ? '<span class="photo-count-badge">+' + (photos.length - 1) + '</span>' : '') + sigBadge;
+      } else photoCell = '<div class="no-photo">Sin foto</div>' + sigBadge;
       html += '<div class="event-card" data-id="' + e.id + '">' +
         '<div class="event-photo">' + photoCell + '</div>' +
         '<div class="event-info">' +
@@ -1585,78 +1412,50 @@
           '<div class="event-address">' + e.address + '</div>' +
           (e.recipient ? '<div class="event-note">Recibió: ' + e.recipient + '</div>' : '') +
           (e.note ? '<div class="event-note">"' + e.note + '"</div>' : '') +
-          '<div class="event-meta"><span>🕒 ' + formatTime(e.timestamp) + '</span>' + (photos.length > 1 ? '<span>📷 ' + photos.length + ' fotos</span>' : '') + '</div>' +
-        '</div>' +
-      '</div>';
+          '<div class="event-meta"><span>🕒 ' + formatTime(e.timestamp) + '</span></div>' +
+        '</div></div>';
     }
     box.innerHTML = html;
-    var cards = box.querySelectorAll('.event-card');
-    for (var j = 0; j < cards.length; j++) {
-      (function (card) {
-        card.addEventListener('click', function () {
-          var id = card.getAttribute('data-id');
-          var evt = null;
-          for (var m = 0; m < state.events.length; m++) {
-            if (state.events[m].id === id) { evt = state.events[m]; break; }
-          }
-          if (evt) openEventDetail(evt);
-        });
-      })(cards[j]);
-    }
+    box.querySelectorAll('.event-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        var evt = state.events.find(function (x) { return x.id === card.getAttribute('data-id'); });
+        if (evt) openEventDetail(evt);
+      });
+    });
   }
 
   function updateEvidenceFormUI() {
-    var recipientWrap = document.getElementById('recipientFieldWrap');
-    if (state.settings.requireRecipient) recipientWrap.classList.remove('hidden');
-    else recipientWrap.classList.add('hidden');
-
-    var sigSection = document.getElementById('signatureSection');
-    if (state.settings.requireSignature) sigSection.classList.remove('hidden');
-    else sigSection.classList.add('hidden');
-
+    document.getElementById('recipientFieldWrap').classList.toggle('hidden', !state.settings.requireRecipient);
+    document.getElementById('signatureSection').classList.toggle('hidden', !state.settings.requireSignature);
     var noPhotoBtn = document.getElementById('noPhotoBtn');
     if (state.settings.allowNoPhoto && !currentPhotos.length && !currentNoPhoto) {
-      noPhotoBtn.classList.remove('hidden');
-      noPhotoBtn.classList.remove('active');
+      noPhotoBtn.classList.remove('hidden', 'active');
       noPhotoBtn.innerHTML = '📷 Marcar entrega sin foto';
     } else if (state.settings.allowNoPhoto && currentNoPhoto) {
       noPhotoBtn.classList.remove('hidden');
       noPhotoBtn.classList.add('active');
       noPhotoBtn.innerHTML = '✓ Entrega sin foto marcada · toca para quitar';
-    } else {
-      noPhotoBtn.classList.add('hidden');
-    }
+    } else noPhotoBtn.classList.add('hidden');
 
     var area = document.getElementById('photoArea');
-    if (currentNoPhoto) area.classList.add('no-photo-mode');
-    else area.classList.remove('no-photo-mode');
-
+    area.classList.toggle('no-photo-mode', currentNoPhoto);
     var placeholder = document.getElementById('photoPlaceholder');
     var noPhotoContent = document.getElementById('noPhotoModeContent');
     var preview = document.getElementById('photoPreview');
     var posInd = document.getElementById('photoPosIndicator');
-
     if (currentPhotos.length) {
       preview.classList.remove('hidden');
       preview.src = currentPhotos[currentPhotoIndex];
       placeholder.classList.add('hidden');
       noPhotoContent.classList.add('hidden');
-      if (currentPhotos.length > 1) {
-        posInd.classList.remove('hidden');
-        posInd.textContent = (currentPhotoIndex + 1) + '/' + currentPhotos.length;
-      } else {
-        posInd.classList.add('hidden');
-      }
+      if (currentPhotos.length > 1) { posInd.classList.remove('hidden'); posInd.textContent = (currentPhotoIndex + 1) + '/' + currentPhotos.length; }
+      else posInd.classList.add('hidden');
     } else if (currentNoPhoto) {
-      preview.classList.add('hidden');
-      placeholder.classList.add('hidden');
-      noPhotoContent.classList.remove('hidden');
-      posInd.classList.add('hidden');
+      preview.classList.add('hidden'); placeholder.classList.add('hidden');
+      noPhotoContent.classList.remove('hidden'); posInd.classList.add('hidden');
     } else {
-      preview.classList.add('hidden');
-      placeholder.classList.remove('hidden');
-      noPhotoContent.classList.add('hidden');
-      posInd.classList.add('hidden');
+      preview.classList.add('hidden'); placeholder.classList.remove('hidden');
+      noPhotoContent.classList.add('hidden'); posInd.classList.add('hidden');
     }
 
     var thumbs = document.getElementById('photoThumbs');
@@ -1666,49 +1465,33 @@
       for (var i = 0; i < currentPhotos.length; i++) {
         thtml += '<div class="photo-thumb' + (i === currentPhotoIndex ? ' active' : '') + '" data-i="' + i + '">' +
           '<img src="' + currentPhotos[i] + '" />' +
-          '<button class="photo-thumb-remove" data-remove="' + i + '" title="Eliminar">✕</button>' +
-        '</div>';
+          '<button class="photo-thumb-remove" data-remove="' + i + '">✕</button></div>';
       }
       thumbs.innerHTML = thtml;
-      var ths = thumbs.querySelectorAll('.photo-thumb');
-      for (var t = 0; t < ths.length; t++) {
-        (function (th) {
-          th.addEventListener('click', function (evt) {
-            if (evt.target.classList.contains('photo-thumb-remove')) return;
-            currentPhotoIndex = parseInt(th.getAttribute('data-i'), 10);
-            updateEvidenceFormUI();
-          });
-        })(ths[t]);
-      }
-      var removes = thumbs.querySelectorAll('.photo-thumb-remove');
-      for (var r = 0; r < removes.length; r++) {
-        (function (rm) {
-          rm.addEventListener('click', function (evt) {
-            evt.stopPropagation();
-            removePhotoAt(parseInt(rm.getAttribute('data-remove'), 10));
-          });
-        })(removes[r]);
-      }
-    } else {
-      thumbs.classList.add('hidden');
-      thumbs.innerHTML = '';
-    }
+      thumbs.querySelectorAll('.photo-thumb').forEach(function (th) {
+        th.addEventListener('click', function (evt) {
+          if (evt.target.classList.contains('photo-thumb-remove')) return;
+          currentPhotoIndex = parseInt(th.getAttribute('data-i'), 10);
+          updateEvidenceFormUI();
+        });
+      });
+      thumbs.querySelectorAll('.photo-thumb-remove').forEach(function (rm) {
+        rm.addEventListener('click', function (evt) {
+          evt.stopPropagation();
+          removePhotoAt(parseInt(rm.getAttribute('data-remove'), 10));
+        });
+      });
+    } else { thumbs.classList.add('hidden'); thumbs.innerHTML = ''; }
 
     var addBtn = document.getElementById('addPhotoBtn');
     if (currentPhotos.length) {
       addBtn.classList.remove('hidden');
-      addBtn.textContent = '➕ Agregar otra foto' + (currentPhotos.length > 1 ? ' (' + currentPhotos.length + ' en total)' : '');
-    } else {
-      addBtn.classList.add('hidden');
-    }
+      addBtn.textContent = '➕ Agregar otra foto' + (currentPhotos.length > 1 ? ' (' + currentPhotos.length + ')' : '');
+    } else addBtn.classList.add('hidden');
 
     var countLbl = document.getElementById('photoCountLabel');
-    if (currentPhotos.length) {
-      countLbl.classList.remove('hidden');
-      countLbl.textContent = currentPhotos.length + ' foto' + (currentPhotos.length > 1 ? 's' : '');
-    } else {
-      countLbl.classList.add('hidden');
-    }
+    if (currentPhotos.length) { countLbl.classList.remove('hidden'); countLbl.textContent = currentPhotos.length + ' foto' + (currentPhotos.length > 1 ? 's' : ''); }
+    else countLbl.classList.add('hidden');
   }
 
   function addPhotoToCurrent(dataURL) {
@@ -1722,133 +1505,74 @@
     if (idx < 0 || idx >= currentPhotos.length) return;
     currentPhotos.splice(idx, 1);
     if (currentPhotoIndex >= currentPhotos.length) currentPhotoIndex = Math.max(0, currentPhotos.length - 1);
-    if (!currentPhotos.length) currentPhotoIndex = 0;
     updateEvidenceFormUI();
     showToast('Foto eliminada', 1400);
   }
 
   function openDetail(pkg) {
     currentPackage = pkg;
-    currentPhotos = [];
-    currentPhotoIndex = 0;
-    currentNoPhoto = false;
-    currentGPS = null;
-    hasSignatureStrokes = false;
-
+    currentPhotos = []; currentPhotoIndex = 0; currentNoPhoto = false; currentGPS = null; hasSignatureStrokes = false;
     var isPickup = pkg.type === 'pickup';
     document.getElementById('detailTitle').textContent = isPickup ? 'Registrar recogida' : 'Registrar evidencia';
     document.getElementById('detailGuide').textContent = 'Guía ' + (pkg.guide || '—');
     document.getElementById('detailClient').textContent = pkg.client;
     document.getElementById('detailAddress').textContent = pkg.address;
     document.getElementById('detailPhone').textContent = pkg.phone || '—';
-
     var btnEnt = document.getElementById('btnEntregado');
     btnEnt.textContent = isPickup ? '✓ Recogido' : '✓ Entregado';
-    if (isPickup) btnEnt.classList.add('pickup');
-    else btnEnt.classList.remove('pickup');
-
+    if (isPickup) btnEnt.classList.add('pickup'); else btnEnt.classList.remove('pickup');
     document.getElementById('recipientInput').value = '';
     document.getElementById('noteInput').value = '';
     document.getElementById('photoInput').value = '';
-
     updateEvidenceFormUI();
     document.getElementById('detailOverlay').classList.add('active');
-
-    if (state.settings.requireSignature) {
-      setTimeout(function () {
-        setupSignatureCanvas();
-        checkReuseSignature();
-      }, 50);
-    }
+    if (state.settings.requireSignature) setTimeout(function () { setupSignatureCanvas(); checkReuseSignature(); }, 50);
     startGPS();
   }
 
   function closeDetail() {
     document.getElementById('detailOverlay').classList.remove('active');
-    if (gpsWatchId !== null) {
-      navigator.geolocation.clearWatch(gpsWatchId);
-      gpsWatchId = null;
-    }
-    currentPackage = null;
-    currentPhotos = [];
-    currentPhotoIndex = 0;
-    currentNoPhoto = false;
-    currentGPS = null;
-    hasSignatureStrokes = false;
+    if (gpsWatchId !== null) { navigator.geolocation.clearWatch(gpsWatchId); gpsWatchId = null; }
+    currentPackage = null; currentPhotos = []; currentPhotoIndex = 0; currentNoPhoto = false; currentGPS = null; hasSignatureStrokes = false;
   }
 
   function startGPS() {
     var gpsBox = document.getElementById('gpsBox');
     var gpsText = document.getElementById('gpsText');
     gpsBox.classList.remove('ok', 'error');
-    if (!navigator.geolocation) {
-      gpsText.textContent = 'GPS no disponible en este dispositivo';
-      gpsBox.classList.add('error');
-      return;
-    }
+    if (!navigator.geolocation) { gpsText.textContent = 'GPS no disponible'; gpsBox.classList.add('error'); return; }
     gpsText.textContent = 'Buscando ubicación...';
     if (gpsWatchId !== null) navigator.geolocation.clearWatch(gpsWatchId);
     gpsWatchId = navigator.geolocation.watchPosition(
       function (pos) {
         currentGPS = { lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: Math.round(pos.coords.accuracy) };
-        gpsText.innerHTML = '<strong>' + currentGPS.lat.toFixed(5) + ', ' + currentGPS.lng.toFixed(5) + '</strong><br><small>Precisión: ±' + currentGPS.accuracy + ' m</small>';
-        gpsBox.classList.add('ok');
-        gpsBox.classList.remove('error');
+        gpsText.innerHTML = '<strong>' + currentGPS.lat.toFixed(5) + ', ' + currentGPS.lng.toFixed(5) + '</strong><br><small>±' + currentGPS.accuracy + ' m</small>';
+        gpsBox.classList.add('ok'); gpsBox.classList.remove('error');
       },
-      function (err) {
-        gpsText.textContent = 'No se pudo obtener ubicación: ' + err.message;
-        gpsBox.classList.add('error');
-        gpsBox.classList.remove('ok');
-      },
+      function (err) { gpsText.textContent = 'Error: ' + err.message; gpsBox.classList.add('error'); gpsBox.classList.remove('ok'); },
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
   }
 
-  // ============================================================
-  // saveDelivery — con firma y watermark
-  // ============================================================
   function saveDelivery(status) {
     if (!currentPackage) return;
     var isPickup = currentPackage.type === 'pickup';
-
     if (status === 'delivered') {
       if (!currentPhotos.length && !(state.settings.allowNoPhoto && currentNoPhoto)) {
-        if (state.settings.allowNoPhoto) {
-          showToast('⚠ Toma una foto o marca "sin foto"');
-        } else {
-          showToast('⚠ Toma una foto para ' + (isPickup ? 'recoger' : 'entregar'));
-        }
+        showToast(state.settings.allowNoPhoto ? '⚠ Toma una foto o marca "sin foto"' : '⚠ Toma una foto');
         return;
       }
-      if (state.settings.requireRecipient) {
-        var r = document.getElementById('recipientInput').value.trim();
-        if (!r) {
-          showToast('⚠ Escribe quién ' + (isPickup ? 'entrega' : 'recibe') + ' el paquete');
-          return;
-        }
+      if (state.settings.requireRecipient && !document.getElementById('recipientInput').value.trim()) {
+        showToast('⚠ Escribe quién recibe'); return;
       }
-      if (state.settings.requireSignature && !hasSignatureStrokes) {
-        showToast('⚠ El cliente debe firmar para confirmar');
-        return;
-      }
+      if (state.settings.requireSignature && !hasSignatureStrokes) { showToast('⚠ El cliente debe firmar'); return; }
     }
-
     var recipient = document.getElementById('recipientInput').value.trim();
     var note = document.getElementById('noteInput').value.trim();
-
     var needSignature = status === 'delivered' && state.settings.requireSignature && hasSignatureStrokes;
-
     var signatureData = null;
-    if (needSignature) {
-      try {
-        signatureData = signatureCanvas.toDataURL('image/png');
-      } catch (e) {
-        showToast('No se pudo capturar la firma');
-        return;
-      }
-    }
+    if (needSignature) { try { signatureData = signatureCanvas.toDataURL('image/png'); } catch (e) { showToast('Error firma'); return; } }
 
-    // Snapshots ANTES de closeDetail
     var pkgSnapshot = currentPackage;
     var gpsSnapshot = currentGPS;
     var noPhotoSnapshot = currentNoPhoto;
@@ -1856,78 +1580,48 @@
     var signatureColor = getSignatureColorHex();
     var ts = Date.now();
 
-    var commit = function (photos, sigData, sigColor) {
+    var commit = function (photos, sigData) {
       var event = {
         id: 'evt-' + Date.now(),
-        packageId: pkgSnapshot.id,
-        guide: pkgSnapshot.guide,
-        client: pkgSnapshot.client,
-        address: pkgSnapshot.address,
-        phone: pkgSnapshot.phone || '',
-        recipient: recipient,
-        status: status,
-        type: pkgSnapshot.type || 'delivery',
-        photos: photos,
-        photo: photos[0] || null,
+        packageId: pkgSnapshot.id, guide: pkgSnapshot.guide, client: pkgSnapshot.client,
+        address: pkgSnapshot.address, phone: pkgSnapshot.phone || '',
+        recipient: recipient, status: status, type: pkgSnapshot.type || 'delivery',
+        photos: photos, photo: photos[0] || null,
         noPhoto: noPhotoSnapshot && !photos.length,
-        signature: sigData,
-        signatureColor: sigColor,
-        signed: !!sigData,
-        note: note,
-        gps: gpsSnapshot,
-        messengerCode: state.messenger.code,
-        messengerName: state.messenger.name,
+        signature: sigData, signatureColor: signatureColor,
+        signed: !!sigData, note: note, gps: gpsSnapshot,
+        messengerCode: state.messenger.code, messengerName: state.messenger.name,
         timestamp: ts
       };
-
       var photosToUpload = photos.slice();
-
       state.events.push(event);
-
-      var pkg = null;
-      for (var i = 0; i < state.route.length; i++) {
-        if (state.route[i].id === pkgSnapshot.id) { pkg = state.route[i]; break; }
-      }
+      var pkg = state.route.find(function (p) { return p.id === pkgSnapshot.id; });
       if (pkg) pkg.status = status === 'delivered' ? 'delivered' : 'issue';
-
       saveMessengerData();
       hideProcessing();
       closeDetail();
       renderRoute();
       renderEvents();
-
       syncEventToServer(event, photosToUpload);
-
       var eventForWA = JSON.parse(JSON.stringify(event));
-
-      if (status === 'delivered' && state.settings.promptWhatsApp) {
-        showWhatsAppPrompt(eventForWA);
-      } else {
+      if (status === 'delivered' && state.settings.promptWhatsApp) showWhatsAppPrompt(eventForWA);
+      else {
         var verb = isPickup ? 'Recogida' : 'Entrega';
         showToast(status === 'delivered' ? '✓ ' + verb + ' registrada' : '⚠ Novedad registrada');
       }
     };
 
     if (needSignature && photosSnapshot.length > 0) {
-      showProcessing('Aplicando firma a ' + photosSnapshot.length + ' foto' + (photosSnapshot.length > 1 ? 's' : '') + '...');
+      showProcessing('Aplicando firma...');
       var watermarked = [];
       var processNext = function (i) {
-        if (i >= photosSnapshot.length) {
-          commit(watermarked, signatureData, signatureColor);
-          return;
-        }
+        if (i >= photosSnapshot.length) { commit(watermarked, signatureData); return; }
         generateWatermark(photosSnapshot[i], signatureData, recipient, ts, signatureColor).then(function (wm) {
-          watermarked.push(wm);
-          processNext(i + 1);
-        }).catch(function () {
-          watermarked.push(photosSnapshot[i]);
-          processNext(i + 1);
-        });
+          watermarked.push(wm); processNext(i + 1);
+        }).catch(function () { watermarked.push(photosSnapshot[i]); processNext(i + 1); });
       };
       processNext(0);
-    } else {
-      commit(photosSnapshot, signatureData, needSignature ? signatureColor : null);
-    }
+    } else commit(photosSnapshot, signatureData);
   }
 
   async function syncEventToServer(event, photos) {
@@ -1948,15 +1642,11 @@
           }
           renderEvents();
         }
-        showToast('☁ Sincronizado con el Sheet', 1800);
+        showToast('☁ Sincronizado', 1800);
       }
     } catch (err) {
-      console.warn('Sync error:', err);
       var localEvt2 = state.events.find(function (e) { return e.id === event.id; });
-      if (localEvt2) {
-        localEvt2.syncError = true;
-        saveMessengerData();
-      }
+      if (localEvt2) { localEvt2.syncError = true; saveMessengerData(); }
       showToast('⚠ Sin conexión · guardado localmente', 2600);
     }
   }
@@ -1965,8 +1655,7 @@
 
   function openEventDetail(evt) {
     document.getElementById('eventDetailGuide').textContent = 'Guía ' + (evt.guide || '—');
-    var photos = getEventPhotos(evt);
-    eventCarouselState = { evt: evt, index: 0, photos: photos };
+    eventCarouselState = { evt: evt, index: 0, photos: getEventPhotos(evt) };
     renderEventCarousel();
     renderEventDetailBody(evt);
     document.getElementById('eventOverlay').classList.add('active');
@@ -1978,20 +1667,15 @@
     var idx = eventCarouselState.index;
     var evt = eventCarouselState.evt;
     if (!photos.length) {
-      var emptyText = evt.noPhoto ? 'Entrega marcada sin foto' : 'Sin fotografía de evidencia';
-      wrap.innerHTML = '<div class="carousel-main"><div class="empty-photo">' + emptyText + '</div></div>';
+      wrap.innerHTML = '<div class="carousel-main"><div class="empty-photo">' + (evt.noPhoto ? 'Entrega sin foto' : 'Sin fotografía') + '</div></div>';
       return;
     }
-    var html = '<div class="carousel-main"><img src="' + photos[idx] + '" alt="Evidencia ' + (idx + 1) + '" />';
-    if (photos.length > 1) {
-      html += '<button class="car-nav prev" id="carPrevBtn">‹</button><button class="car-nav next" id="carNextBtn">›</button><div class="car-counter">' + (idx + 1) + ' / ' + photos.length + '</div>';
-    }
+    var html = '<div class="carousel-main"><img src="' + photos[idx] + '" />';
+    if (photos.length > 1) html += '<button class="car-nav prev" id="carPrevBtn">‹</button><button class="car-nav next" id="carNextBtn">›</button><div class="car-counter">' + (idx + 1) + '/' + photos.length + '</div>';
     html += '</div>';
     if (photos.length > 1) {
-      html += '<div class="carousel-thumbs" id="carThumbs">';
-      for (var i = 0; i < photos.length; i++) {
-        html += '<img class="carousel-thumb' + (i === idx ? ' active' : '') + '" data-i="' + i + '" src="' + photos[i] + '" />';
-      }
+      html += '<div class="carousel-thumbs">';
+      for (var i = 0; i < photos.length; i++) html += '<img class="carousel-thumb' + (i === idx ? ' active' : '') + '" data-i="' + i + '" src="' + photos[i] + '" />';
       html += '</div>';
     }
     wrap.innerHTML = html;
@@ -2004,141 +1688,94 @@
         eventCarouselState.index = (eventCarouselState.index + 1) % photos.length;
         renderEventCarousel();
       });
-      var ths = document.querySelectorAll('#carThumbs .carousel-thumb');
-      for (var t = 0; t < ths.length; t++) {
-        (function (th) {
-          th.addEventListener('click', function () {
-            eventCarouselState.index = parseInt(th.getAttribute('data-i'), 10);
-            renderEventCarousel();
-          });
-        })(ths[t]);
-      }
+      wrap.querySelectorAll('.carousel-thumb').forEach(function (th) {
+        th.addEventListener('click', function () {
+          eventCarouselState.index = parseInt(th.getAttribute('data-i'), 10);
+          renderEventCarousel();
+        });
+      });
     }
   }
 
   function renderEventDetailBody(evt) {
     var photos = getEventPhotos(evt);
-    var statusLabel = evt.status === 'delivered' ? '✓ Entregado' : '⚠ Novedad';
+    var statusLabel = evt.status === 'delivered' ? (evt.type === 'pickup' ? '✓ Recogido' : '✓ Entregado') : '⚠ Novedad';
     var statusClass = evt.status === 'delivered' ? 'delivered' : 'issue';
-    if (evt.type === 'pickup' && evt.status === 'delivered') statusLabel = '✓ Recogido';
     var phone = normalizePhone(evt.phone || '');
     var hasPhone = phone.length > 0;
-
     var html = '';
     html += '<div class="ev-status-row"><span class="status-badge ' + statusClass + '">' + statusLabel + '</span><span class="ev-time">' + formatTime(evt.timestamp) + '</span></div>';
     html += '<div class="ev-block"><div class="ev-label">Cliente</div><div class="ev-value">' + (evt.client || '—') + '</div></div>';
     if (evt.phone) html += '<div class="ev-block"><div class="ev-label">Teléfono</div><div class="ev-value">' + evt.phone + '</div></div>';
     html += '<div class="ev-block"><div class="ev-label">Dirección</div><div class="ev-value">' + (evt.address || '—') + '</div></div>';
     if (evt.recipient) html += '<div class="ev-block"><div class="ev-label">Recibido por</div><div class="ev-value">' + evt.recipient + '</div></div>';
-    if (evt.note) html += '<div class="ev-block note"><div class="ev-label">Nota del mensajero</div><div class="ev-value">"' + evt.note + '"</div></div>';
-    html += '<div class="ev-grid">' +
-      '<div class="ev-block"><div class="ev-label">Fecha y hora</div><div class="ev-value" style="font-size:13px;">' + formatFullDate(evt.timestamp) + '</div></div>' +
-      '<div class="ev-block"><div class="ev-label">Mensajero</div><div class="ev-value" style="font-size:13px;">' + (evt.messengerName || state.messenger.name) + '<br><span style="color:var(--muted);font-weight:500;font-size:11px;">' + (evt.messengerCode || state.messenger.code) + '</span></div></div>' +
-    '</div>';
-    if (photos.length > 1) html += '<div class="ev-block"><div class="ev-label">Evidencias</div><div class="ev-value">' + photos.length + ' fotografías adjuntas</div></div>';
-    if (evt.signature) html += '<div class="ev-signature-img"><div class="ev-label">Firma del cliente</div><img src="' + evt.signature + '" alt="Firma" /></div>';
-    else if (evt.signed) html += '<div class="ev-block"><div class="ev-label">Firma del cliente</div><div class="ev-value" style="font-size:13px;">✍️ Firmado por el cliente (grabada en la foto)</div></div>';
-    if (evt.gps) {
-      html += '<div class="ev-block"><div class="ev-label">Ubicación GPS</div><div class="ev-value" style="font-size:13px;">' + evt.gps.lat.toFixed(5) + ', ' + evt.gps.lng.toFixed(5) + (evt.gps.accuracy ? '<br><span style="color:var(--muted);font-weight:500;font-size:11px;">Precisión ±' + evt.gps.accuracy + ' m</span>' : '') + '</div></div>';
-    }
+    if (evt.note) html += '<div class="ev-block note"><div class="ev-label">Nota</div><div class="ev-value">"' + evt.note + '"</div></div>';
+    html += '<div class="ev-grid"><div class="ev-block"><div class="ev-label">Fecha y hora</div><div class="ev-value" style="font-size:13px;">' + formatFullDate(evt.timestamp) + '</div></div>' +
+      '<div class="ev-block"><div class="ev-label">Mensajero</div><div class="ev-value" style="font-size:13px;">' + (evt.messengerName || state.messenger.name) + '</div></div></div>';
+    if (evt.signature) html += '<div class="ev-signature-img"><div class="ev-label">Firma del cliente</div><img src="' + evt.signature + '" /></div>';
+    else if (evt.signed) html += '<div class="ev-block"><div class="ev-label">Firma</div><div class="ev-value" style="font-size:13px;">✍️ Firmado (grabada en la foto)</div></div>';
+    if (evt.gps) html += '<div class="ev-block"><div class="ev-label">GPS</div><div class="ev-value" style="font-size:13px;">' + evt.gps.lat.toFixed(5) + ', ' + evt.gps.lng.toFixed(5) + '</div></div>';
     if (evt.status === 'delivered') html += '<div class="wa-actions-wrap" id="evtWaActions"></div>';
     document.getElementById('eventDetailBody').innerHTML = html;
-
     if (evt.status === 'delivered') {
       var actions = document.getElementById('evtWaActions');
       var btnHtml = '';
-      if (hasPhone) {
-        btnHtml += '<button class="wa-share-btn" data-action="direct"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>Enviar mensaje al cliente</button>';
-      }
-      if (photos.length) {
-        btnHtml += '<button class="wa-share-btn' + (hasPhone ? ' secondary' : '') + '" data-action="photo">📷 Compartir ' + (photos.length > 1 ? photos.length + ' fotos' : 'con foto') + '</button>';
-      }
+      if (hasPhone) btnHtml += '<button class="wa-share-btn" data-action="direct">Enviar mensaje al cliente</button>';
+      if (photos.length) btnHtml += '<button class="wa-share-btn' + (hasPhone ? ' secondary' : '') + '" data-action="photo">📷 Compartir ' + (photos.length > 1 ? photos.length + ' fotos' : 'con foto') + '</button>';
       actions.innerHTML = btnHtml;
-      var buttons = actions.querySelectorAll('button');
-      for (var i = 0; i < buttons.length; i++) {
-        (function (btn) {
-          btn.addEventListener('click', function () {
-            var action = btn.getAttribute('data-action');
-            if (action === 'direct') sendWhatsAppDirect(evt);
-            else shareWhatsAppWithPhotos(evt);
-          });
-        })(buttons[i]);
-      }
+      actions.querySelectorAll('button').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var action = btn.getAttribute('data-action');
+          if (action === 'direct') sendWhatsAppDirect(evt);
+          else shareWhatsAppWithPhotos(evt);
+        });
+      });
     }
   }
 
-  function closeEventDetail() {
-    document.getElementById('eventOverlay').classList.remove('active');
-  }
+  function closeEventDetail() { document.getElementById('eventOverlay').classList.remove('active'); }
 
   function openAddPackage() {
-    document.getElementById('addClient').value = '';
-    document.getElementById('addAddress').value = '';
-    document.getElementById('addPhone').value = '';
-    document.getElementById('addGuide').value = '';
-    document.getElementById('addNote').value = '';
+    ['addClient','addAddress','addPhone','addGuide','addNote'].forEach(function (id) { document.getElementById(id).value = ''; });
     setAddFormType('delivery');
     document.getElementById('addPackageOverlay').classList.add('active');
     setTimeout(function () { document.getElementById('addClient').focus(); }, 200);
   }
-  function closeAddPackage() {
-    document.getElementById('addPackageOverlay').classList.remove('active');
-  }
+  function closeAddPackage() { document.getElementById('addPackageOverlay').classList.remove('active'); }
   function setAddFormType(type) {
     addFormType = type;
-    var btnD = document.getElementById('typeDelivery');
-    var btnP = document.getElementById('typePickup');
-    btnD.classList.remove('active', 'pickup-active');
-    btnP.classList.remove('active', 'pickup-active');
-    if (type === 'pickup') btnP.classList.add('active', 'pickup-active');
-    else btnD.classList.add('active');
+    document.getElementById('typeDelivery').classList.toggle('active', type !== 'pickup');
+    document.getElementById('typeDelivery').classList.remove('pickup-active');
+    document.getElementById('typePickup').classList.toggle('active', type === 'pickup');
+    document.getElementById('typePickup').classList.toggle('pickup-active', type === 'pickup');
   }
   function confirmAddPackage() {
     var client = document.getElementById('addClient').value.trim();
     var address = document.getElementById('addAddress').value.trim();
     var phone = document.getElementById('addPhone').value.trim();
     var guide = document.getElementById('addGuide').value.trim();
-    var note = document.getElementById('addNote').value.trim();
-
     if (!client) { showToast('⚠ Escribe el nombre del cliente'); return; }
     if (!address) { showToast('⚠ Escribe la dirección'); return; }
-
     var maxOrder = 0;
-    for (var i = 0; i < state.route.length; i++) {
-      if ((state.route[i].order || 0) > maxOrder) maxOrder = state.route[i].order;
-    }
-
+    for (var i = 0; i < state.route.length; i++) if ((state.route[i].order || 0) > maxOrder) maxOrder = state.route[i].order;
     var newPkg = {
-      id: 'pkg-manual-' + Date.now(),
-      order: maxOrder + 1,
+      id: 'pkg-manual-' + Date.now(), order: maxOrder + 1,
       guide: guide || (addFormType === 'pickup' ? 'REC-' + (maxOrder + 1) : 'MAN-' + (maxOrder + 1)),
-      client: client,
-      address: address,
-      phone: phone,
-      type: addFormType,
-      manualNote: note,
-      status: 'pending',
-      fromManual: true
+      client: client, address: address, phone: phone, type: addFormType,
+      status: 'pending', fromManual: true
     };
-
     state.route.push(newPkg);
     saveMessengerData();
     renderRoute();
     closeAddPackage();
     showToast('✓ Agregado a tu ruta');
-
-    RutaXAPI.addPackages([newPkg]).catch(function (err) {
-      console.warn('Sync addPackage:', err);
-      newPkg.syncError = true;
-      saveMessengerData();
-      showToast('⚠ Quedó local · se sincronizará luego', 2600);
+    RutaXAPI.addPackages([newPkg]).catch(function () {
+      newPkg.syncError = true; saveMessengerData();
+      showToast('⚠ Quedó local', 2600);
     });
   }
 
-  function normalizeQuery(s) {
-    return (s || '').toString().toLowerCase().trim()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  }
+  function normalizeQuery(s) { return (s || '').toString().toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
   function buildDateHaystack(ts) {
     var d = new Date(ts);
     var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -2148,17 +1785,13 @@
   }
   function matchesAll(haystack, query) {
     var terms = query.split(/\s+/).filter(Boolean);
-    if (!terms.length) return true;
-    for (var i = 0; i < terms.length; i++) {
-      if (haystack.indexOf(terms[i]) < 0) return false;
-    }
+    for (var i = 0; i < terms.length; i++) if (haystack.indexOf(terms[i]) < 0) return false;
     return true;
   }
   function performSearch(query) {
     var q = normalizeQuery(query);
     var hasQuery = q.length > 0;
-    var pending = [];
-    var events = [];
+    var pending = [], events = [];
     for (var i = 0; i < state.route.length; i++) {
       var p = state.route[i];
       if (p.status !== 'pending') continue;
@@ -2167,8 +1800,7 @@
     }
     for (var j = 0; j < state.events.length; j++) {
       var e = state.events[j];
-      var parts = [e.client, e.guide, e.address, e.recipient, e.note, e.phone, buildDateHaystack(e.timestamp)];
-      var hayE = normalizeQuery(parts.filter(Boolean).join(' '));
+      var hayE = normalizeQuery([e.client, e.guide, e.address, e.recipient, e.note, e.phone, buildDateHaystack(e.timestamp)].filter(Boolean).join(' '));
       if (!hasQuery || matchesAll(hayE, q)) events.push(e);
     }
     events.sort(function (a, b) { return b.timestamp - a.timestamp; });
@@ -2183,7 +1815,7 @@
       html += '<div class="sr-section-title">Entregas recientes</div>';
       var recent = res.events.slice(0, 8);
       if (!recent.length && !res.pending.length) {
-        box.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">Busca cualquier entrega</div><div>Por nombre, guía, dirección, fecha o quién recibió.</div></div>';
+        box.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">Busca cualquier entrega</div></div>';
         return;
       }
       for (var i = 0; i < recent.length; i++) html += buildEventResultCard(recent[i]);
@@ -2191,9 +1823,8 @@
       attachSearchResultHandlers();
       return;
     }
-    var total = res.pending.length + res.events.length;
-    if (!total) {
-      box.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">Sin resultados</div><div>No encontramos nada para "' + query + '".</div></div>';
+    if (!res.pending.length && !res.events.length) {
+      box.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">Sin resultados</div></div>';
       return;
     }
     if (res.pending.length) {
@@ -2212,49 +1843,37 @@
     var isPickup = p.type === 'pickup';
     return '<div class="sr-card" data-type="pending" data-id="' + p.id + '">' +
       '<div class="sr-photo">' + (isPickup ? '📤' : '📦') + '</div>' +
-      '<div class="sr-body"><div class="sr-top"><span class="sr-guide">' + (p.guide || '—') + '</span><span class="status-badge pending">○ ' + (isPickup ? 'Recogida' : 'Pendiente') + '</span></div><div class="sr-title">' + p.client + '</div><div class="sr-sub">' + p.address + '</div></div>' +
-      '<div class="chevron">›</div>' +
-    '</div>';
+      '<div class="sr-body"><div class="sr-top"><span class="sr-guide">' + (p.guide || '—') + '</span><span class="status-badge pending">○ Pendiente</span></div><div class="sr-title">' + p.client + '</div><div class="sr-sub">' + p.address + '</div></div><div class="chevron">›</div></div>';
   }
 
   function buildEventResultCard(e) {
     var photos = getEventPhotos(e);
-    var statusText = e.status === 'delivered' ? (e.type === 'pickup' ? '✓ Recogido' : '✓ Entregado') : '⚠ Novedad';
+    var statusText = e.status === 'delivered' ? '✓ Entregado' : '⚠ Novedad';
     var photoCell;
-    if (photos.length) photoCell = '<img src="' + photos[0] + '" />' + (photos.length > 1 ? '<span class="photo-count-badge">+' + (photos.length - 1) + '</span>' : '');
+    if (photos[0]) photoCell = '<img src="' + photos[0] + '" />';
     else if (e.noPhoto) photoCell = '🚫';
     else photoCell = '📋';
     var sigIcon = (e.signature || e.signed) ? ' · ✍️' : '';
     return '<div class="sr-card" data-type="event" data-id="' + e.id + '">' +
       '<div class="sr-photo">' + photoCell + '</div>' +
-      '<div class="sr-body"><div class="sr-top"><span class="sr-guide">' + e.guide + '</span><span class="status-badge ' + e.status + '">' + statusText + '</span></div><div class="sr-title">' + (e.client || '—') + '</div><div class="sr-sub">' + (e.address || '') + '</div>' + (e.recipient ? '<div class="sr-sub">Recibió: ' + e.recipient + '</div>' : '') + '<div class="sr-date">🕒 ' + formatTime(e.timestamp) + (photos.length > 1 ? ' · 📷 ' + photos.length : '') + sigIcon + '</div></div>' +
-    '</div>';
+      '<div class="sr-body"><div class="sr-top"><span class="sr-guide">' + e.guide + '</span><span class="status-badge ' + e.status + '">' + statusText + '</span></div><div class="sr-title">' + (e.client || '—') + '</div><div class="sr-sub">' + (e.address || '') + '</div><div class="sr-date">🕒 ' + formatTime(e.timestamp) + sigIcon + '</div></div></div>';
   }
 
   function attachSearchResultHandlers() {
-    var cards = document.querySelectorAll('#searchResults .sr-card');
-    for (var i = 0; i < cards.length; i++) {
-      (function (card) {
-        card.addEventListener('click', function () {
-          var type = card.getAttribute('data-type');
-          var id = card.getAttribute('data-id');
-          closeSearch();
-          if (type === 'pending') {
-            var pkg = null;
-            for (var j = 0; j < state.route.length; j++) {
-              if (state.route[j].id === id) { pkg = state.route[j]; break; }
-            }
-            if (pkg) openDetail(pkg);
-          } else {
-            var evt = null;
-            for (var k = 0; k < state.events.length; k++) {
-              if (state.events[k].id === id) { evt = state.events[k]; break; }
-            }
-            if (evt) openEventDetail(evt);
-          }
-        });
-      })(cards[i]);
-    }
+    document.querySelectorAll('#searchResults .sr-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        var type = card.getAttribute('data-type');
+        var id = card.getAttribute('data-id');
+        closeSearch();
+        if (type === 'pending') {
+          var pkg = state.route.find(function (p) { return p.id === id; });
+          if (pkg) openDetail(pkg);
+        } else {
+          var evt = state.events.find(function (e) { return e.id === id; });
+          if (evt) openEventDetail(evt);
+        }
+      });
+    });
   }
 
   function openSearch() {
@@ -2265,9 +1884,7 @@
     renderSearchResults('');
     setTimeout(function () { input.focus(); }, 100);
   }
-  function closeSearch() {
-    document.getElementById('searchOverlay').classList.remove('active');
-  }
+  function closeSearch() { document.getElementById('searchOverlay').classList.remove('active'); }
 
   function openSettings() {
     document.getElementById('settingsAccountText').textContent = 'Estás como: ' + state.messenger.name + ' (' + state.messenger.code + ') · ' + state.messenger.zone;
@@ -2276,54 +1893,36 @@
     updateTogglesUI();
     document.getElementById('settingsOverlay').classList.add('active');
   }
-  function closeSettings() {
-    document.getElementById('settingsOverlay').classList.remove('active');
-  }
+  function closeSettings() { document.getElementById('settingsOverlay').classList.remove('active'); }
 
   function updateTogglesUI() {
     var tr = document.getElementById('toggleRecipient');
     var tn = document.getElementById('toggleNoPhoto');
     var tw = document.getElementById('toggleWhatsApp');
     var ts = document.getElementById('toggleSignature');
-    if (state.settings.requireRecipient) tr.classList.add('on'); else tr.classList.remove('on');
-    tr.setAttribute('aria-checked', state.settings.requireRecipient ? 'true' : 'false');
-    if (state.settings.allowNoPhoto) tn.classList.add('on'); else tn.classList.remove('on');
-    tn.setAttribute('aria-checked', state.settings.allowNoPhoto ? 'true' : 'false');
-    if (state.settings.promptWhatsApp) tw.classList.add('on'); else tw.classList.remove('on');
-    tw.setAttribute('aria-checked', state.settings.promptWhatsApp ? 'true' : 'false');
-    if (ts) {
-      if (state.settings.requireSignature) ts.classList.add('on'); else ts.classList.remove('on');
-      ts.setAttribute('aria-checked', state.settings.requireSignature ? 'true' : 'false');
-    }
+    tr.classList.toggle('on', state.settings.requireRecipient);
+    tn.classList.toggle('on', state.settings.allowNoPhoto);
+    tw.classList.toggle('on', state.settings.promptWhatsApp);
+    if (ts) ts.classList.toggle('on', state.settings.requireSignature);
     var colorWrap = document.getElementById('signatureColorWrap');
-    if (colorWrap) {
-      if (state.settings.requireSignature) colorWrap.classList.remove('hidden');
-      else colorWrap.classList.add('hidden');
-    }
+    if (colorWrap) colorWrap.classList.toggle('hidden', !state.settings.requireSignature);
     updateColorChips();
   }
 
   function updateColorChips() {
-    var chips = document.querySelectorAll('.color-chip');
-    for (var i = 0; i < chips.length; i++) {
-      if (chips[i].getAttribute('data-color') === state.settings.signatureColor) chips[i].classList.add('active');
-      else chips[i].classList.remove('active');
-    }
+    document.querySelectorAll('.color-chip').forEach(function (chip) {
+      chip.classList.toggle('active', chip.getAttribute('data-color') === state.settings.signatureColor);
+    });
   }
 
   function parseCSV(text) {
-    var rows = [];
-    var row = [];
-    var cur = '';
-    var inQuotes = false;
+    var rows = [], row = [], cur = '', inQuotes = false;
     if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
     for (var i = 0; i < text.length; i++) {
       var c = text[i];
       if (inQuotes) {
-        if (c === '"') {
-          if (text[i + 1] === '"') { cur += '"'; i++; }
-          else inQuotes = false;
-        } else cur += c;
+        if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else inQuotes = false; }
+        else cur += c;
       } else {
         if (c === '"') inQuotes = true;
         else if (c === ',' || c === ';') { row.push(cur); cur = ''; }
@@ -2335,9 +1934,7 @@
     if (cur.length || row.length) { row.push(cur); rows.push(row); }
     return rows;
   }
-  function normalizeCSVHeader(s) {
-    return (s || '').toString().trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  }
+  function normalizeCSVHeader(s) { return (s || '').toString().trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
   function detectColumns(header) {
     var map = { guide: -1, client: -1, address: -1, phone: -1, type: -1 };
     for (var i = 0; i < header.length; i++) {
@@ -2360,9 +1957,7 @@
     for (var i = 0; i < dataRows.length; i++) {
       var row = dataRows[i];
       var empty = true;
-      for (var k = 0; k < row.length; k++) {
-        if (row[k] && row[k].toString().trim()) { empty = false; break; }
-      }
+      for (var k = 0; k < row.length; k++) if (row[k] && row[k].toString().trim()) { empty = false; break; }
       if (empty) continue;
       var guide, client, address, phone, type = 'delivery';
       if (useHeader) {
@@ -2370,15 +1965,10 @@
         client = map.client >= 0 ? (row[map.client] || '').trim() : '';
         address = map.address >= 0 ? (row[map.address] || '').trim() : '';
         phone = map.phone >= 0 ? (row[map.phone] || '').trim() : '';
-        if (map.type >= 0) {
-          var t = normalizeCSVHeader(row[map.type] || '');
-          if (t === 'recogida' || t === 'pickup' || t === 'recoger') type = 'pickup';
-        }
+        if (map.type >= 0) { var t = normalizeCSVHeader(row[map.type] || ''); if (t === 'recogida' || t === 'pickup' || t === 'recoger') type = 'pickup'; }
       } else {
-        guide = (row[0] || '').trim();
-        client = (row[1] || '').trim();
-        address = (row[2] || '').trim();
-        phone = (row[3] || '').trim();
+        guide = (row[0] || '').trim(); client = (row[1] || '').trim();
+        address = (row[2] || '').trim(); phone = (row[3] || '').trim();
       }
       if (!guide && !address) continue;
       items.push({ guide: guide, client: client, address: address, phone: phone, type: type });
@@ -2387,22 +1977,15 @@
   }
   function addItemsToRoute(items) {
     var maxOrder = 0;
-    for (var i = 0; i < state.route.length; i++) {
-      if ((state.route[i].order || 0) > maxOrder) maxOrder = state.route[i].order;
-    }
+    for (var i = 0; i < state.route.length; i++) if ((state.route[i].order || 0) > maxOrder) maxOrder = state.route[i].order;
     var now = Date.now();
     for (var j = 0; j < items.length; j++) {
       var item = items[j];
       state.route.push({
-        id: 'pkg-csv-' + now + '-' + j,
-        order: maxOrder + j + 1,
-        guide: item.guide || ('CSV-' + (now + j)),
-        client: item.client || 'Sin nombre',
-        address: item.address || 'Sin dirección',
-        phone: item.phone || '',
-        type: item.type || 'delivery',
-        status: 'pending',
-        fromCSV: true
+        id: 'pkg-csv-' + now + '-' + j, order: maxOrder + j + 1,
+        guide: item.guide || ('CSV-' + (now + j)), client: item.client || 'Sin nombre',
+        address: item.address || 'Sin dirección', phone: item.phone || '',
+        type: item.type || 'delivery', status: 'pending', fromCSV: true
       });
     }
     saveMessengerData();
@@ -2414,8 +1997,8 @@
     var html = '<div style="font-weight:700;color:var(--ink);margin-bottom:6px;">' + items.length + ' nueva' + (items.length > 1 ? 's' : '') + ' entrega' + (items.length > 1 ? 's' : '') + ':</div>';
     for (var i = 0; i < shown.length; i++) {
       var it = shown[i];
-      var tag = it.type === 'pickup' ? ' 📤 Recogida' : '';
-      html += '<div class="csv-preview-item"><div><span class="guide">' + (it.guide || '(sin guía)') + '</span> · ' + (it.client || 'Sin cliente') + tag + '</div><div class="addr">' + (it.address || '(sin dirección)') + (it.phone ? ' · ' + it.phone : '') + '</div></div>';
+      var tag = it.type === 'pickup' ? ' 📤' : '';
+      html += '<div class="csv-preview-item"><div><span class="guide">' + (it.guide || '(sin guía)') + '</span> · ' + (it.client || 'Sin cliente') + tag + '</div><div class="addr">' + (it.address || '(sin dirección)') + '</div></div>';
     }
     if (items.length > 50) html += '<div style="text-align:center;color:var(--muted);font-size:11px;padding-top:6px;">... y ' + (items.length - 50) + ' más</div>';
     box.innerHTML = html;
@@ -2423,10 +2006,8 @@
 
   function setupPhotoInput() {
     var input = document.getElementById('photoInput');
-    var area = document.getElementById('photoArea');
-    var addBtn = document.getElementById('addPhotoBtn');
-    area.addEventListener('click', function () { input.click(); });
-    addBtn.addEventListener('click', function (e) { e.stopPropagation(); input.click(); });
+    document.getElementById('photoArea').addEventListener('click', function () { input.click(); });
+    document.getElementById('addPhotoBtn').addEventListener('click', function (e) { e.stopPropagation(); input.click(); });
     input.addEventListener('change', function (e) {
       var file = e.target.files && e.target.files[0];
       if (!file) return;
@@ -2446,119 +2027,80 @@
     canvas.addEventListener('pointermove', onSigMove);
     canvas.addEventListener('pointerup', onSigEnd);
     canvas.addEventListener('pointercancel', onSigEnd);
-
-    var clearBtn = document.getElementById('sigClearBtn');
-    if (clearBtn) clearBtn.addEventListener('click', function () {
-      clearSignature();
-      showToast('Firma borrada', 1400);
-    });
-    var reuseBtn = document.getElementById('sigReuseBtn');
-    if (reuseBtn) reuseBtn.addEventListener('click', reuseSignature);
+    document.getElementById('sigClearBtn').addEventListener('click', function () { clearSignature(); showToast('Firma borrada', 1400); });
+    document.getElementById('sigReuseBtn').addEventListener('click', reuseSignature);
   }
 
   function updateFabVisibility() {
-    var activeTab = document.querySelector('.tab.active');
-    if (!activeTab) return;
-    var tab = activeTab.getAttribute('data-tab');
-    var fab = document.getElementById('addManualFab');
-    if (tab === 'ruta') fab.classList.remove('hidden');
-    else fab.classList.add('hidden');
+    var tab = document.querySelector('.tab.active').getAttribute('data-tab');
+    document.getElementById('addManualFab').classList.toggle('hidden', tab !== 'ruta');
   }
 
   function setupEventListeners() {
-    var tabs = document.querySelectorAll('.tab');
-    for (var i = 0; i < tabs.length; i++) {
-      (function (tab) {
-        tab.addEventListener('click', function () {
-          var all = document.querySelectorAll('.tab');
-          for (var a = 0; a < all.length; a++) all[a].classList.remove('active');
-          var views = document.querySelectorAll('.view');
-          for (var b = 0; b < views.length; b++) views[b].classList.remove('active');
-          tab.classList.add('active');
-          var target = tab.getAttribute('data-tab') === 'ruta' ? 'viewRuta' : 'viewRegistro';
-          document.getElementById(target).classList.add('active');
-          updateFabVisibility();
-        });
-      })(tabs[i]);
-    }
+    document.querySelectorAll('.tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('active'); });
+        document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
+        tab.classList.add('active');
+        document.getElementById(tab.getAttribute('data-tab') === 'ruta' ? 'viewRuta' : 'viewRegistro').classList.add('active');
+        updateFabVisibility();
+      });
+    });
 
     document.getElementById('backBtn').addEventListener('click', closeDetail);
     document.getElementById('btnEntregado').addEventListener('click', function () { saveDelivery('delivered'); });
     document.getElementById('btnNovedad').addEventListener('click', function () { saveDelivery('issue'); });
-
     document.getElementById('noPhotoBtn').addEventListener('click', function () {
       if (currentPhotos.length) { currentPhotos = []; currentPhotoIndex = 0; }
       currentNoPhoto = !currentNoPhoto;
       updateEvidenceFormUI();
     });
-
     document.getElementById('eventBackBtn').addEventListener('click', closeEventDetail);
     document.getElementById('settingsBtn').addEventListener('click', openSettings);
     document.getElementById('settingsBackBtn').addEventListener('click', closeSettings);
 
-    document.getElementById('toggleRecipient').addEventListener('click', function () {
-      state.settings.requireRecipient = !state.settings.requireRecipient;
-      saveMessengerData();
-      updateTogglesUI();
-      showToast(state.settings.requireRecipient ? 'Ajuste activado' : 'Ajuste desactivado', 1600);
-      RutaXAPI.saveSettings(state.settings).catch(function (e) { console.warn('sync settings', e); });
+    var toggles = [
+      ['toggleRecipient', 'requireRecipient', 'Ajuste'],
+      ['toggleNoPhoto', 'allowNoPhoto', 'Ajuste'],
+      ['toggleWhatsApp', 'promptWhatsApp', 'Ajuste'],
+      ['toggleSignature', 'requireSignature', 'Firma']
+    ];
+    toggles.forEach(function (arr) {
+      var el = document.getElementById(arr[0]);
+      if (el) el.addEventListener('click', function () {
+        state.settings[arr[1]] = !state.settings[arr[1]];
+        saveMessengerData();
+        updateTogglesUI();
+        showToast(state.settings[arr[1]] ? 'Ajuste activado' : 'Ajuste desactivado', 1600);
+        RutaXAPI.saveSettings(state.settings).catch(function () {});
+      });
     });
 
-    document.getElementById('toggleNoPhoto').addEventListener('click', function () {
-      state.settings.allowNoPhoto = !state.settings.allowNoPhoto;
-      saveMessengerData();
-      updateTogglesUI();
-      showToast(state.settings.allowNoPhoto ? 'Ajuste activado' : 'Ajuste desactivado', 1600);
-      RutaXAPI.saveSettings(state.settings).catch(function (e) { console.warn('sync settings', e); });
+    document.querySelectorAll('.color-chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        state.settings.signatureColor = chip.getAttribute('data-color');
+        saveMessengerData();
+        updateColorChips();
+        if (signatureCtx) signatureCtx.strokeStyle = getSignatureColorHex();
+        showToast('Color cambiado', 1500);
+        RutaXAPI.saveSettings(state.settings).catch(function () {});
+      });
     });
-
-    document.getElementById('toggleWhatsApp').addEventListener('click', function () {
-      state.settings.promptWhatsApp = !state.settings.promptWhatsApp;
-      saveMessengerData();
-      updateTogglesUI();
-      showToast(state.settings.promptWhatsApp ? 'Ajuste activado' : 'Ajuste desactivado', 1600);
-      RutaXAPI.saveSettings(state.settings).catch(function (e) { console.warn('sync settings', e); });
-    });
-
-    var ts = document.getElementById('toggleSignature');
-    if (ts) ts.addEventListener('click', function () {
-      state.settings.requireSignature = !state.settings.requireSignature;
-      saveMessengerData();
-      updateTogglesUI();
-      showToast(state.settings.requireSignature ? 'Firma obligatoria activada' : 'Firma obligatoria desactivada', 1800);
-      RutaXAPI.saveSettings(state.settings).catch(function (e) { console.warn('sync settings', e); });
-    });
-
-    var chips = document.querySelectorAll('.color-chip');
-    for (var c = 0; c < chips.length; c++) {
-      (function (chip) {
-        chip.addEventListener('click', function () {
-          state.settings.signatureColor = chip.getAttribute('data-color');
-          saveMessengerData();
-          updateColorChips();
-          if (signatureCtx) signatureCtx.strokeStyle = getSignatureColorHex();
-          showToast('Color de firma cambiado', 1500);
-          RutaXAPI.saveSettings(state.settings).catch(function (e) { console.warn('sync settings', e); });
-        });
-      })(chips[c]);
-    }
 
     document.getElementById('changeMessengerBtn').addEventListener('click', function () {
       closeSettings();
       RutaXAPI.clearSession();
       localStorage.removeItem(CURRENT_KEY);
       showSplash();
-      RutaXAPI.publicList()
-        .then(function (ms) { renderSplashFromAPI(ms); })
-        .catch(function () { renderSplash(); });
+      RutaXAPI.publicList().then(function (ms) { renderSplashFromAPI(ms); }).catch(function () { renderSplash(); });
     });
     document.getElementById('resetRouteBtn').addEventListener('click', function () {
       if (!confirm('¿Reiniciar los datos de ' + state.messenger.name + '?')) return;
       localStorage.removeItem(dataKey(state.messenger.code, 'route'));
       localStorage.removeItem(dataKey(state.messenger.code, 'events'));
       localStorage.removeItem(dataKey(state.messenger.code, 'settings'));
-      loadMessengerData(state.messenger.code);
-      renderHeader(); renderRoute(); renderEvents();
+      state.route = []; state.events = [];
+      renderRoute(); renderEvents();
       closeSettings();
       showToast('Ruta reiniciada');
     });
@@ -2572,11 +2114,11 @@
       reader.onload = function () {
         try {
           var items = rowsToItems(parseCSV(reader.result));
-          if (!items.length) { showToast('⚠ No se encontraron filas válidas'); return; }
+          if (!items.length) { showToast('⚠ No hay filas válidas'); return; }
           pendingCSVItems = items;
           renderCSVPreview(items);
           document.getElementById('csvPreviewBox').classList.remove('hidden');
-        } catch (err) { showToast('Error al leer el archivo'); }
+        } catch (err) { showToast('Error al leer'); }
         finally { csvInput.value = ''; }
       };
       reader.readAsText(file, 'UTF-8');
@@ -2600,11 +2142,9 @@
     var searchInput = document.getElementById('searchInput');
     var searchClear = document.getElementById('searchClearBtn');
     searchInput.addEventListener('input', function () {
-      var v = searchInput.value;
-      if (v && v.length) searchClear.classList.add('visible');
-      else searchClear.classList.remove('visible');
+      searchClear.classList.toggle('visible', !!searchInput.value.length);
       clearTimeout(searchDebounceTimer);
-      searchDebounceTimer = setTimeout(function () { renderSearchResults(v); }, 180);
+      searchDebounceTimer = setTimeout(function () { renderSearchResults(searchInput.value); }, 180);
     });
     searchClear.addEventListener('click', function () {
       searchInput.value = '';
@@ -2618,8 +2158,7 @@
       var evt = pendingWhatsAppEvent;
       closeWhatsAppPrompt();
       if (!evt) return;
-      var phone = normalizePhone(evt.phone || '');
-      if (phone) sendWhatsAppDirect(evt);
+      if (normalizePhone(evt.phone || '')) sendWhatsAppDirect(evt);
       else shareWhatsAppWithPhotos(evt);
     });
     document.getElementById('waSharePhotoBtn').addEventListener('click', function () {
@@ -2655,31 +2194,23 @@
     buildPinPad();
     document.getElementById('pinOverlay').classList.add('active');
   }
-
   function closePinModal() {
     document.getElementById('pinOverlay').classList.remove('active');
     pinBuffer = '';
   }
-
   function updatePinDots() {
-    var dots = document.querySelectorAll('#pinDots span');
-    for (var i = 0; i < dots.length; i++) {
-      if (i < pinBuffer.length) dots[i].classList.add('filled');
-      else dots[i].classList.remove('filled');
-    }
+    document.querySelectorAll('#pinDots span').forEach(function (dot, i) {
+      dot.classList.toggle('filled', i < pinBuffer.length);
+    });
   }
-
   function buildPinPad() {
     var pad = document.getElementById('pinPad');
     var html = '';
-    for (var i = 1; i <= 9; i++) {
-      html += '<button class="pin-key" data-num="' + i + '">' + i + '</button>';
-    }
+    for (var i = 1; i <= 9; i++) html += '<button class="pin-key" data-num="' + i + '">' + i + '</button>';
     html += '<button class="pin-key pin-key-empty" tabindex="-1"></button>';
     html += '<button class="pin-key" data-num="0">0</button>';
     html += '<button class="pin-key pin-key-del" data-action="del">⌫</button>';
     pad.innerHTML = html;
-
     pad.onclick = function (e) {
       var btn = e.target.closest('.pin-key');
       if (!btn) return;
@@ -2689,7 +2220,6 @@
       else if (action === 'del') pinDelete();
     };
   }
-
   function pinKey(num) {
     if (pinBuffer.length >= 4) return;
     pinBuffer += num;
@@ -2697,11 +2227,7 @@
     document.getElementById('pinError').textContent = '';
     if (pinBuffer.length === 4) setTimeout(handlePinSubmit, 180);
   }
-
-  function pinDelete() {
-    pinBuffer = pinBuffer.slice(0, -1);
-    updatePinDots();
-  }
+  function pinDelete() { pinBuffer = pinBuffer.slice(0, -1); updatePinDots(); }
 
   function handlePinSubmit() {
     if (pinBuffer.length !== 4) return;
@@ -2709,41 +2235,24 @@
     var errEl = document.getElementById('pinError');
     errEl.style.color = 'rgba(255,255,255,0.7)';
     errEl.textContent = 'Verificando...';
-
     RutaXAPI.login(pinTarget.code, pin).then(function (data) {
       if (!data.ok) throw new Error(data.error || 'PIN incorrecto');
-
       var info = data.messenger;
       localStorage.setItem('rutax_info_' + info.code, JSON.stringify(info));
       localStorage.setItem('rutax_current_v8', info.code);
-
       state.messenger = info;
-
       if (data.role === 'admin') {
-        closePinModal();
-        hideSplash();
-        openAdminPanel();
-        return;
+        closePinModal(); hideSplash(); openAdminPanel(); return;
       }
-
       state.route = data.route || [];
       state.events = data.events || [];
       state.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || {});
-      state.route.forEach(function (p) {
-        if (!p.status) p.status = 'pending';
-        if (!p.type) p.type = 'delivery';
-      });
-      state.events.forEach(function (e) {
-        if (!e.messengerName || e.messengerName === info.code) e.messengerName = info.name;
-      });
+      state.route.forEach(function (p) { if (!p.status) p.status = 'pending'; if (!p.type) p.type = 'delivery'; });
+      state.events.forEach(function (e) { if (!e.messengerName || e.messengerName === info.code) e.messengerName = info.name; });
       saveMessengerData();
-
       closePinModal();
-      renderHeader();
-      renderRoute();
-      renderEvents();
-      hideSplash();
-      updateFabVisibility();
+      renderHeader(); renderRoute(); renderEvents();
+      hideSplash(); updateFabVisibility();
       showToast('Bienvenido, ' + info.name.split(' ')[0]);
     }).catch(function (err) {
       errEl.style.color = '#fca5a5';
@@ -2754,36 +2263,26 @@
   }
 
   // ============================================================
-  // BLOQUE 3 · ADMINISTRACIÓN
+  // ADMIN MOBILE
   // ============================================================
 
   function openAdminPanel() {
-    document.getElementById('adminSubtitle').textContent =
-      'Conectado como ' + (state.messenger ? state.messenger.name : 'Administrador');
-
+    document.getElementById('adminSubtitle').textContent = 'Conectado como ' + (state.messenger ? state.messenger.name : 'Administrador');
     document.querySelectorAll('.admin-tab').forEach(function (t) { t.classList.remove('active'); });
     document.querySelectorAll('.admin-view').forEach(function (v) { v.classList.remove('active'); });
     document.querySelector('.admin-tab[data-atab="mensajeros"]').classList.add('active');
     document.getElementById('adminMensajerosView').classList.add('active');
-
     document.getElementById('adminOverlay').classList.add('active');
-
     refreshAdminMensajeros();
   }
-
-  function closeAdminPanel() {
-    document.getElementById('adminOverlay').classList.remove('active');
-  }
-
+  function closeAdminPanel() { document.getElementById('adminOverlay').classList.remove('active'); }
   function adminLogout() {
     RutaXAPI.clearSession();
     localStorage.removeItem(CURRENT_KEY);
     localStorage.removeItem('rutax_current_v8');
     closeAdminPanel();
     showSplash();
-    RutaXAPI.publicList()
-      .then(function (ms) { renderSplashFromAPI(ms); })
-      .catch(function () { renderSplash(); });
+    RutaXAPI.publicList().then(function (ms) { renderSplashFromAPI(ms); }).catch(function () { renderSplash(); });
   }
 
   function refreshAdminMensajeros() {
@@ -2793,62 +2292,46 @@
       adminState.messengers = data.messengers || [];
       renderAdminMensajeros();
     }).catch(function (err) {
-      box.innerHTML = '<div class="admin-live-empty">⚠ ' + (err.message || 'Error al cargar') + '</div>';
+      box.innerHTML = '<div class="admin-live-empty">⚠ ' + (err.message || 'Error') + '</div>';
     });
   }
 
   function renderAdminMensajeros() {
     var box = document.getElementById('adminMensajerosView');
-    var html = '';
-
     var activos = adminState.messengers.filter(function (m) { return m.active; }).length;
-    html += '<div style="font-size:12px;color:var(--muted);font-weight:700;margin-bottom:10px;padding:0 2px;">' +
-      activos + ' activo' + (activos === 1 ? '' : 's') + ' de ' + adminState.messengers.length +
-    '</div>';
-
+    var html = '<div style="font-size:12px;color:var(--muted);font-weight:700;margin-bottom:10px;padding:0 2px;">' + activos + ' activo' + (activos === 1 ? '' : 's') + ' de ' + adminState.messengers.length + '</div>';
     if (!adminState.messengers.length) {
       html += '<div class="admin-live-empty">No hay mensajeros.</div>';
       box.innerHTML = html;
       return;
     }
-
     for (var i = 0; i < adminState.messengers.length; i++) {
       var m = adminState.messengers[i];
       html += '<div class="ms-card' + (m.active ? '' : ' inactive') + '" data-code="' + m.code + '">' +
         '<div class="ms-avatar">' + m.code + '</div>' +
-        '<div class="ms-info">' +
-          '<div class="ms-name">' + m.name + '</div>' +
-          '<div class="ms-zone">' + (m.zone || 'Sin zona') + ' · <span class="ms-pin">PIN: ' + m.pin + '</span></div>' +
-        '</div>' +
-        '<div class="ms-right">' +
-          '<button class="ms-edit-btn" data-action="edit" data-code="' + m.code + '">Editar</button>' +
-          '<button class="toggle-switch' + (m.active ? ' on' : '') + '" data-action="toggle" data-code="' + m.code + '"></button>' +
-        '</div>' +
-      '</div>';
+        '<div class="ms-info"><div class="ms-name">' + m.name + '</div>' +
+        '<div class="ms-zone">' + (m.zone || 'Sin zona') + ' · <span class="ms-pin">PIN: ' + m.pin + '</span></div></div>' +
+        '<div class="ms-right"><button class="ms-edit-btn" data-action="edit" data-code="' + m.code + '">Editar</button>' +
+        '<button class="toggle-switch' + (m.active ? ' on' : '') + '" data-action="toggle" data-code="' + m.code + '"></button></div></div>';
     }
-
     html += '<button class="admin-add-btn" id="adminAddMsBtn">+ Agregar mensajero</button>';
-
     box.innerHTML = html;
 
     box.querySelectorAll('[data-action="edit"]').forEach(function (btn) {
       btn.addEventListener('click', function (ev) {
         ev.stopPropagation();
-        var code = btn.getAttribute('data-code');
-        var mm = adminState.messengers.find(function (x) { return x.code === code; });
+        var mm = adminState.messengers.find(function (x) { return x.code === btn.getAttribute('data-code'); });
         if (mm) openEditMessenger(mm);
       });
     });
-
     box.querySelectorAll('[data-action="toggle"]').forEach(function (btn) {
       btn.addEventListener('click', function (ev) {
         ev.stopPropagation();
-        var code = btn.getAttribute('data-code');
-        var mm = adminState.messengers.find(function (x) { return x.code === code; });
+        var mm = adminState.messengers.find(function (x) { return x.code === btn.getAttribute('data-code'); });
         if (!mm) return;
         var newActive = !mm.active;
         btn.classList.toggle('on', newActive);
-        RutaXAPI.adminUpdateMessenger({ code: code, active: newActive }).then(function () {
+        RutaXAPI.adminUpdateMessenger({ code: mm.code, active: newActive }).then(function () {
           mm.active = newActive;
           showToast(newActive ? '✓ Habilitado' : '⏸ Deshabilitado', 1600);
           renderAdminMensajeros();
@@ -2858,279 +2341,152 @@
         });
       });
     });
-
     var addBtn = document.getElementById('adminAddMsBtn');
     if (addBtn) addBtn.addEventListener('click', function () { openEditMessenger(null); });
   }
 
   function openEditMessenger(mm) {
     adminState.editingCode = mm ? mm.code : null;
-    var title = document.getElementById('editMessengerTitle');
-    var sub = document.getElementById('editMessengerSub');
-    var codeInput = document.getElementById('editMsCode');
-    var nameInput = document.getElementById('editMsName');
-    var zoneInput = document.getElementById('editMsZone');
-    var pinInput = document.getElementById('editMsPin');
-
-    if (mm) {
-      title.textContent = 'Editar mensajero';
-      sub.textContent = 'Cambia sus datos. Los cambios se aplican al instante.';
-      codeInput.value = mm.code;
-      nameInput.value = mm.name;
-      zoneInput.value = mm.zone === 'Sin asignar' ? '' : mm.zone;
-      pinInput.value = mm.pin;
-    } else {
-      title.textContent = 'Nuevo mensajero';
-      sub.textContent = 'Código se asigna automáticamente (M11, M12...)';
-      codeInput.value = 'Auto';
-      nameInput.value = '';
-      zoneInput.value = '';
-      pinInput.value = '1234';
-    }
-
+    document.getElementById('editMessengerTitle').textContent = mm ? 'Editar mensajero' : 'Nuevo mensajero';
+    document.getElementById('editMessengerSub').textContent = mm ? 'Cambia sus datos.' : 'Código se asigna automáticamente';
+    document.getElementById('editMsCode').value = mm ? mm.code : 'Auto';
+    document.getElementById('editMsName').value = mm ? mm.name : '';
+    document.getElementById('editMsZone').value = mm && mm.zone !== 'Sin asignar' ? mm.zone : '';
+    document.getElementById('editMsPin').value = mm ? mm.pin : '1234';
     document.getElementById('editMessengerOverlay').classList.add('active');
-    setTimeout(function () { nameInput.focus(); }, 200);
+    setTimeout(function () { document.getElementById('editMsName').focus(); }, 200);
   }
-
   function closeEditMessenger() {
     document.getElementById('editMessengerOverlay').classList.remove('active');
     adminState.editingCode = null;
   }
-
   function confirmEditMessenger() {
     var name = document.getElementById('editMsName').value.trim();
     var zone = document.getElementById('editMsZone').value.trim() || 'Sin asignar';
     var pin = document.getElementById('editMsPin').value.trim();
-
     if (!name) { showToast('⚠ Escribe el nombre'); return; }
     if (!pin || pin.length < 4) { showToast('⚠ PIN de 4 dígitos'); return; }
-
     var isNew = adminState.editingCode === null;
     var payload = { name: name, zone: zone, pin: pin };
-    var promise;
-
-    if (isNew) {
-      promise = RutaXAPI.adminAddMessenger(payload);
-    } else {
-      payload.code = adminState.editingCode;
-      promise = RutaXAPI.adminUpdateMessenger(payload);
-    }
-
+    var promise = isNew ? RutaXAPI.adminAddMessenger(payload) : (payload.code = adminState.editingCode, RutaXAPI.adminUpdateMessenger(payload));
     promise.then(function (data) {
       closeEditMessenger();
-      showToast(isNew ? '✓ Mensajero creado (' + data.code + ')' : '✓ Actualizado', 2200);
+      showToast(isNew ? '✓ Creado ' + (data.code || '') : '✓ Actualizado', 2200);
       refreshAdminMensajeros();
-    }).catch(function (err) {
-      showToast('⚠ ' + (err.message || 'Error al guardar'), 2600);
-    });
+    }).catch(function (err) { showToast('⚠ ' + (err.message || 'Error'), 2600); });
   }
 
   function renderAdminLive() {
     var box = document.getElementById('adminVivoView');
-    var since, until;
-    if (adminState.liveSince && adminState.liveUntil) {
-      since = adminState.liveSince;
-      until = adminState.liveUntil;
-    } else {
-      var d = new Date();
-      d.setHours(0, 0, 0, 0);
-      since = d.getTime();
-      until = since + 86400000;
-    }
-
-    if (adminState.drillDown) {
-      renderAdminDrillDown();
-      return;
-    }
-
-    box.innerHTML = '<div class="admin-live-empty">Cargando progreso...</div>';
-
+    if (adminState.drillDown) { renderAdminDrillDown(); return; }
+    var since = adminState.liveSince || (function () { var d = new Date(); d.setHours(0,0,0,0); return d.getTime(); })();
+    var until = adminState.liveUntil || (since + 86400000);
+    box.innerHTML = '<div class="admin-live-empty">Cargando...</div>';
     RutaXAPI.adminLive(since, until).then(function (data) {
       adminState.live = data.messengers || [];
       adminState.liveSince = data.since;
       adminState.liveUntil = data.until;
       renderAdminLiveList();
-    }).catch(function (err) {
-      box.innerHTML = '<div class="admin-live-empty">⚠ ' + (err.message || 'Error') + '</div>';
-    });
-  }
-
-  function formatDateInput(ts) {
-    var d = new Date(ts);
-    var y = d.getFullYear();
-    var m = String(d.getMonth() + 1).padStart(2, '0');
-    var day = String(d.getDate()).padStart(2, '0');
-    return y + '-' + m + '-' + day;
+    }).catch(function (err) { box.innerHTML = '<div class="admin-live-empty">⚠ ' + (err.message || 'Error') + '</div>'; });
   }
 
   function renderAdminLiveList() {
     var box = document.getElementById('adminVivoView');
     var hoy = new Date(); hoy.setHours(0, 0, 0, 0);
     var isToday = adminState.liveSince === hoy.getTime();
-
-    var html = '';
-    html += '<div class="live-header-bar">' +
-      '<span class="live-date-label">' + (isToday ? '📅 Hoy' : '📅 ' + formatDateInput(adminState.liveSince)) + '</span>' +
+    var html = '<div class="live-header-bar"><span class="live-date-label">' + (isToday ? '📅 Hoy' : '📅 ' + formatDateInput(adminState.liveSince)) + '</span>' +
       '<input type="date" class="live-date-input" id="adminLiveDate" value="' + formatDateInput(adminState.liveSince) + '" />' +
-      '<button class="live-refresh-btn" id="adminLiveRefresh">↻</button>' +
-    '</div>';
-
+      '<button class="live-refresh-btn" id="adminLiveRefresh">↻</button></div>';
     if (!adminState.live.length) {
       html += '<div class="admin-live-empty">No hay mensajeros activos.</div>';
       box.innerHTML = html;
       wireLiveControls();
       return;
     }
-
     var now = Date.now();
     for (var i = 0; i < adminState.live.length; i++) {
       var m = adminState.live[i];
       var st = m.stats;
       var total = st.routeTotal || 1;
       var pct = st.routeTotal ? Math.round((st.delivered / total) * 100) : 0;
-      var statusClass = 'st-idle';
-      var statusDot = '🔴';
+      var statusClass = 'st-idle', statusDot = '🔴';
       if (st.lastActivity) {
         var mins = Math.round((now - st.lastActivity) / 60000);
         if (mins < 30) { statusClass = 'st-fresh'; statusDot = '🟢'; }
         else if (mins < 60) { statusClass = 'st-paused'; statusDot = '🟡'; }
       }
-
-      var lastLabel = st.lastActivity
-        ? 'Última: ' + formatTime(st.lastActivity)
-        : 'Sin actividad';
-
+      var lastLabel = st.lastActivity ? 'Última: ' + formatTime(st.lastActivity) : 'Sin actividad';
       html += '<div class="live-card ' + statusClass + '" data-code="' + m.code + '">' +
-        '<div class="live-card-head">' +
-          '<div>' +
-            '<div class="live-name">' + m.name + '</div>' +
-            '<div class="live-zone">' + m.code + ' · ' + (m.zone || 'Sin zona') + '</div>' +
-          '</div>' +
-          '<div class="live-status-dot">' + statusDot + '</div>' +
-        '</div>' +
+        '<div class="live-card-head"><div><div class="live-name">' + m.name + '</div><div class="live-zone">' + m.code + ' · ' + (m.zone || '') + '</div></div><div class="live-status-dot">' + statusDot + '</div></div>' +
         '<div class="live-progress-bar"><div class="live-progress-fill" style="width:' + pct + '%"></div></div>' +
-        '<div class="live-progress-text">' + st.delivered + ' de ' + st.routeTotal + ' entregados · ' + pct + '%</div>' +
-        '<div class="live-meta">' +
-          '<span>🕒 ' + lastLabel + '</span>' +
-          '<span class="live-sig-count">✍️ ' + st.signed + ' firmada' + (st.signed === 1 ? '' : 's') + '</span>' +
-          (st.issues ? '<span style="color:#b45309;">⚠ ' + st.issues + ' novedad' + (st.issues > 1 ? 'es' : '') + '</span>' : '') +
-        '</div>' +
-      '</div>';
+        '<div class="live-progress-text">' + st.delivered + ' de ' + st.routeTotal + ' · ' + pct + '%</div>' +
+        '<div class="live-meta"><span>🕒 ' + lastLabel + '</span><span class="live-sig-count">✍️ ' + st.signed + '</span>' +
+        (st.issues ? '<span style="color:#b45309;">⚠ ' + st.issues + '</span>' : '') + '</div></div>';
     }
-
     box.innerHTML = html;
-
     box.querySelectorAll('.live-card').forEach(function (card) {
       card.addEventListener('click', function () {
-        var code = card.getAttribute('data-code');
-        var mm = adminState.live.find(function (x) { return x.code === code; });
-        if (!mm) return;
-        adminState.drillDown = mm;
-        renderAdminDrillDown();
+        var mm = adminState.live.find(function (x) { return x.code === card.getAttribute('data-code'); });
+        if (mm) { adminState.drillDown = mm; renderAdminDrillDown(); }
       });
     });
-
     wireLiveControls();
   }
 
   function wireLiveControls() {
     var dateInput = document.getElementById('adminLiveDate');
-    if (dateInput) {
-      dateInput.addEventListener('change', function () {
-        var parts = dateInput.value.split('-');
-        var d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-        d.setHours(0, 0, 0, 0);
-        adminState.liveSince = d.getTime();
-        adminState.liveUntil = adminState.liveSince + 86400000;
-        renderAdminLive();
-      });
-    }
+    if (dateInput) dateInput.addEventListener('change', function () {
+      var parts = dateInput.value.split('-');
+      var d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+      d.setHours(0, 0, 0, 0);
+      adminState.liveSince = d.getTime();
+      adminState.liveUntil = adminState.liveSince + 86400000;
+      renderAdminLive();
+    });
     var refreshBtn = document.getElementById('adminLiveRefresh');
-    if (refreshBtn) {
-      refreshBtn.addEventListener('click', function () { renderAdminLive(); });
-    }
+    if (refreshBtn) refreshBtn.addEventListener('click', function () { renderAdminLive(); });
   }
 
   function renderAdminDrillDown() {
     var box = document.getElementById('adminVivoView');
     var m = adminState.drillDown;
     if (!m) { renderAdminLive(); return; }
-
-    var html = '<div class="admin-drill-header">' +
-      '<button class="admin-drill-back" id="adminDrillBack">←</button>' +
-      '<div class="admin-drill-title">' + m.name + ' · ' + m.events.length + ' evento' + (m.events.length === 1 ? '' : 's') + '</div>' +
-    '</div>';
-
+    var html = '<div class="admin-drill-header"><button class="admin-drill-back" id="adminDrillBack">←</button>' +
+      '<div class="admin-drill-title">' + m.name + ' · ' + m.events.length + ' evento' + (m.events.length === 1 ? '' : 's') + '</div></div>';
     if (!m.events.length) {
-      html += '<div class="admin-live-empty">Sin entregas registradas en esta fecha.</div>';
+      html += '<div class="admin-live-empty">Sin entregas en esta fecha.</div>';
       box.innerHTML = html;
-      document.getElementById('adminDrillBack').addEventListener('click', function () {
-        adminState.drillDown = null;
-        renderAdminLive();
-      });
+      document.getElementById('adminDrillBack').addEventListener('click', function () { adminState.drillDown = null; renderAdminLive(); });
       return;
     }
-
     for (var i = 0; i < m.events.length; i++) {
       var e = m.events[i];
-      var statusText = e.status === 'delivered' ? (e.type === 'pickup' ? '✓ Recogido' : '✓ Entregado') : '⚠ Novedad';
-      var photoCell;
-      if (e.photos && e.photos.length) {
-        photoCell = '<img src="' + e.photos[0] + '" />';
-      } else if (e.noPhoto) {
-        photoCell = '🚫';
-      } else {
-        photoCell = '📋';
-      }
+      var statusText = e.status === 'delivered' ? '✓ Entregado' : '⚠ Novedad';
+      var photoCell = e.photos && e.photos.length ? '<img src="' + e.photos[0] + '" />' : (e.noPhoto ? '🚫' : '📋');
       var sigBadge = e.signed ? '<span class="ae-badge-sig">✍️</span>' : '';
-
-      html += '<div class="ae-card" data-id="' + e.id + '">' +
-        '<div class="ae-photo">' + photoCell + sigBadge + '</div>' +
-        '<div class="ae-body">' +
-          '<div class="ae-head">' +
-            '<span class="ae-guide">' + (e.guide || '—') + '</span>' +
-            '<span class="status-badge ' + e.status + '" style="font-size:9px;">' + statusText + '</span>' +
-          '</div>' +
-          '<div class="ae-client">' + (e.client || '—') + '</div>' +
-          '<div class="ae-addr">' + (e.address || '') + '</div>' +
-          '<div class="ae-time">🕒 ' + formatTime(e.timestamp) + (e.recipient ? ' · Recibió: ' + e.recipient : '') + '</div>' +
-        '</div>' +
-      '</div>';
+      html += '<div class="ae-card" data-id="' + e.id + '"><div class="ae-photo">' + photoCell + sigBadge + '</div>' +
+        '<div class="ae-body"><div class="ae-head"><span class="ae-guide">' + (e.guide || '—') + '</span><span class="status-badge ' + e.status + '" style="font-size:9px;">' + statusText + '</span></div>' +
+        '<div class="ae-client">' + (e.client || '—') + '</div><div class="ae-addr">' + (e.address || '') + '</div>' +
+        '<div class="ae-time">🕒 ' + formatTime(e.timestamp) + (e.recipient ? ' · ' + e.recipient : '') + '</div></div></div>';
     }
-
     box.innerHTML = html;
-
-    document.getElementById('adminDrillBack').addEventListener('click', function () {
-      adminState.drillDown = null;
-      renderAdminLive();
-    });
-
+    document.getElementById('adminDrillBack').addEventListener('click', function () { adminState.drillDown = null; renderAdminLive(); });
     box.querySelectorAll('.ae-card').forEach(function (card) {
       card.addEventListener('click', function () {
-        var id = card.getAttribute('data-id');
-        var evt = m.events.find(function (x) { return x.id === id; });
+        var evt = m.events.find(function (x) { return x.id === card.getAttribute('data-id'); });
         if (evt) openEventDetail(evt);
       });
     });
   }
 
   function setupAdminEvents() {
-    document.getElementById('adminAccessBtn').addEventListener('click', function () {
-      openPinModal('ADMIN', 'Administrador', 'Panel de control');
-    });
-
+    document.getElementById('adminAccessBtn').addEventListener('click', function () { openPinModal('ADMIN', 'Administrador', 'Panel de control'); });
     document.getElementById('adminBackBtn').addEventListener('click', function () {
-      if (adminState.drillDown) {
-        adminState.drillDown = null;
-        renderAdminLive();
-        return;
-      }
+      if (adminState.drillDown) { adminState.drillDown = null; renderAdminLive(); return; }
       closeAdminPanel();
       showSplash();
     });
-
     document.getElementById('adminLogoutBtn').addEventListener('click', adminLogout);
-
     document.querySelectorAll('.admin-tab').forEach(function (tab) {
       tab.addEventListener('click', function () {
         document.querySelectorAll('.admin-tab').forEach(function (t) { t.classList.remove('active'); });
@@ -3143,11 +2499,328 @@
         else renderAdminLive();
       });
     });
-
     document.getElementById('editMsCancelBtn').addEventListener('click', closeEditMessenger);
     document.getElementById('editMsConfirmBtn').addEventListener('click', confirmEditMessenger);
     document.getElementById('editMessengerOverlay').addEventListener('click', function (e) {
       if (e.target.id === 'editMessengerOverlay') closeEditMessenger();
+    });
+  }
+
+  // ============================================================
+  // ADMIN DESKTOP
+  // ============================================================
+
+  function openAdminDesktop() {
+    document.getElementById('adminOverlay').classList.remove('active');
+    document.getElementById('adminDesktopOverlay').classList.add('active');
+    document.querySelectorAll('.ad-tab').forEach(function (t) { t.classList.remove('active'); });
+    document.querySelector('.ad-tab[data-dtab="mensajeros"]').classList.add('active');
+    desktopAdminState.activeTab = 'mensajeros';
+    loadDesktopMessengers();
+  }
+  function closeAdminDesktop() { document.getElementById('adminDesktopOverlay').classList.remove('active'); }
+
+  function loadDesktopMessengers() {
+    var list = document.getElementById('adMsgList');
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">Cargando...</div>';
+    RutaXAPI.adminListMessengers().then(function (data) {
+      desktopAdminState.messengers = data.messengers || [];
+      if (!desktopAdminState.selectedCode && desktopAdminState.messengers.length) desktopAdminState.selectedCode = desktopAdminState.messengers[0].code;
+      renderDesktopSidebar();
+      renderDesktopMain();
+    }).catch(function (err) {
+      list.innerHTML = '<div style="padding:20px;text-align:center;color:#dc2626;font-size:12px;">⚠ ' + (err.message || 'Error') + '</div>';
+    });
+  }
+
+  function renderDesktopSidebar() {
+    var list = document.getElementById('adMsgList');
+    var filter = (desktopAdminState.filter || '').toLowerCase();
+    var filtered = desktopAdminState.messengers.filter(function (m) {
+      if (!filter) return true;
+      return (m.name + ' ' + m.code + ' ' + (m.zone || '')).toLowerCase().indexOf(filter) >= 0;
+    });
+    if (!filtered.length) {
+      list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">Sin resultados</div>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < filtered.length; i++) {
+      var m = filtered[i];
+      html += '<div class="ad-msg-item' + (m.code === desktopAdminState.selectedCode ? ' active' : '') + (m.active ? '' : ' inactive') + '" data-code="' + m.code + '">' +
+        '<div class="ad-mini-avatar">' + m.code + '</div>' +
+        '<div class="ad-mini-info"><div class="ad-mini-name">' + m.name + '</div><div class="ad-mini-zone">' + (m.zone || 'Sin zona') + '</div></div>' +
+        '<div class="ad-dot' + (m.active ? ' on' : '') + '"></div></div>';
+    }
+    list.innerHTML = html;
+    list.querySelectorAll('.ad-msg-item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        desktopAdminState.selectedCode = item.getAttribute('data-code');
+        renderDesktopSidebar();
+        if (desktopAdminState.activeTab === 'mensajeros') loadDesktopMessengerDetail();
+        else renderDesktopMain();
+      });
+    });
+  }
+
+  function renderDesktopMain() {
+    if (desktopAdminState.activeTab === 'mensajeros') loadDesktopMessengerDetail();
+    else renderDesktopLive();
+  }
+
+  function loadDesktopMessengerDetail() {
+    var main = document.getElementById('adMain');
+    var mm = desktopAdminState.messengers.find(function (x) { return x.code === desktopAdminState.selectedCode; });
+    if (!mm) {
+      main.innerHTML = '<div class="ad-empty"><div class="ad-empty-icon">👥</div><div>Selecciona un mensajero</div></div>';
+      return;
+    }
+    main.innerHTML = '<div class="ad-empty"><div class="ad-empty-icon">⏳</div><div>Cargando rutas...</div></div>';
+    RutaXAPI.adminGetRoutes(mm.code).then(function (data) {
+      desktopAdminState.selectedRoutes = data.routes || [];
+      renderDesktopMessengerDetail(mm);
+    }).catch(function (err) {
+      main.innerHTML = '<div class="ad-empty"><div class="ad-empty-icon">⚠️</div><div>' + (err.message || 'Error') + '</div></div>';
+    });
+  }
+
+  function renderDesktopMessengerDetail(mm) {
+    var main = document.getElementById('adMain');
+    var routes = desktopAdminState.selectedRoutes;
+    var st = mm.stats || {};
+    var pending = routes.filter(function (r) { return r.status === 'pending'; });
+    var delivered = routes.filter(function (r) { return r.status === 'delivered'; });
+
+    var html = '<div class="ad-detail-card"><div class="ad-detail-header">' +
+      '<div><div class="ad-detail-name">' + mm.name + '</div>' +
+      '<div class="ad-detail-meta">' + mm.code + ' · ' + (mm.zone || 'Sin zona') + ' · PIN <strong style="color:var(--ink);font-family:monospace;">' + mm.pin + '</strong></div></div>' +
+      '<div class="ad-detail-actions"><button class="ad-btn secondary" id="adEditBtn">✏️ Editar</button>' +
+      '<button class="ad-btn ' + (mm.active ? 'danger' : 'primary') + '" id="adToggleBtn">' + (mm.active ? '⏸ Deshabilitar' : '▶ Habilitar') + '</button></div></div>' +
+      '<div class="ad-stats-row">' +
+        '<div class="ad-stat"><div class="ad-stat-value">' + routes.length + '</div><div class="ad-stat-label">Rutas</div></div>' +
+        '<div class="ad-stat"><div class="ad-stat-value" style="color:var(--green-dark);">' + delivered.length + '</div><div class="ad-stat-label">Entregadas</div></div>' +
+        '<div class="ad-stat"><div class="ad-stat-value">' + pending.length + '</div><div class="ad-stat-label">Pendientes</div></div>' +
+        '<div class="ad-stat"><div class="ad-stat-value" style="color:var(--green-dark);">' + (st.signedToday || 0) + '</div><div class="ad-stat-label">Firmas hoy</div></div>' +
+      '</div>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
+        '<button class="ad-btn accent" id="adAssignCsvBtn">📁 Asignar ruta CSV</button>' +
+        '<button class="ad-btn secondary" id="adRefreshRoutesBtn">🔄 Actualizar</button>' +
+      '</div></div>' +
+      '<div class="ad-section-title"><span>Rutas del mensajero</span><span style="font-weight:600;text-transform:none;color:var(--muted);">' + routes.length + ' totales</span></div>';
+
+    if (!routes.length) {
+      html += '<div class="ad-table-wrap"><div class="ad-empty" style="padding:40px 20px;"><div class="ad-empty-icon">📦</div><div>Sin rutas asignadas</div><div style="margin-top:8px;font-size:12px;">Usa "Asignar ruta CSV" para cargar</div></div></div>';
+    } else {
+      html += '<div class="ad-table-wrap"><table class="ad-table"><thead><tr><th>#</th><th>Guía</th><th>Cliente</th><th>Dirección</th><th>Teléfono</th><th>Tipo</th><th>Estado</th></tr></thead><tbody>';
+      var sorted = routes.slice().sort(function (a, b) { return a.order - b.order; });
+      for (var i = 0; i < sorted.length; i++) {
+        var r = sorted[i];
+        var statusLabel, statusColor;
+        if (r.status === 'delivered') { statusLabel = '✓ Entregado'; statusColor = 'var(--green-dark)'; }
+        else if (r.status === 'issue') { statusLabel = '⚠ Novedad'; statusColor = '#b45309'; }
+        else { statusLabel = '○ Pendiente'; statusColor = 'var(--muted)'; }
+        var typeBadge = r.type === 'pickup' ? '<span style="background:#ede9fe;color:var(--purple);padding:2px 6px;border-radius:6px;font-size:10px;font-weight:700;">📤</span>' : '<span style="color:var(--muted);font-size:11px;">📦</span>';
+        html += '<tr><td style="font-weight:700;color:var(--muted);">' + r.order + '</td>' +
+          '<td style="font-family:monospace;font-weight:600;">' + (r.guide || '—') + '</td>' +
+          '<td>' + (r.client || '—') + '</td>' +
+          '<td style="color:var(--muted);">' + (r.address || '—') + '</td>' +
+          '<td style="color:var(--muted);">' + (r.phone || '—') + '</td>' +
+          '<td>' + typeBadge + '</td>' +
+          '<td style="font-weight:700;color:' + statusColor + ';">' + statusLabel + '</td></tr>';
+      }
+      html += '</tbody></table></div>';
+    }
+
+    main.innerHTML = html;
+    document.getElementById('adEditBtn').addEventListener('click', function () { openEditMessenger(mm); });
+    document.getElementById('adToggleBtn').addEventListener('click', function () {
+      RutaXAPI.adminUpdateMessenger({ code: mm.code, active: !mm.active }).then(function () {
+        mm.active = !mm.active;
+        showToast(mm.active ? '✓ Habilitado' : '⏸ Deshabilitado', 1600);
+        renderDesktopSidebar();
+        renderDesktopMessengerDetail(mm);
+      }).catch(function (err) { showToast('⚠ ' + (err.message || 'Error'), 2400); });
+    });
+    document.getElementById('adAssignCsvBtn').addEventListener('click', function () { openCsvModal(mm); });
+    document.getElementById('adRefreshRoutesBtn').addEventListener('click', function () { loadDesktopMessengerDetail(); showToast('🔄', 1200); });
+  }
+
+  function renderDesktopLive() {
+    var main = document.getElementById('adMain');
+    main.innerHTML = '<div class="ad-empty"><div class="ad-empty-icon">⏳</div><div>Cargando...</div></div>';
+    var since = desktopAdminState.liveSince;
+    var until = desktopAdminState.liveUntil;
+    if (!since) { var d = new Date(); d.setHours(0,0,0,0); since = d.getTime(); until = since + 86400000; }
+    RutaXAPI.adminLive(since, until).then(function (data) {
+      desktopAdminState.live = data.messengers || [];
+      desktopAdminState.liveSince = data.since;
+      desktopAdminState.liveUntil = data.until;
+      var hoy = new Date(); hoy.setHours(0,0,0,0);
+      var isToday = desktopAdminState.liveSince === hoy.getTime();
+      var html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px;">' +
+        '<div style="font-size:22px;font-weight:800;color:var(--ink);">' + (isToday ? '📅 Hoy' : '📅 Histórico') + '</div>' +
+        '<div style="display:flex;gap:10px;align-items:center;">' +
+        '<input type="date" id="adLiveDate" value="' + formatDateInput(desktopAdminState.liveSince) + '" style="border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-family:inherit;font-size:13px;cursor:pointer;outline:none;" />' +
+        '<button class="ad-btn primary" id="adLiveRefresh">🔄 Refrescar</button></div></div>';
+      if (!desktopAdminState.live.length) {
+        html += '<div class="ad-empty"><div class="ad-empty-icon">📊</div><div>Sin mensajeros activos</div></div>';
+      } else {
+        var now = Date.now();
+        html += '<div class="ad-live-grid">';
+        for (var i = 0; i < desktopAdminState.live.length; i++) {
+          var m = desktopAdminState.live[i];
+          var st = m.stats;
+          var pct = st.routeTotal ? Math.round((st.delivered / st.routeTotal) * 100) : 0;
+          var statusClass = 'st-idle', dot = '🔴';
+          if (st.lastActivity) {
+            var mins = Math.round((now - st.lastActivity) / 60000);
+            if (mins < 30) { statusClass = 'st-fresh'; dot = '🟢'; }
+            else if (mins < 60) { statusClass = 'st-paused'; dot = '🟡'; }
+          }
+          html += '<div class="ad-live-card ' + statusClass + '" data-code="' + m.code + '">' +
+            '<div class="ad-live-head"><div><div class="ad-live-name">' + m.name + '</div><div class="ad-live-zone">' + m.code + ' · ' + (m.zone || '') + '</div></div><div class="ad-live-dot">' + dot + '</div></div>' +
+            '<div class="ad-live-progress"><div class="ad-live-progress-fill" style="width:' + pct + '%"></div></div>' +
+            '<div class="ad-live-text">' + st.delivered + ' de ' + st.routeTotal + ' · ' + pct + '%</div>' +
+            '<div class="ad-live-meta"><span>✍️ <strong>' + st.signed + '</strong></span>' +
+            (st.issues ? '<span style="color:#b45309;">⚠ <strong>' + st.issues + '</strong></span>' : '') +
+            (st.lastActivity ? '<span>🕒 ' + formatTime(st.lastActivity) + '</span>' : '<span>Sin actividad</span>') + '</div></div>';
+        }
+        html += '</div>';
+      }
+      main.innerHTML = html;
+      var dateInp = document.getElementById('adLiveDate');
+      if (dateInp) dateInp.addEventListener('change', function () {
+        var parts = dateInp.value.split('-');
+        var dd = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        dd.setHours(0, 0, 0, 0);
+        desktopAdminState.liveSince = dd.getTime();
+        desktopAdminState.liveUntil = desktopAdminState.liveSince + 86400000;
+        renderDesktopLive();
+      });
+      var refresh = document.getElementById('adLiveRefresh');
+      if (refresh) refresh.addEventListener('click', function () { desktopAdminState.liveSince = null; desktopAdminState.liveUntil = null; renderDesktopLive(); });
+      main.querySelectorAll('.ad-live-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+          desktopAdminState.selectedCode = card.getAttribute('data-code');
+          desktopAdminState.activeTab = 'mensajeros';
+          document.querySelectorAll('.ad-tab').forEach(function (t) { t.classList.remove('active'); });
+          document.querySelector('.ad-tab[data-dtab="mensajeros"]').classList.add('active');
+          renderDesktopSidebar();
+          loadDesktopMessengerDetail();
+        });
+      });
+    }).catch(function (err) { main.innerHTML = '<div class="ad-empty"><div class="ad-empty-icon">⚠️</div><div>' + (err.message || 'Error') + '</div></div>'; });
+  }
+
+  function openCsvModal(mm) {
+    desktopAdminState.csvTarget = mm.code;
+    desktopAdminState.csvItems = null;
+    desktopAdminState.csvMode = 'append';
+    document.getElementById('adCsvTitle').textContent = 'Asignar ruta a ' + mm.name;
+    document.getElementById('adCsvSubtitle').textContent = mm.code + ' · ' + (mm.zone || 'Sin zona');
+    document.getElementById('adCsvStep1').classList.remove('hidden');
+    document.getElementById('adCsvStep2').classList.add('hidden');
+    document.getElementById('adCsvConfirmBtn').classList.add('hidden');
+    document.getElementById('adCsvFileInput').value = '';
+    document.querySelectorAll('.ad-csv-mode-option').forEach(function (o) { o.classList.remove('active'); });
+    document.querySelector('.ad-csv-mode-option[data-mode="append"]').classList.add('active');
+    document.getElementById('adCsvModal').classList.add('active');
+  }
+  function closeCsvModal() {
+    document.getElementById('adCsvModal').classList.remove('active');
+    desktopAdminState.csvTarget = null;
+    desktopAdminState.csvItems = null;
+  }
+  function handleCsvFile(file) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var items = rowsToItems(parseCSV(reader.result));
+        if (!items.length) { showToast('⚠ No hay filas válidas', 2400); return; }
+        desktopAdminState.csvItems = items;
+        renderCsvPreview(items);
+      } catch (err) { showToast('Error al leer archivo', 2400); }
+    };
+    reader.readAsText(file, 'UTF-8');
+  }
+  function renderCsvPreview(items) {
+    document.getElementById('adCsvStep1').classList.add('hidden');
+    document.getElementById('adCsvStep2').classList.remove('hidden');
+    document.getElementById('adCsvConfirmBtn').classList.remove('hidden');
+    document.getElementById('adCsvCount').textContent = items.length + ' ítem' + (items.length === 1 ? '' : 's') + ' detectado' + (items.length === 1 ? '' : 's');
+    var box = document.getElementById('adCsvPreview');
+    var shown = items.slice(0, 50);
+    var html = '';
+    for (var i = 0; i < shown.length; i++) {
+      var it = shown[i];
+      var tag = it.type === 'pickup' ? ' · 📤 Recogida' : '';
+      html += '<div class="ad-csv-preview-row"><div><span class="g">' + (it.guide || '(sin guía)') + '</span> · ' + (it.client || 'Sin cliente') + tag + '</div>' +
+        '<div class="a">' + (it.address || '(sin dirección)') + (it.phone ? ' · ' + it.phone : '') + '</div></div>';
+    }
+    if (items.length > 50) html += '<div class="ad-csv-preview-row" style="text-align:center;color:var(--muted);">... y ' + (items.length - 50) + ' más</div>';
+    box.innerHTML = html;
+  }
+  function confirmCsvUpload() {
+    if (!desktopAdminState.csvItems || !desktopAdminState.csvItems.length) return;
+    if (!desktopAdminState.csvTarget) return;
+    var btn = document.getElementById('adCsvConfirmBtn');
+    btn.disabled = true; btn.textContent = 'Asignando...';
+    RutaXAPI.adminAssignRoute(desktopAdminState.csvTarget, desktopAdminState.csvItems, desktopAdminState.csvMode).then(function (data) {
+      closeCsvModal();
+      showToast('✓ ' + data.added + ' ruta' + (data.added === 1 ? '' : 's') + ' asignada' + (data.added === 1 ? '' : 's'), 3200);
+      loadDesktopMessengerDetail();
+    }).catch(function (err) {
+      showToast('⚠ ' + (err.message || 'Error'), 2800);
+      btn.disabled = false; btn.textContent = 'Asignar ruta';
+    });
+  }
+
+  function setupDesktopAdminEvents() {
+    document.getElementById('adminDesktopBtn').addEventListener('click', openAdminDesktop);
+    document.getElementById('desktopBackMobile').addEventListener('click', function () {
+      closeAdminDesktop();
+      document.getElementById('adminOverlay').classList.add('active');
+      refreshAdminMensajeros();
+    });
+    document.getElementById('desktopLogoutBtn').addEventListener('click', function () { closeAdminDesktop(); adminLogout(); });
+    document.querySelectorAll('.ad-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        document.querySelectorAll('.ad-tab').forEach(function (t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        desktopAdminState.activeTab = tab.getAttribute('data-dtab');
+        if (desktopAdminState.activeTab === 'mensajeros') renderDesktopMain();
+        else { desktopAdminState.liveSince = null; desktopAdminState.liveUntil = null; renderDesktopMain(); }
+      });
+    });
+    document.getElementById('adSearchInput').addEventListener('input', function (e) {
+      desktopAdminState.filter = e.target.value;
+      renderDesktopSidebar();
+    });
+    var fileInput = document.getElementById('adCsvFileInput');
+    document.getElementById('adCsvDropzone').addEventListener('click', function () { fileInput.click(); });
+    fileInput.addEventListener('change', function (e) {
+      var f = e.target.files && e.target.files[0];
+      if (f) handleCsvFile(f);
+    });
+    document.getElementById('adCsvCloseBtn').addEventListener('click', closeCsvModal);
+    document.getElementById('adCsvCancelBtn').addEventListener('click', closeCsvModal);
+    document.getElementById('adCsvConfirmBtn').addEventListener('click', confirmCsvUpload);
+    document.getElementById('adCsvChangeFile').addEventListener('click', function () {
+      document.getElementById('adCsvStep1').classList.remove('hidden');
+      document.getElementById('adCsvStep2').classList.add('hidden');
+      document.getElementById('adCsvConfirmBtn').classList.add('hidden');
+      fileInput.value = '';
+      fileInput.click();
+    });
+    document.querySelectorAll('.ad-csv-mode-option').forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        document.querySelectorAll('.ad-csv-mode-option').forEach(function (o) { o.classList.remove('active'); });
+        opt.classList.add('active');
+        desktopAdminState.csvMode = opt.getAttribute('data-mode');
+      });
+    });
+    document.getElementById('adCsvModal').addEventListener('click', function (e) {
+      if (e.target.id === 'adCsvModal') closeCsvModal();
     });
   }
 
@@ -3156,77 +2829,40 @@
       setupPhotoInput();
       setupEventListeners();
       setupAdminEvents();
-
+      setupDesktopAdminEvents();
       document.getElementById('pinBackBtn').addEventListener('click', closePinModal);
 
-      RutaXAPI.publicList()
-        .then(function (ms) { renderSplashFromAPI(ms); })
-        .catch(function (err) {
-          console.warn('API caída, usando fallback:', err);
-          renderSplash();
-        });
+      RutaXAPI.publicList().then(function (ms) { renderSplashFromAPI(ms); }).catch(function (err) {
+        console.warn('API caída:', err);
+        renderSplash();
+      });
 
       var savedCode = localStorage.getItem('rutax_current_v8');
       if (savedCode && RutaXAPI.isLoggedIn()) {
         RutaXAPI.pull().then(function (data) {
           if (data.role !== 'messenger' && data.role !== 'admin') throw new Error('rol desconocido');
-
           var info = null;
           var infoRaw = localStorage.getItem('rutax_info_' + savedCode);
           if (infoRaw) { try { info = JSON.parse(infoRaw); } catch (e) {} }
-
-          if (!info && MESSENGERS[savedCode]) {
-            info = { code: savedCode, name: MESSENGERS[savedCode].name, zone: MESSENGERS[savedCode].zone };
-          }
-          if (!info && savedCode === 'ADMIN') {
-            info = { code: 'ADMIN', name: 'Administrador', zone: 'Administración' };
-          }
-          if (!info) throw new Error('sin info local');
-
+          if (!info && savedCode === 'ADMIN') info = { code: 'ADMIN', name: 'Administrador', zone: 'Administración' };
+          if (!info) throw new Error('sin info');
           state.messenger = info;
-
-          if (data.role === 'admin') {
-            hideSplash();
-            openAdminPanel();
-            return;
-          }
-
+          if (data.role === 'admin') { hideSplash(); openAdminPanel(); return; }
           state.route = data.route || [];
           state.events = data.events || [];
           state.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || {});
           state.route.forEach(function (p) { if (!p.status) p.status = 'pending'; if (!p.type) p.type = 'delivery'; });
           state.events.forEach(function (e) { if (!e.messengerName || e.messengerName === info.code) e.messengerName = info.name; });
           saveMessengerData();
-
-          renderHeader();
-          renderRoute();
-          renderEvents();
-          hideSplash();
-          updateFabVisibility();
+          renderHeader(); renderRoute(); renderEvents();
+          hideSplash(); updateFabVisibility();
         }).catch(function (err) {
           console.warn('Auto-login falló:', err);
-          if (localStorage.getItem(dataKey(savedCode, 'route'))) {
-            loadMessengerData(savedCode);
-            renderHeader();
-            renderRoute();
-            renderEvents();
-            hideSplash();
-            updateFabVisibility();
-          } else {
-            showSplash();
-          }
+          showSplash();
         });
-      } else {
-        showSplash();
-      }
+      } else showSplash();
     } catch (e) {
-      console.error('Ruta X init error:', e);
-      var box = document.getElementById('messengerOptions');
-      if (box) {
-        box.innerHTML = '<div style="background:#7f1d1d;border:1px solid #ef4444;border-radius:12px;padding:16px;font-size:13px;line-height:1.5;">' +
-          '<strong>Error al iniciar Ruta X</strong><br>' + e.message +
-        '</div>';
-      }
+      console.error('Init error:', e);
     }
   }
   document.addEventListener('DOMContentLoaded', init);
