@@ -81,6 +81,8 @@
   .overlay{position:fixed;inset:0;background:var(--bg);z-index:100;display:none;overflow-y:auto;}
   .overlay.active{display:block;}
 
+  #eventOverlay { z-index: 220; }
+
   .detail-screen{min-height:100vh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;}
   .detail-header{background:linear-gradient(135deg,#0A1F44 0%,#0E3A6C 55%,#1E5BB8 100%);color:white;padding:16px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:2;}
   .back-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;width:40px;height:40px;border-radius:12px;font-size:20px;cursor:pointer;flex-shrink:0;}
@@ -343,7 +345,6 @@
   .pin-key-empty{background:transparent;border:none;cursor:default;}
   .pin-key-del{font-size:20px;}
 
-  /* ADMIN MOBILE */
   .admin-screen{min-height:100vh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;background:var(--bg);}
   .admin-tabs{display:flex;background:white;border-bottom:1px solid var(--line);}
   .admin-tab{flex:1;padding:14px;border:none;background:none;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;font-family:inherit;}
@@ -399,7 +400,6 @@
   .ae-addr{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .ae-time{font-size:10px;color:#9ca3af;margin-top:3px;}
 
-  /* ADMIN DESKTOP */
   .admin-desktop-overlay{position:fixed;inset:0;background:#0f172a;z-index:200;display:none;flex-direction:column;}
   .admin-desktop-overlay.active{display:flex;}
   .ad-topbar{height:64px;background:linear-gradient(90deg,#0A1F44 0%,#0E3A6C 50%,#1E5BB8 100%);display:flex;align-items:center;padding:0 28px;gap:24px;color:white;box-shadow:0 4px 16px rgba(0,0,0,0.3);flex-shrink:0;}
@@ -495,7 +495,6 @@
   .ad-csv-mode-option strong{display:block;font-size:13px;color:var(--ink);margin-bottom:2px;}
   .ad-csv-mode-option span{font-size:12px;color:var(--muted);line-height:1.3;}
 
-  /* NUEVO v13: toolbar búsqueda + miniatura en tabla desktop */
   .ad-routes-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:12px;}
   .ad-routes-toolbar input{flex:1;border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:13px;font-family:inherit;outline:none;background:white;}
   .ad-routes-toolbar input:focus{border-color:var(--navy);}
@@ -512,7 +511,111 @@
     .ad-stats-row{grid-template-columns:repeat(2,1fr);}
     .ad-csv-mode{flex-direction:column;}
   }
-  #eventOverlay { z-index: 220; }
+
+  /* ============================================================ */
+  /* v14 · DETALLE ANCHO EN PC (admin desktop)                     */
+  /* ============================================================ */
+  @media (min-width: 1024px) {
+    #eventOverlay {
+      overflow: hidden;
+    }
+    #eventOverlay .event-detail-screen {
+      max-width: 100%;
+      width: 100%;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 480px;
+      grid-template-rows: 68px 1fr;
+      grid-template-areas:
+        "header header"
+        "carousel body";
+      background: #0f172a;
+    }
+    #eventOverlay .detail-header {
+      grid-area: header;
+      padding: 0 28px;
+      height: 68px;
+      box-sizing: border-box;
+    }
+    #eventOverlay .detail-header .detail-title { font-size: 18px; }
+    #eventOverlay .detail-header .detail-sub { font-size: 13px; }
+    #eventOverlay .back-btn { width: 42px; height: 42px; font-size: 22px; }
+
+    #eventOverlay .carousel-wrap {
+      grid-area: carousel;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #0A1F44;
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+    #eventOverlay .carousel-main {
+      flex: 1;
+      min-height: 0;
+      max-height: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    #eventOverlay .carousel-main img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    #eventOverlay .car-nav {
+      width: 52px;
+      height: 52px;
+      font-size: 28px;
+    }
+    #eventOverlay .car-counter {
+      font-size: 13px;
+      padding: 5px 14px;
+      bottom: 16px;
+      right: 16px;
+    }
+    #eventOverlay .carousel-thumbs {
+      padding: 12px 20px;
+      gap: 10px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      justify-content: center;
+    }
+    #eventOverlay .carousel-thumb {
+      width: 68px;
+      height: 68px;
+      border-radius: 10px;
+    }
+
+    #eventOverlay .event-detail-body {
+      grid-area: body;
+      overflow-y: auto;
+      padding: 24px;
+      background: var(--bg);
+    }
+    #eventOverlay .ev-status-row {
+      padding: 18px;
+    }
+    #eventOverlay .ev-status-row .status-badge {
+      font-size: 13px;
+      padding: 6px 14px;
+    }
+    #eventOverlay .ev-status-row .ev-time {
+      font-size: 14px;
+    }
+    #eventOverlay .ev-block { padding: 16px; }
+    #eventOverlay .ev-block .ev-value { font-size: 15px; }
+    #eventOverlay .ev-signature-img img { max-height: 140px; }
+    #eventOverlay .wa-actions-wrap { gap: 10px; }
+    #eventOverlay .wa-share-btn { padding: 16px; font-size: 15px; }
+
+    #eventOverlay .event-detail-body::-webkit-scrollbar { width: 8px; }
+    #eventOverlay .event-detail-body::-webkit-scrollbar-track { background: #e5e7eb; }
+    #eventOverlay .event-detail-body::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+  }
 </style>
 <script src="api.js"></script>
 </head>
@@ -724,7 +827,7 @@
         <p>Borra tus registros. Solo afecta a tu usuario.</p>
         <button class="settings-btn danger" id="resetRouteBtn">Reiniciar mis datos</button>
       </div>
-      <div class="app-version">Ruta X · v0.13 · Detalle paquetes + buscador</div>
+      <div class="app-version">Ruta X · v0.14 · Desktop auto-detect</div>
     </div>
   </div>
 </div>
@@ -914,16 +1017,65 @@
     csvTarget: null, csvItems: null, csvMode: 'append'
   };
 
+  // ============================================================
+  // Opción A · límite de eventos con fotos locales retenidas
+  // ============================================================
+  var MAX_EVENTS_WITH_LOCAL_PHOTOS = 8;
+
+  // ------------------------------------------------------------
+  // v14 · detectar si es escritorio
+  // ------------------------------------------------------------
+  function isDesktopViewport() {
+    try { return window.matchMedia('(min-width: 1024px)').matches; }
+    catch (e) { return window.innerWidth >= 1024; }
+  }
+
   function saveMessengerData() {
     if (!state.messenger) return;
     try {
       localStorage.setItem(dataKey(state.messenger.code, 'route'), JSON.stringify(state.route));
       localStorage.setItem(dataKey(state.messenger.code, 'events'), JSON.stringify(state.events));
       localStorage.setItem(dataKey(state.messenger.code, 'settings'), JSON.stringify(state.settings));
-    } catch (e) { showToast('⚠ Almacenamiento lleno.'); }
+    } catch (e) {
+      try {
+        state.events.forEach(function (ev) { if (ev.localPhotos) delete ev.localPhotos; });
+        localStorage.setItem(dataKey(state.messenger.code, 'route'), JSON.stringify(state.route));
+        localStorage.setItem(dataKey(state.messenger.code, 'events'), JSON.stringify(state.events));
+        localStorage.setItem(dataKey(state.messenger.code, 'settings'), JSON.stringify(state.settings));
+        showToast('⚠ Espacio liberado · fotos viejas ya no se adjuntan', 2800);
+      } catch (e2) {
+        showToast('⚠ Almacenamiento lleno.', 2400);
+      }
+    }
   }
 
   function safeParse(str, fb) { try { return JSON.parse(str); } catch (e) { return fb; } }
+
+  function pruneLocalPhotos() {
+    var withLocal = [];
+    for (var i = state.events.length - 1; i >= 0; i--) {
+      if (state.events[i].localPhotos && state.events[i].localPhotos.length) withLocal.push(i);
+    }
+    for (var j = MAX_EVENTS_WITH_LOCAL_PHOTOS; j < withLocal.length; j++) {
+      delete state.events[withLocal[j]].localPhotos;
+    }
+  }
+
+  function mergeLocalPhotos(serverEvents) {
+    if (!serverEvents || !serverEvents.length) return serverEvents || [];
+    var key = state.messenger ? dataKey(state.messenger.code, 'events') : null;
+    if (!key) return serverEvents;
+    var localEvents = safeParse(localStorage.getItem(key), []);
+    if (!localEvents || !localEvents.length) return serverEvents;
+    var localMap = {};
+    localEvents.forEach(function (e) {
+      if (e.localPhotos && e.localPhotos.length) localMap[e.id] = e.localPhotos;
+    });
+    return serverEvents.map(function (e) {
+      if (localMap[e.id]) e.localPhotos = localMap[e.id];
+      return e;
+    });
+  }
 
   function showToast(msg, duration) {
     duration = duration || 2400;
@@ -981,6 +1133,11 @@
     if (evt.photos && evt.photos.length) return evt.photos;
     if (evt.photo) return [evt.photo];
     return [];
+  }
+
+  function getEventPhotosForShare(evt) {
+    if (evt.localPhotos && evt.localPhotos.length) return evt.localPhotos;
+    return getEventPhotos(evt);
   }
 
   function getSignatureColorHex() { return state.settings.signatureColor || '#a3e635'; }
@@ -1134,16 +1291,28 @@
     if (p.length === 10) return '57' + p;
     return p;
   }
+
   function buildWhatsAppMessage(evt) {
     var msg = 'Hola ' + (evt.client || 'cliente') + ', le confirmamos la entrega de su paquete ';
     msg += (evt.guide || '') + ' el ' + formatFullDate(evt.timestamp) + '.';
     if (evt.recipient) msg += '\nRecibido por: ' + evt.recipient + '.';
-    var ph = getEventPhotos(evt).filter(function (p) { return p && p.indexOf('http') === 0; });
-    if (ph.length) { msg += '\n\nEvidencia:'; ph.forEach(function (u) { msg += '\n' + u; }); }
-    else msg += '\n\nAdjuntamos la evidencia firmada.';
+    var photosForShare = getEventPhotosForShare(evt);
+    var hasLocal = photosForShare.some(function (x) { return x && x.indexOf('data:') === 0; });
+    if (hasLocal) {
+      msg += '\n\nAdjuntamos la evidencia fotográfica firmada de la entrega.';
+    } else {
+      var ph = getEventPhotos(evt).filter(function (p) { return p && p.indexOf('http') === 0; });
+      if (ph.length) {
+        msg += '\n\nEvidencia:';
+        ph.forEach(function (u) { msg += '\n' + u; });
+      } else {
+        msg += '\n\nAdjuntamos la evidencia firmada.';
+      }
+    }
     msg += '\n— Ruta X';
     return msg;
   }
+
   function dataURLtoBlob(dataURL) {
     var arr = dataURL.split(',');
     var mime = arr[0].match(/:(.*?);/)[1];
@@ -1159,12 +1328,20 @@
     window.open('https://wa.me/' + p + '?text=' + encodeURIComponent(buildWhatsAppMessage(evt)), '_blank');
   }
   function shareWhatsAppWithPhotos(evt) {
-    var ph = getEventPhotos(evt);
+    var ph = getEventPhotosForShare(evt);
     var p = normalizePhone(evt.phone || '');
     var hasLocal = ph.some(function (x) { return x && x.indexOf('data:') === 0; });
-    if (!hasLocal) { if (p) sendWhatsAppDirect(evt); else showToast('Las fotos ya están en Drive'); return; }
+    if (!hasLocal) {
+      if (p) sendWhatsAppDirect(evt);
+      else showToast('Las fotos ya están en Drive · compártelas desde allí');
+      return;
+    }
     var msg = buildWhatsAppMessage(evt);
-    if (!ph.length || !navigator.share) { if (p) sendWhatsAppDirect(evt); else showToast('No se puede compartir'); return; }
+    if (!ph.length || !navigator.share) {
+      if (p) sendWhatsAppDirect(evt);
+      else showToast('No se puede compartir');
+      return;
+    }
     var files = [];
     for (var i = 0; i < ph.length && i < 5; i++) {
       try { files.push(new File([dataURLtoBlob(ph[i])], 'e-' + i + '.jpg', { type: 'image/jpeg' })); } catch (e) {}
@@ -1177,7 +1354,7 @@
   }
   function showWhatsAppPrompt(evt) {
     pendingWhatsAppEvent = evt;
-    var ph = getEventPhotos(evt);
+    var ph = getEventPhotosForShare(evt);
     var p = normalizePhone(evt.phone || '');
     document.getElementById('waClientName').textContent = evt.client || 'el cliente';
     document.getElementById('waClientPhone').textContent = p ? '📱 +' + p : '(sin teléfono)';
@@ -1436,6 +1613,7 @@
         address: pkgS.address, phone: pkgS.phone || '', recipient: rec,
         status: status, type: pkgS.type || 'delivery',
         photos: photos, photo: photos[0] || null,
+        localPhotos: photos.slice(),
         noPhoto: noPhotoS && !photos.length,
         signature: sigD, signatureColor: sigColor, signed: !!sigD,
         note: note, gps: gpsS,
@@ -1446,6 +1624,7 @@
       state.events.push(event);
       var pkg = state.route.find(function (p) { return p.id === pkgS.id; });
       if (pkg) pkg.status = status === 'delivered' ? 'delivered' : 'issue';
+      pruneLocalPhotos();
       saveMessengerData();
       hideProcessing(); closeDetail(); renderRoute(); renderEvents();
       syncEventToServer(event, toUpload);
@@ -1471,8 +1650,10 @@
       if (resp.ok && resp.photoUrls) {
         var e = state.events.find(function (x) { return x.id === event.id; });
         if (e) {
+          if (!e.localPhotos && photos && photos.length) e.localPhotos = photos.slice();
           e.photos = resp.photoUrls; e.photo = resp.photoUrls[0] || null;
           e.photoIds = resp.photoIds || []; e.synced = true;
+          pruneLocalPhotos();
           saveMessengerData();
           if (eventCarouselState.evt && eventCarouselState.evt.id === event.id) {
             eventCarouselState.photos = resp.photoUrls;
@@ -1983,8 +2164,15 @@
       localStorage.setItem('rutax_info_' + info.code, JSON.stringify(info));
       localStorage.setItem('rutax_current_v8', info.code);
       state.messenger = info;
-      if (data.role === 'admin') { closePinModal(); hideSplash(); openAdminPanel(); return; }
-      state.route = data.route || []; state.events = data.events || [];
+      if (data.role === 'admin') {
+        closePinModal(); hideSplash();
+        // v14 · auto-abrir panel escritorio si es PC
+        if (isDesktopViewport()) openAdminDesktop();
+        else openAdminPanel();
+        return;
+      }
+      state.route = data.route || [];
+      state.events = mergeLocalPhotos(data.events || []);
       state.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || {});
       state.route.forEach(function (p) { if (!p.status) p.status = 'pending'; if (!p.type) p.type = 'delivery'; });
       state.events.forEach(function (e) { if (!e.messengerName || e.messengerName === info.code) e.messengerName = info.name; });
@@ -1996,10 +2184,6 @@
       pinBuffer = ''; updatePinDots();
     });
   }
-
-  // ============================================================
-  // ADMIN MOBILE
-  // ============================================================
 
   function openAdminPanel() {
     document.getElementById('adminSubtitle').textContent = 'Conectado como ' + (state.messenger ? state.messenger.name : 'Administrador');
@@ -2226,10 +2410,6 @@
     });
   }
 
-  // ============================================================
-  // ADMIN DESKTOP
-  // ============================================================
-
   function openAdminDesktop() {
     document.getElementById('adminOverlay').classList.remove('active');
     document.getElementById('adminDesktopOverlay').classList.add('active');
@@ -2295,7 +2475,6 @@
     });
   }
 
-  // NUEVO v13: tabla de rutas con miniatura + click en fila
   function renderRoutesTable(routes, filter) {
     var q = normalizeQuery(filter || '');
     var filtered = routes.filter(function (r) {
@@ -2363,7 +2542,6 @@
     var st = mm.stats || {};
     var pend = routes.filter(function (r) { return r.status === 'pending'; });
     var del = routes.filter(function (r) { return r.status === 'delivered'; });
-    var iss = routes.filter(function (r) { return r.status === 'issue'; });
 
     var html = '<div class="ad-detail-card"><div class="ad-detail-header">' +
       '<div><div class="ad-detail-name">' + mm.name + '</div>' +
@@ -2389,7 +2567,6 @@
     html += '<div id="adRoutesTableWrap">' + renderRoutesTable(routes, desktopAdminState.routesFilter) + '</div>';
 
     main.innerHTML = html;
-
     updateRoutesCount();
 
     document.getElementById('adEditBtn').addEventListener('click', function () { openEditMessenger(mm); });
@@ -2413,7 +2590,6 @@
         updateRoutesCount();
       });
     }
-
     wireRouteRows();
   }
 
@@ -2619,8 +2795,15 @@
           if (!info && saved === 'ADMIN') info = { code: 'ADMIN', name: 'Administrador', zone: 'Administración' };
           if (!info) throw new Error('sin info');
           state.messenger = info;
-          if (data.role === 'admin') { hideSplash(); openAdminPanel(); return; }
-          state.route = data.route || []; state.events = data.events || [];
+          if (data.role === 'admin') {
+            hideSplash();
+            // v14 · auto-abrir panel escritorio si es PC
+            if (isDesktopViewport()) openAdminDesktop();
+            else openAdminPanel();
+            return;
+          }
+          state.route = data.route || [];
+          state.events = mergeLocalPhotos(data.events || []);
           state.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || {});
           state.route.forEach(function (p) { if (!p.status) p.status = 'pending'; if (!p.type) p.type = 'delivery'; });
           state.events.forEach(function (e) { if (!e.messengerName || e.messengerName === info.code) e.messengerName = info.name; });
