@@ -53,12 +53,24 @@
   }
 
   async function pull()          { return call('pull', {}); }
-  async function saveEvent(evt, photosBase64) {
+    async function saveEvent(evt, photosBase64) {
+    var lightEvent = Object.assign({}, evt);
+    lightEvent.signed = !!evt.signature;
+    delete lightEvent.signature;
+    delete lightEvent.photos;
+    delete lightEvent.photo;
+    return call('saveEvent', { event: lightEvent, photosBase64: photosBase64 || [] });
+  }
     return call('saveEvent', { event: evt, photosBase64: photosBase64 || [] });
   }
   async function addPackages(packages) { return call('addPackages', { packages: packages }); }
   async function saveSettings(settings) { return call('saveSettings', { settings: settings }); }
   async function resetRoute()    { return call('resetRoute', {}); }
+
+  async function adminListMessengers()     { return call('adminListMessengers', {}); }
+  async function adminUpdateMessenger(mm)  { return call('adminUpdateMessenger', { messenger: mm }); }
+  async function adminAddMessenger(mm)     { return call('adminAddMessenger', { messenger: mm }); }
+  async function adminLive(since, until)   { return call('adminLive', { since: since, until: until }); }
 
   window.RutaXAPI = {
     API_URL: API_URL,
@@ -73,6 +85,13 @@
     saveEvent: saveEvent,
     addPackages: addPackages,
     saveSettings: saveSettings,
-    resetRoute: resetRoute
+    resetRoute: resetRoute,
+    adminListMessengers: adminListMessengers,
+    adminUpdateMessenger: adminUpdateMessenger,
+    adminAddMessenger: adminAddMessenger,
+    adminLive: adminLive,
+    
+
+    
   };
 })();
