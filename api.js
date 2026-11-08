@@ -1,11 +1,12 @@
 /**
  * Ruta X · Cliente de API
  * Comunica la app con Google Apps Script
+ * v11 · Con firma (indicador) y panel de administración
  */
 (function () {
   'use strict';
 
-  // ⚠️ PEGA AQUÍ LA URL DEL PASO 2A (la que termina en /exec)
+  // ⚠️ PEGA AQUÍ LA URL DEL BLOQUE 2A (la que termina en /exec)
   var API_URL = 'https://script.google.com/macros/s/AKfycbwdKi0AopAS6V2ySrBhaYV4HuHNgRuhsYbHMOsJqK2D81WKvz2deD1faT61zYNDPwgNwQ/exec';
 
   var TOKEN_KEY = 'rutax_token';
@@ -23,7 +24,9 @@
     else localStorage.removeItem(ROLE_KEY);
   }
 
-  function clearSession() { setSession(null, null); }
+  function clearSession() {
+    setSession(null, null);
+  }
 
   async function call(action, payload) {
     var body = Object.assign({ action: action, token: token }, payload || {});
@@ -38,6 +41,8 @@
     return data;
   }
 
+  // ---------- PÚBLICO (sin token) ----------
+
   async function publicList() {
     var r = await fetch(API_URL + '?action=publicList');
     if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -46,52 +51,95 @@
     return data.messengers || [];
   }
 
+  // ---------- AUTENTICACIÓN ----------
+
   async function login(codigo, pin) {
     var data = await call('login', { codigo: codigo, pin: pin });
     if (data.ok && data.token) setSession(data.token, data.role);
     return data;
   }
 
-  async function pull()          { return call('pull', {}); }
-    async function saveEvent(evt, photosBase64) {
+  // ---------- SINCRONIZACIÓN MENSAJERO ----------
+
+  async function pull() {
+    return call('pull', {});
+  }
+
+  async function saveEvent(evt, photosBase64) {
+    // Prepara el evento para el backend: quita campos pesados/locales
+    // y solo deja un flag booleano "signed" (la firma va quemada en la foto)
     var lightEvent = Object.assign({}, evt);
     lightEvent.signed = !!evt.signature;
     delete lightEvent.signature;
     delete lightEvent.photos;
     delete lightEvent.photo;
-    return call('saveEvent', { event: lightEvent, photosBase64: photosBase64 || [] });
+    return call('saveEvent', {
+      event: lightEvent,
+      photosBase64: photosBase64 || []
+    });
   }
-    return call('saveEvent', { event: evt, photosBase64: photosBase64 || [] });
-  }
-  async function addPackages(packages) { return call('addPackages', { packages: packages }); }
-  async function saveSettings(settings) { return call('saveSettings', { settings: settings }); }
-  async function resetRoute()    { return call('resetRoute', {}); }
 
-  async function adminListMessengers()     { return call('adminListMessengers', {}); }
-  async function adminUpdateMessenger(mm)  { return call('adminUpdateMessenger', { messenger: mm }); }
-  async function adminAddMessenger(mm)     { return call('adminAddMessenger', { messenger: mm }); }
-  async function adminLive(since, until)   { return call('adminLive', { since: since, until: until }); }
+  async function addPackages(packages) {
+    return call('addPackages', { packages: packages });
+  }
+
+  async function saveSettings(settings) {
+    return call('saveSettings', { settings: settings });
+  }
+
+  async function resetRoute() {
+    return call('resetRoute', {});
+  }
+
+  // ---------- ADMINISTRACIÓN ----------
+
+  async function adminListMessengers() {
+    return call('adminListMessengers', {});
+  }
+
+  async function adminUpdateMessenger(mm) {
+    return call('adminUpdateMessenger', { messenger: mm });
+  }
+
+  async function adminAddMessenger(mm) {
+    return call('adminAddMessenger', { messenger: mm });
+  }
+
+  async function adminLive(since, until) {
+    var payload = {};
+    if (since !== undefined && since !== null) payload.since = since;
+    if (until !== undefined && until !== null) payload.until = until;
+    return call('adminLive', payload);
+  }
+
+  // ---------- EXPORT ----------
 
   window.RutaXAPI = {
     API_URL: API_URL,
+
+    // Sesión
     setSession: setSession,
     clearSession: clearSession,
     getToken: function () { return token; },
     getRole: function () { return role; },
     isLoggedIn: function () { return !!token; },
+
+    // Auth y público
     publicList: publicList,
     login: login,
+
+    // Sync mensajero
     pull: pull,
     saveEvent: saveEvent,
     addPackages: addPackages,
     saveSettings: saveSettings,
     resetRoute: resetRoute,
+
+    // Admin
     adminListMessengers: adminListMessengers,
     adminUpdateMessenger: adminUpdateMessenger,
     adminAddMessenger: adminAddMessenger,
-    adminLive: adminLive,
-    
-
-    
+    adminLive: adminLive
   };
 })();
+  
