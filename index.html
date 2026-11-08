@@ -56,18 +56,21 @@
   .package-card:active{transform:scale(0.98);}
   .package-card.issue{border-left-color:#f59e0b;background:#fffbeb;}
   .package-card.pickup{border-left-color:var(--purple);}
+  .package-card.retry{border-left-color:#f59e0b;background:#fffbeb;}
   .order-badge{width:36px;height:36px;border-radius:10px;background:#eff6ff;color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0;}
-  .package-card.issue .order-badge{background:#fef3c7;color:#b45309;}
+  .package-card.issue .order-badge,.package-card.retry .order-badge{background:#fef3c7;color:#b45309;}
   .package-card.pickup .order-badge{background:#ede9fe;color:var(--purple);}
   .package-info{flex:1;min-width:0;}
   .package-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px;flex-wrap:wrap;}
   .guide{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:0.3px;}
-  .badges-wrap{display:flex;gap:4px;align-items:center;}
+  .badges-wrap{display:flex;gap:4px;align-items:center;flex-wrap:wrap;}
   .status-badge{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap;}
   .status-badge.pending{background:#f3f4f6;color:var(--muted);}
   .status-badge.delivered{background:#dcfce7;color:var(--green-dark);}
   .status-badge.issue{background:#fef3c7;color:#b45309;}
   .status-badge.pickup-badge{background:#ede9fe;color:var(--purple);}
+  .status-badge.undone{background:#f3f4f6;color:#4b5563;}
+  .retry-badge{display:inline-block;background:#fef3c7;color:#b45309;font-size:9px;padding:2px 7px;border-radius:4px;font-weight:700;letter-spacing:0.3px;text-transform:uppercase;}
   .client{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:2px;}
   .address{font-size:13px;color:var(--muted);line-height:1.3;}
   .issue-count{font-size:11px;color:#b45309;font-weight:600;margin-top:4px;}
@@ -191,6 +194,8 @@
   .events-count{font-size:12px;color:var(--muted);font-weight:600;}
   .event-card{background:white;border-radius:14px;padding:12px;margin-bottom:10px;display:flex;gap:12px;box-shadow:0 1px 3px rgba(15,23,42,0.05);cursor:pointer;transition:transform 0.1s;}
   .event-card:active{transform:scale(0.99);}
+  .event-card.undone{opacity:0.72;}
+  .event-card.undone .event-address{color:#9ca3af;text-decoration:line-through;}
   .event-photo{width:70px;height:70px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#f3f4f6;display:flex;align-items:center;justify-content:center;position:relative;}
   .event-photo img{width:100%;height:100%;object-fit:cover;}
   .no-photo{font-size:10px;color:#9ca3af;text-align:center;padding:4px;}
@@ -221,6 +226,9 @@
   .ev-block .ev-label{font-size:11px;text-transform:uppercase;letter-spacing:0.6px;color:var(--muted);font-weight:700;margin-bottom:4px;}
   .ev-block .ev-value{font-size:15px;font-weight:600;color:var(--ink);line-height:1.45;word-break:break-word;}
   .ev-block.note .ev-value{font-weight:500;font-style:italic;color:#374151;}
+  .ev-block.undone-block{background:#fef2f2;border-left:4px solid #ef4444;}
+  .ev-block.undone-block .ev-label{color:#b91c1c;}
+  .ev-block.undone-block .ev-value{color:#7f1d1d;}
   .ev-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
   .ev-grid .ev-block{margin-bottom:0;}
   .ev-status-row{display:flex;align-items:center;justify-content:space-between;padding:14px;background:white;border-radius:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(15,23,42,0.05);}
@@ -229,6 +237,16 @@
   .ev-signature-img{background:white;border-radius:14px;padding:10px;margin-bottom:10px;box-shadow:0 1px 3px rgba(15,23,42,0.05);}
   .ev-signature-img .ev-label{font-size:11px;text-transform:uppercase;letter-spacing:0.6px;color:var(--muted);font-weight:700;margin-bottom:6px;padding:0 4px;}
   .ev-signature-img img{max-width:100%;height:auto;display:block;max-height:100px;margin:0 auto;}
+
+  .undo-btn{width:100%;background:white;border:1.5px solid #ef4444;color:#dc2626;padding:14px;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;margin-top:12px;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 0.15s,transform 0.1s;}
+  .undo-btn:active:not(.disabled){background:#fef2f2;transform:scale(0.98);}
+  .undo-btn.disabled{background:#f9fafb;border-color:#d1d5db;color:#9ca3af;cursor:not-allowed;font-size:12px;padding:12px;}
+
+  .undo-reason-list{display:flex;flex-direction:column;gap:8px;}
+  .undo-reason-option{background:#f9fafb;border:1.5px solid var(--line);border-radius:10px;padding:13px 14px;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;font-family:inherit;text-align:left;display:flex;align-items:center;gap:10px;transition:all 0.15s;width:100%;}
+  .undo-reason-option:active{transform:scale(0.99);}
+  .undo-reason-option.selected{background:#fef2f2;border-color:#ef4444;color:#b91c1c;}
+  .undo-reason-option.selected::after{content:'✓';margin-left:auto;font-weight:800;font-size:16px;color:#ef4444;}
 
   .wa-actions-wrap{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
   .wa-share-btn{width:100%;background:var(--wa);color:white;border:none;border-radius:14px;padding:15px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(37,211,102,0.3);font-family:inherit;transition:transform 0.1s;}
@@ -390,6 +408,7 @@
   .admin-drill-title{font-size:15px;font-weight:700;color:var(--ink);}
   .ae-card{background:white;border-radius:12px;padding:10px;margin-bottom:8px;display:flex;gap:10px;box-shadow:0 1px 2px rgba(15,23,42,0.05);cursor:pointer;align-items:center;transition:transform 0.1s;}
   .ae-card:active{transform:scale(0.99);}
+  .ae-card.undone{opacity:0.72;}
   .ae-photo{width:50px;height:50px;border-radius:8px;overflow:hidden;flex-shrink:0;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;}
   .ae-photo img{width:100%;height:100%;object-fit:cover;}
   .ae-badge-sig{position:absolute;top:2px;left:2px;background:rgba(34,197,94,0.95);color:white;font-size:9px;padding:1px 4px;border-radius:4px;}
@@ -512,109 +531,34 @@
     .ad-csv-mode{flex-direction:column;}
   }
 
-  /* ============================================================ */
-  /* v14 · DETALLE ANCHO EN PC (admin desktop)                     */
-  /* ============================================================ */
   @media (min-width: 1024px) {
-    #eventOverlay {
-      overflow: hidden;
-    }
+    #eventOverlay { overflow: hidden; }
     #eventOverlay .event-detail-screen {
-      max-width: 100%;
-      width: 100%;
-      height: 100vh;
+      max-width: 100%; width: 100%; height: 100vh;
       display: grid;
       grid-template-columns: minmax(0, 1fr) 480px;
       grid-template-rows: 68px 1fr;
-      grid-template-areas:
-        "header header"
-        "carousel body";
+      grid-template-areas: "header header" "carousel body";
       background: #0f172a;
     }
-    #eventOverlay .detail-header {
-      grid-area: header;
-      padding: 0 28px;
-      height: 68px;
-      box-sizing: border-box;
-    }
+    #eventOverlay .detail-header { grid-area: header; padding: 0 28px; height: 68px; box-sizing: border-box; }
     #eventOverlay .detail-header .detail-title { font-size: 18px; }
     #eventOverlay .detail-header .detail-sub { font-size: 13px; }
     #eventOverlay .back-btn { width: 42px; height: 42px; font-size: 22px; }
-
-    #eventOverlay .carousel-wrap {
-      grid-area: carousel;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      background: #0A1F44;
-      border-right: 1px solid rgba(255,255,255,0.05);
-    }
-    #eventOverlay .carousel-main {
-      flex: 1;
-      min-height: 0;
-      max-height: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    #eventOverlay .carousel-main img {
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      border-radius: 8px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    }
-    #eventOverlay .car-nav {
-      width: 52px;
-      height: 52px;
-      font-size: 28px;
-    }
-    #eventOverlay .car-counter {
-      font-size: 13px;
-      padding: 5px 14px;
-      bottom: 16px;
-      right: 16px;
-    }
-    #eventOverlay .carousel-thumbs {
-      padding: 12px 20px;
-      gap: 10px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      justify-content: center;
-    }
-    #eventOverlay .carousel-thumb {
-      width: 68px;
-      height: 68px;
-      border-radius: 10px;
-    }
-
-    #eventOverlay .event-detail-body {
-      grid-area: body;
-      overflow-y: auto;
-      padding: 24px;
-      background: var(--bg);
-    }
-    #eventOverlay .ev-status-row {
-      padding: 18px;
-    }
-    #eventOverlay .ev-status-row .status-badge {
-      font-size: 13px;
-      padding: 6px 14px;
-    }
-    #eventOverlay .ev-status-row .ev-time {
-      font-size: 14px;
-    }
-    #eventOverlay .ev-block { padding: 16px; }
-    #eventOverlay .ev-block .ev-value { font-size: 15px; }
-    #eventOverlay .ev-signature-img img { max-height: 140px; }
-    #eventOverlay .wa-actions-wrap { gap: 10px; }
-    #eventOverlay .wa-share-btn { padding: 16px; font-size: 15px; }
-
+    #eventOverlay .carousel-wrap { grid-area: carousel; display: flex; flex-direction: column; overflow: hidden; background: #0A1F44; border-right: 1px solid rgba(255,255,255,0.05); }
+    #eventOverlay .carousel-main { flex: 1; min-height: 0; max-height: none; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    #eventOverlay .carousel-main img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    #eventOverlay .car-nav { width: 52px; height: 52px; font-size: 28px; }
+    #eventOverlay .car-counter { font-size: 13px; padding: 5px 14px; bottom: 16px; right: 16px; }
+    #eventOverlay .carousel-thumbs { padding: 12px 20px; gap: 10px; border-top: 1px solid rgba(255,255,255,0.08); justify-content: center; }
+    #eventOverlay .carousel-thumb { width: 68px; height: 68px; border-radius: 10px; }
+    #eventOverlay .event-detail-body { grid-area: body; overflow-y: auto; padding: 24px; background: var(--bg); }
     #eventOverlay .event-detail-body::-webkit-scrollbar { width: 8px; }
     #eventOverlay .event-detail-body::-webkit-scrollbar-track { background: #e5e7eb; }
     #eventOverlay .event-detail-body::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+
+    #undoOverlay { align-items: center; }
+    #undoOverlay .whatsapp-sheet { max-width: 560px; border-radius: 16px; max-height: 85vh; }
   }
 </style>
 <script src="api.js"></script>
@@ -827,7 +771,7 @@
         <p>Borra tus registros. Solo afecta a tu usuario.</p>
         <button class="settings-btn danger" id="resetRouteBtn">Reiniciar mis datos</button>
       </div>
-      <div class="app-version">Ruta X · v0.14 · Desktop auto-detect</div>
+      <div class="app-version">Ruta X · v0.15 · Anulación de entrega</div>
     </div>
   </div>
 </div>
@@ -872,6 +816,39 @@
     <div class="add-form-actions">
       <button class="add-form-btn cancel" id="addCancelBtn">Cancelar</button>
       <button class="add-form-btn confirm" id="addConfirmBtn">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<div id="undoOverlay" class="whatsapp-overlay">
+  <div class="whatsapp-sheet" style="max-height:92vh;overflow-y:auto;">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="width:64px;height:64px;border-radius:50%;background:#fef2f2;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:32px;">↺</div>
+      <div style="font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;">Anular entrega</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.5;">El paquete volverá a tu ruta con estado <strong style="color:#b45309;">🔁 Reintentar</strong>.</div>
+    </div>
+    <div style="background:#f8fafc;border-radius:10px;padding:12px;margin-bottom:16px;">
+      <div style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:4px;">Paquete</div>
+      <div id="undoPackageName" style="font-size:14px;font-weight:700;color:var(--ink);">—</div>
+      <div id="undoPackageGuide" style="font-size:12px;color:var(--muted);margin-top:2px;">—</div>
+    </div>
+    <label class="add-form-label" style="margin-top:0;">Motivo de la anulación *</label>
+    <div class="undo-reason-list" id="undoReasonList">
+      <button class="undo-reason-option" data-reason="Me equivoqué de paquete"><span>📦</span> Me equivoqué de paquete</button>
+      <button class="undo-reason-option" data-reason="Me equivoqué de dirección"><span>🏠</span> Me equivoqué de dirección</button>
+      <button class="undo-reason-option" data-reason="El cliente no estaba"><span>🚪</span> El cliente no estaba / no recibió</button>
+      <button class="undo-reason-option" data-reason="El cliente rechazó el paquete"><span>✋</span> El cliente rechazó el paquete</button>
+      <button class="undo-reason-option" data-reason="Otro motivo"><span>💬</span> Otro motivo</button>
+    </div>
+    <div id="undoCustomWrap" class="hidden" style="margin-top:10px;">
+      <input type="text" id="undoCustomReason" class="add-text-input" placeholder="Describe el motivo..." autocomplete="off" maxlength="200" />
+    </div>
+    <div style="background:#fffbeb;border:1px solid #fef3c7;border-radius:10px;padding:12px;margin-top:16px;font-size:12px;color:#92400e;line-height:1.5;">
+      <strong>⚠ Importante:</strong> Si ya enviaste el WhatsApp al cliente, seguirá viendo el mensaje anterior. La anulación solo aplica al sistema interno.
+    </div>
+    <div class="add-form-actions" style="margin-top:16px;">
+      <button class="add-form-btn cancel" id="undoCancelBtn">Cancelar</button>
+      <button class="add-form-btn confirm" id="undoConfirmBtn" style="background:#ef4444;">Anular entrega</button>
     </div>
   </div>
 </div>
@@ -1016,18 +993,17 @@
     live: [], liveSince: null, liveUntil: null, filter: '', routesFilter: '',
     csvTarget: null, csvItems: null, csvMode: 'append'
   };
+  var undoState = { evt: null, reason: null };
 
-  // ============================================================
-  // Opción A · límite de eventos con fotos locales retenidas
-  // ============================================================
   var MAX_EVENTS_WITH_LOCAL_PHOTOS = 8;
+  var UNDO_WINDOW_MS = 60 * 60 * 1000;
 
-  // ------------------------------------------------------------
-  // v14 · detectar si es escritorio
-  // ------------------------------------------------------------
   function isDesktopViewport() {
     try { return window.matchMedia('(min-width: 1024px)').matches; }
     catch (e) { return window.innerWidth >= 1024; }
+  }
+  function isAdminSession() {
+    return state.messenger && state.messenger.code === 'ADMIN';
   }
 
   function saveMessengerData() {
@@ -1042,10 +1018,8 @@
         localStorage.setItem(dataKey(state.messenger.code, 'route'), JSON.stringify(state.route));
         localStorage.setItem(dataKey(state.messenger.code, 'events'), JSON.stringify(state.events));
         localStorage.setItem(dataKey(state.messenger.code, 'settings'), JSON.stringify(state.settings));
-        showToast('⚠ Espacio liberado · fotos viejas ya no se adjuntan', 2800);
-      } catch (e2) {
-        showToast('⚠ Almacenamiento lleno.', 2400);
-      }
+        showToast('⚠ Espacio liberado', 2800);
+      } catch (e2) { showToast('⚠ Almacenamiento lleno.', 2400); }
     }
   }
 
@@ -1068,9 +1042,7 @@
     var localEvents = safeParse(localStorage.getItem(key), []);
     if (!localEvents || !localEvents.length) return serverEvents;
     var localMap = {};
-    localEvents.forEach(function (e) {
-      if (e.localPhotos && e.localPhotos.length) localMap[e.id] = e.localPhotos;
-    });
+    localEvents.forEach(function (e) { if (e.localPhotos && e.localPhotos.length) localMap[e.id] = e.localPhotos; });
     return serverEvents.map(function (e) {
       if (localMap[e.id]) e.localPhotos = localMap[e.id];
       return e;
@@ -1134,12 +1106,10 @@
     if (evt.photo) return [evt.photo];
     return [];
   }
-
   function getEventPhotosForShare(evt) {
     if (evt.localPhotos && evt.localPhotos.length) return evt.localPhotos;
     return getEventPhotos(evt);
   }
-
   function getSignatureColorHex() { return state.settings.signatureColor || '#a3e635'; }
 
   function setupSignatureCanvas() {
@@ -1302,17 +1272,12 @@
       msg += '\n\nAdjuntamos la evidencia fotográfica firmada de la entrega.';
     } else {
       var ph = getEventPhotos(evt).filter(function (p) { return p && p.indexOf('http') === 0; });
-      if (ph.length) {
-        msg += '\n\nEvidencia:';
-        ph.forEach(function (u) { msg += '\n' + u; });
-      } else {
-        msg += '\n\nAdjuntamos la evidencia firmada.';
-      }
+      if (ph.length) { msg += '\n\nEvidencia:'; ph.forEach(function (u) { msg += '\n' + u; }); }
+      else { msg += '\n\nAdjuntamos la evidencia firmada.'; }
     }
     msg += '\n— Ruta X';
     return msg;
   }
-
   function dataURLtoBlob(dataURL) {
     var arr = dataURL.split(',');
     var mime = arr[0].match(/:(.*?);/)[1];
@@ -1333,15 +1298,11 @@
     var hasLocal = ph.some(function (x) { return x && x.indexOf('data:') === 0; });
     if (!hasLocal) {
       if (p) sendWhatsAppDirect(evt);
-      else showToast('Las fotos ya están en Drive · compártelas desde allí');
+      else showToast('Las fotos ya están en Drive');
       return;
     }
     var msg = buildWhatsAppMessage(evt);
-    if (!ph.length || !navigator.share) {
-      if (p) sendWhatsAppDirect(evt);
-      else showToast('No se puede compartir');
-      return;
-    }
+    if (!ph.length || !navigator.share) { if (p) sendWhatsAppDirect(evt); else showToast('No se puede compartir'); return; }
     var files = [];
     for (var i = 0; i < ph.length && i < 5; i++) {
       try { files.push(new File([dataURLtoBlob(ph[i])], 'e-' + i + '.jpg', { type: 'image/jpeg' })); } catch (e) {}
@@ -1407,7 +1368,7 @@
     });
   }
   function showSplash() {
-    ['detailOverlay','eventOverlay','settingsOverlay','searchOverlay','whatsappOverlay','addPackageOverlay','adminOverlay','adminDesktopOverlay'].forEach(function (id) {
+    ['detailOverlay','eventOverlay','settingsOverlay','searchOverlay','whatsappOverlay','addPackageOverlay','adminOverlay','adminDesktopOverlay','undoOverlay'].forEach(function (id) {
       document.getElementById(id).classList.remove('active');
     });
     document.getElementById('splashOverlay').classList.add('active');
@@ -1434,12 +1395,15 @@
         var p = visible[i];
         var issues = state.events.filter(function (e) { return e.packageId === p.id && e.status === 'issue'; }).length;
         var isPickup = p.type === 'pickup';
-        var label = p.status === 'issue' ? 'Novedad' : (isPickup ? 'Recogida' : 'Pendiente');
-        var icon = p.status === 'issue' ? '⚠' : (isPickup ? '📤' : '○');
-        html += '<div class="package-card ' + p.status + (isPickup ? ' pickup' : '') + '" data-id="' + p.id + '">' +
+        var isRetry = p.retry && p.status === 'pending';
+        var label = p.status === 'issue' ? 'Novedad' : (isRetry ? 'Reintentar' : (isPickup ? 'Recogida' : 'Pendiente'));
+        var icon = p.status === 'issue' ? '⚠' : (isRetry ? '🔁' : (isPickup ? '📤' : '○'));
+        var cardClass = (isRetry ? 'retry' : p.status) + (isPickup ? ' pickup' : '');
+        var retryBadge = isRetry ? '<span class="retry-badge">🔁 Reintentar</span>' : '';
+        html += '<div class="package-card ' + cardClass + '" data-id="' + p.id + '">' +
           '<div class="order-badge">' + p.order + '</div>' +
           '<div class="package-info"><div class="package-top"><span class="guide">' + (p.guide || (isPickup ? 'RECOGIDA' : '—')) + '</span>' +
-          '<div class="badges-wrap">' + (isPickup ? '<span class="status-badge pickup-badge">📤</span>' : '') +
+          '<div class="badges-wrap">' + retryBadge + (isPickup ? '<span class="status-badge pickup-badge">📤</span>' : '') +
           '<span class="status-badge ' + p.status + '">' + icon + ' ' + label + '</span></div></div>' +
           '<div class="client">' + p.client + '</div><div class="address">' + p.address + '</div>' +
           (issues > 0 ? '<div class="issue-count">⚠ ' + issues + ' novedad previa</div>' : '') + '</div><div class="chevron">›</div></div>';
@@ -1468,16 +1432,25 @@
     sorted.forEach(function (e) {
       var ph = getEventPhotos(e);
       var sigBadge = (e.signature || e.signed) ? '<span class="sig-badge">✍️</span>' : '';
-      var photoCell = ph[0] ? '<img src="' + ph[0] + '" />' + (ph.length > 1 ? '<span class="photo-count-badge">+' + (ph.length - 1) + '</span>' : '') + sigBadge
-        : '<div class="no-photo">Sin foto</div>' + sigBadge;
-      var st = e.status === 'delivered' ? '✓ Entregado' : '⚠ Novedad';
-      html += '<div class="event-card" data-id="' + e.id + '">' +
+      var photoCell = ph[0]
+        ? '<img src="' + ph[0] + '" />' + (ph.length > 1 ? '<span class="photo-count-badge">+' + (ph.length - 1) + '</span>' : '') + sigBadge
+        : '<div class="no-photo">' + (e.status === 'undone' ? 'Anulada' : 'Sin foto') + '</div>' + sigBadge;
+
+      var st, stCls;
+      if (e.status === 'delivered') { st = '✓ Entregado'; stCls = 'delivered'; }
+      else if (e.status === 'undone') { st = '↺ Anulada'; stCls = 'undone'; }
+      else { st = '⚠ Novedad'; stCls = 'issue'; }
+
+      var extraClass = e.status === 'undone' ? ' undone' : '';
+
+      html += '<div class="event-card' + extraClass + '" data-id="' + e.id + '">' +
         '<div class="event-photo">' + photoCell + '</div>' +
         '<div class="event-info"><div class="event-top"><span class="event-guide">' + e.guide + '</span>' +
-        '<span class="status-badge ' + e.status + '">' + st + '</span></div>' +
+        '<span class="status-badge ' + stCls + '">' + st + '</span></div>' +
         '<div class="event-address">' + e.address + '</div>' +
         (e.recipient ? '<div class="event-note">Recibió: ' + e.recipient + '</div>' : '') +
-        (e.note ? '<div class="event-note">"' + e.note + '"</div>' : '') +
+        (e.status === 'undone' && e.undoReason ? '<div class="event-note" style="color:#b91c1c;">↺ ' + e.undoReason + '</div>' : '') +
+        (e.status !== 'undone' && e.note ? '<div class="event-note">"' + e.note + '"</div>' : '') +
         '<div class="event-meta"><span>🕒 ' + formatTime(e.timestamp) + '</span></div></div></div>';
     });
     box.innerHTML = html;
@@ -1525,10 +1498,7 @@
         });
       });
       th.querySelectorAll('.photo-thumb-remove').forEach(function (r) {
-        r.addEventListener('click', function (e) {
-          e.stopPropagation();
-          removePhotoAt(parseInt(r.getAttribute('data-remove'), 10));
-        });
+        r.addEventListener('click', function (e) { e.stopPropagation(); removePhotoAt(parseInt(r.getAttribute('data-remove'), 10)); });
       });
     } else { th.classList.add('hidden'); th.innerHTML = ''; }
     var ab = document.getElementById('addPhotoBtn');
@@ -1539,9 +1509,7 @@
     else cl.classList.add('hidden');
   }
 
-  function addPhotoToCurrent(d) {
-    currentPhotos.push(d); currentPhotoIndex = currentPhotos.length - 1; currentNoPhoto = false; updateEvidenceFormUI();
-  }
+  function addPhotoToCurrent(d) { currentPhotos.push(d); currentPhotoIndex = currentPhotos.length - 1; currentNoPhoto = false; updateEvidenceFormUI(); }
   function removePhotoAt(i) {
     if (i < 0 || i >= currentPhotos.length) return;
     currentPhotos.splice(i, 1);
@@ -1623,7 +1591,10 @@
       var toUpload = photos.slice();
       state.events.push(event);
       var pkg = state.route.find(function (p) { return p.id === pkgS.id; });
-      if (pkg) pkg.status = status === 'delivered' ? 'delivered' : 'issue';
+      if (pkg) {
+        pkg.status = status === 'delivered' ? 'delivered' : 'issue';
+        if (status === 'delivered') pkg.retry = false;
+      }
       pruneLocalPhotos();
       saveMessengerData();
       hideProcessing(); closeDetail(); renderRoute(); renderEvents();
@@ -1719,40 +1690,192 @@
 
   function renderEventDetailBody(evt) {
     var ph = getEventPhotos(evt);
-    var stLbl = evt.status === 'delivered' ? (evt.type === 'pickup' ? '✓ Recogido' : '✓ Entregado') : '⚠ Novedad';
-    var stCls = evt.status === 'delivered' ? 'delivered' : 'issue';
+    var statusLabel, statusClass;
+    if (evt.status === 'delivered') { statusLabel = evt.type === 'pickup' ? '✓ Recogido' : '✓ Entregado'; statusClass = 'delivered'; }
+    else if (evt.status === 'undone') { statusLabel = '↺ Anulada'; statusClass = 'undone'; }
+    else { statusLabel = '⚠ Novedad'; statusClass = 'issue'; }
+
     var phone = normalizePhone(evt.phone || '');
     var hasPhone = phone.length > 0;
     var html = '';
-    html += '<div class="ev-status-row"><span class="status-badge ' + stCls + '">' + stLbl + '</span><span class="ev-time">' + formatTime(evt.timestamp) + '</span></div>';
+    html += '<div class="ev-status-row"><span class="status-badge ' + statusClass + '">' + statusLabel + '</span><span class="ev-time">' + formatTime(evt.timestamp) + '</span></div>';
+
+    if (evt.status === 'undone' && evt.undoReason) {
+      html += '<div class="ev-block undone-block">' +
+        '<div class="ev-label">Motivo de anulación</div>' +
+        '<div class="ev-value" style="font-size:14px;font-weight:600;">' + evt.undoReason + '</div>' +
+        (evt.undoneAt ? '<div style="font-size:11px;color:#b91c1c;margin-top:6px;">Anulada ' + formatTime(evt.undoneAt) + (evt.undoBy ? ' por ' + evt.undoBy : '') + '</div>' : '') +
+        '</div>';
+    }
+
     html += '<div class="ev-block"><div class="ev-label">Cliente</div><div class="ev-value">' + (evt.client || '—') + '</div></div>';
     if (evt.phone) html += '<div class="ev-block"><div class="ev-label">Teléfono</div><div class="ev-value">' + evt.phone + '</div></div>';
     html += '<div class="ev-block"><div class="ev-label">Dirección</div><div class="ev-value">' + (evt.address || '—') + '</div></div>';
     if (evt.recipient) html += '<div class="ev-block"><div class="ev-label">Recibido por</div><div class="ev-value">' + evt.recipient + '</div></div>';
-    if (evt.note) html += '<div class="ev-block note"><div class="ev-label">Nota</div><div class="ev-value">"' + evt.note + '"</div></div>';
+    if (evt.note && evt.status !== 'undone') html += '<div class="ev-block note"><div class="ev-label">Nota</div><div class="ev-value">"' + evt.note + '"</div></div>';
     html += '<div class="ev-grid"><div class="ev-block"><div class="ev-label">Fecha y hora</div><div class="ev-value" style="font-size:13px;">' + formatFullDate(evt.timestamp) + '</div></div>' +
       '<div class="ev-block"><div class="ev-label">Mensajero</div><div class="ev-value" style="font-size:13px;">' + (evt.messengerName || (state.messenger && state.messenger.name) || '—') + '<br><span style="color:var(--muted);font-weight:500;font-size:11px;">' + (evt.messengerCode || '') + '</span></div></div></div>';
     if (evt.signature) html += '<div class="ev-signature-img"><div class="ev-label">Firma</div><img src="' + evt.signature + '" /></div>';
     else if (evt.signed) html += '<div class="ev-block"><div class="ev-label">Firma</div><div class="ev-value" style="font-size:13px;">✍️ Firmado (en la foto)</div></div>';
     if (evt.gps) html += '<div class="ev-block"><div class="ev-label">GPS</div><div class="ev-value" style="font-size:13px;">' + evt.gps.lat.toFixed(5) + ', ' + evt.gps.lng.toFixed(5) + (evt.gps.accuracy ? '<br><span style="color:var(--muted);font-weight:500;font-size:11px;">±' + evt.gps.accuracy + ' m</span>' : '') + '</div></div>';
-    if (evt.status === 'delivered') html += '<div class="wa-actions-wrap" id="evtWaActions"></div>';
+
+    if (evt.status === 'delivered') {
+      html += '<div class="wa-actions-wrap" id="evtWaActions"></div>';
+
+      var isAdmin = isAdminSession();
+      var elapsedMs = Date.now() - evt.timestamp;
+      var canUndo = false;
+      var undoHint = '';
+      if (isAdmin) {
+        canUndo = true;
+      } else if (elapsedMs <= UNDO_WINDOW_MS) {
+        canUndo = true;
+        var remainMin = Math.max(0, Math.ceil((UNDO_WINDOW_MS - elapsedMs) / 60000));
+        undoHint = ' <span style="font-size:11px;opacity:0.7;font-weight:500;">(' + remainMin + ' min restantes)</span>';
+      } else {
+        undoHint = ' <span style="font-size:11px;opacity:0.7;font-weight:500;">(ventana expirada)</span>';
+      }
+
+      if (canUndo) {
+        html += '<button class="undo-btn" id="undoDeliveryBtn">↺ Anular entrega' + undoHint + '</button>';
+      } else {
+        html += '<button class="undo-btn disabled" disabled>↺ Anular entrega' + undoHint + '</button>';
+      }
+    }
+
     document.getElementById('eventDetailBody').innerHTML = html;
+
     if (evt.status === 'delivered') {
       var a = document.getElementById('evtWaActions');
       var bh = '';
       if (hasPhone) bh += '<button class="wa-share-btn" data-action="direct">Enviar mensaje al cliente</button>';
       if (ph.length) bh += '<button class="wa-share-btn' + (hasPhone ? ' secondary' : '') + '" data-action="photo">📷 Compartir ' + (ph.length > 1 ? ph.length + ' fotos' : 'con foto') + '</button>';
-      a.innerHTML = bh;
-      a.querySelectorAll('button').forEach(function (b) {
-        b.addEventListener('click', function () {
-          var act = b.getAttribute('data-action');
-          if (act === 'direct') sendWhatsAppDirect(evt);
-          else shareWhatsAppWithPhotos(evt);
+      if (a) {
+        a.innerHTML = bh;
+        a.querySelectorAll('button').forEach(function (b) {
+          b.addEventListener('click', function () {
+            var act = b.getAttribute('data-action');
+            if (act === 'direct') sendWhatsAppDirect(evt);
+            else shareWhatsAppWithPhotos(evt);
+          });
         });
-      });
+      }
+      var undoBtn = document.getElementById('undoDeliveryBtn');
+      if (undoBtn && !undoBtn.disabled) {
+        undoBtn.addEventListener('click', function () { openUndoModal(evt); });
+      }
     }
   }
   function closeEventDetail() { document.getElementById('eventOverlay').classList.remove('active'); }
+
+  // ============================================================
+  // v15 · UNDO MODAL + confirmUndo
+  // ============================================================
+  function openUndoModal(evt) {
+    undoState = { evt: evt, reason: null };
+    document.getElementById('undoPackageName').textContent = evt.client || '—';
+    document.getElementById('undoPackageGuide').textContent = 'Guía ' + (evt.guide || '—') + ' · ' + (evt.address || '');
+    document.querySelectorAll('.undo-reason-option').forEach(function (btn) { btn.classList.remove('selected'); });
+    document.getElementById('undoCustomWrap').classList.add('hidden');
+    document.getElementById('undoCustomReason').value = '';
+    document.getElementById('undoOverlay').classList.add('active');
+  }
+  function closeUndoModal() {
+    document.getElementById('undoOverlay').classList.remove('active');
+    undoState = { evt: null, reason: null };
+  }
+  function confirmUndo() {
+    if (!undoState.evt) return;
+    if (!undoState.reason) { showToast('⚠ Selecciona un motivo'); return; }
+    var customText = document.getElementById('undoCustomReason').value.trim();
+    var finalReason = undoState.reason;
+    if (undoState.reason === 'Otro motivo') {
+      if (!customText) { showToast('⚠ Describe el motivo'); return; }
+      finalReason = 'Otro: ' + customText;
+    }
+    var evt = undoState.evt;
+    var ts = Date.now();
+    var undoBy = state.messenger ? state.messenger.code : 'ADMIN';
+
+    function patchEvent(e) {
+      if (!e || e.id !== evt.id) return;
+      e.status = 'undone';
+      e.undoneAt = ts;
+      e.undoReason = finalReason;
+      e.undoBy = undoBy;
+    }
+
+    state.events.forEach(patchEvent);
+    if (!isAdminSession()) {
+      var pkg = state.route.find(function(p) { return p.id === evt.packageId; });
+      if (pkg) {
+        pkg.status = 'pending';
+        pkg.retry = true;
+        pkg.retryCount = (pkg.retryCount || 0) + 1;
+      }
+    }
+    if (adminState.live) adminState.live.forEach(function(m) { if (m.events) m.events.forEach(patchEvent); });
+    if (adminState.drillDown && adminState.drillDown.events) adminState.drillDown.events.forEach(patchEvent);
+    if (desktopAdminState.selectedRoutes) {
+      desktopAdminState.selectedRoutes.forEach(function(r) {
+        if (r.event && r.event.id === evt.id) {
+          patchEvent(r.event);
+          r.status = 'pending';
+          r.retry = true;
+        }
+      });
+    }
+
+    saveMessengerData();
+    closeUndoModal();
+    closeEventDetail();
+
+    if (!isAdminSession()) { renderRoute(); renderEvents(); }
+    if (document.getElementById('adminOverlay').classList.contains('active')) {
+      if (adminState.drillDown) renderAdminDrillDown();
+      else renderAdminLive();
+    }
+    if (document.getElementById('adminDesktopOverlay').classList.contains('active')) {
+      var mm = desktopAdminState.messengers.find(function(x) { return x.code === desktopAdminState.selectedCode; });
+      if (mm) renderDesktopMessengerDetail(mm);
+    }
+
+    showToast('✓ Entrega anulada · paquete vuelve a reintentar', 3000);
+
+    // Intento de sync servidor (best effort, si existe la función)
+    try {
+      if (RutaXAPI.undoDelivery) {
+        RutaXAPI.undoDelivery(evt.id, finalReason).catch(function(err) {
+          console.warn('Undo sync failed:', err);
+        });
+      } else if (RutaXAPI.updatePackage && evt.packageId) {
+        RutaXAPI.updatePackage(evt.packageId, 'pending').catch(function() {});
+      }
+    } catch (e) {}
+  }
+
+  function setupUndoEvents() {
+    document.querySelectorAll('.undo-reason-option').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.undo-reason-option').forEach(function (b) { b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        undoState.reason = btn.getAttribute('data-reason');
+        var wrap = document.getElementById('undoCustomWrap');
+        if (undoState.reason === 'Otro motivo') {
+          wrap.classList.remove('hidden');
+          document.getElementById('undoCustomReason').focus();
+        } else {
+          wrap.classList.add('hidden');
+          document.getElementById('undoCustomReason').value = '';
+        }
+      });
+    });
+    document.getElementById('undoCancelBtn').addEventListener('click', closeUndoModal);
+    document.getElementById('undoConfirmBtn').addEventListener('click', confirmUndo);
+    document.getElementById('undoOverlay').addEventListener('click', function (e) {
+      if (e.target.id === 'undoOverlay') closeUndoModal();
+    });
+  }
 
   function openAddPackage() {
     ['addClient','addAddress','addPhone','addGuide','addNote'].forEach(function (id) { document.getElementById(id).value = ''; });
@@ -1811,7 +1934,7 @@
       if (!hasQ || matchesAll(h, q)) pending.push(p);
     });
     state.events.forEach(function (e) {
-      var h = normalizeQuery([e.client, e.guide, e.address, e.recipient, e.note, e.phone, buildDateHaystack(e.timestamp)].filter(Boolean).join(' '));
+      var h = normalizeQuery([e.client, e.guide, e.address, e.recipient, e.note, e.phone, e.undoReason, buildDateHaystack(e.timestamp)].filter(Boolean).join(' '));
       if (!hasQ || matchesAll(h, q)) events.push(e);
     });
     events.sort(function (a, b) { return b.timestamp - a.timestamp; });
@@ -1837,7 +1960,7 @@
       res.pending.forEach(function (p) { html += buildPendingResultCard(p); });
     }
     if (res.events.length) {
-      html += '<div class="sr-section-title">Entregas (' + res.events.length + ')</div>';
+      html += '<div class="sr-section-title">Registros (' + res.events.length + ')</div>';
       res.events.forEach(function (e) { html += buildEventResultCard(e); });
     }
     box.innerHTML = html;
@@ -1846,21 +1969,25 @@
 
   function buildPendingResultCard(p) {
     var isP = p.type === 'pickup';
+    var retryBadge = p.retry ? '<span class="status-badge" style="background:#fef3c7;color:#b45309;">🔁 Reintentar</span>' : '<span class="status-badge pending">○ Pendiente</span>';
     return '<div class="sr-card" data-type="pending" data-id="' + p.id + '">' +
       '<div class="sr-photo">' + (isP ? '📤' : '📦') + '</div>' +
-      '<div class="sr-body"><div class="sr-top"><span class="sr-guide">' + (p.guide||'—') + '</span><span class="status-badge pending">○ Pendiente</span></div>' +
+      '<div class="sr-body"><div class="sr-top"><span class="sr-guide">' + (p.guide||'—') + '</span>' + retryBadge + '</div>' +
       '<div class="sr-title">' + p.client + '</div><div class="sr-sub">' + p.address + '</div></div><div class="chevron">›</div></div>';
   }
   function buildEventResultCard(e) {
     var ph = getEventPhotos(e);
-    var st = e.status === 'delivered' ? '✓ Entregado' : '⚠ Novedad';
+    var stLbl, stCls;
+    if (e.status === 'delivered') { stLbl = '✓ Entregado'; stCls = 'delivered'; }
+    else if (e.status === 'undone') { stLbl = '↺ Anulada'; stCls = 'undone'; }
+    else { stLbl = '⚠ Novedad'; stCls = 'issue'; }
     var pc;
     if (ph[0]) pc = '<img src="' + ph[0] + '" />';
     else if (e.noPhoto) pc = '🚫'; else pc = '📋';
     var si = (e.signature || e.signed) ? ' · ✍️' : '';
     return '<div class="sr-card" data-type="event" data-id="' + e.id + '">' +
       '<div class="sr-photo">' + pc + '</div>' +
-      '<div class="sr-body"><div class="sr-top"><span class="sr-guide">' + e.guide + '</span><span class="status-badge ' + e.status + '">' + st + '</span></div>' +
+      '<div class="sr-body"><div class="sr-top"><span class="sr-guide">' + e.guide + '</span><span class="status-badge ' + stCls + '">' + stLbl + '</span></div>' +
       '<div class="sr-title">' + (e.client||'—') + '</div><div class="sr-sub">' + (e.address||'') + '</div>' +
       '<div class="sr-date">🕒 ' + formatTime(e.timestamp) + si + '</div></div></div>';
   }
@@ -2118,6 +2245,7 @@
       if (e.target.id === 'whatsappOverlay') closeWhatsAppPrompt();
     });
     setupSignatureEvents();
+    setupUndoEvents();
   }
 
   function openPinModal(code, name, zone) {
@@ -2166,7 +2294,6 @@
       state.messenger = info;
       if (data.role === 'admin') {
         closePinModal(); hideSplash();
-        // v14 · auto-abrir panel escritorio si es PC
         if (isDesktopViewport()) openAdminDesktop();
         else openAdminPanel();
         return;
@@ -2357,21 +2484,25 @@
     var m = adminState.drillDown;
     if (!m) { renderAdminLive(); return; }
     var html = '<div class="admin-drill-header"><button class="admin-drill-back" id="adminDrillBack">←</button>' +
-      '<div class="admin-drill-title">' + m.name + ' · ' + m.events.length + ' entrega' + (m.events.length === 1 ? '' : 's') + '</div></div>';
+      '<div class="admin-drill-title">' + m.name + ' · ' + m.events.length + ' registro' + (m.events.length === 1 ? '' : 's') + '</div></div>';
     if (!m.events.length) {
-      html += '<div class="admin-live-empty">Sin entregas en esta fecha.</div>';
+      html += '<div class="admin-live-empty">Sin registros en esta fecha.</div>';
       box.innerHTML = html;
       document.getElementById('adminDrillBack').addEventListener('click', function () { adminState.drillDown = null; renderAdminLive(); });
       return;
     }
     m.events.forEach(function (e) {
-      var st = e.status === 'delivered' ? '✓ Entregado' : '⚠ Novedad';
+      var stLbl, stCls;
+      if (e.status === 'delivered') { stLbl = '✓ Entregado'; stCls = 'delivered'; }
+      else if (e.status === 'undone') { stLbl = '↺ Anulada'; stCls = 'undone'; }
+      else { stLbl = '⚠ Novedad'; stCls = 'issue'; }
       var pc = e.photos && e.photos.length ? '<img src="' + e.photos[0] + '" />' : (e.noPhoto ? '🚫' : '📋');
       var sb = e.signed ? '<span class="ae-badge-sig">✍️</span>' : '';
-      html += '<div class="ae-card" data-id="' + e.id + '">' +
+      var cardCls = e.status === 'undone' ? ' undone' : '';
+      html += '<div class="ae-card' + cardCls + '" data-id="' + e.id + '">' +
         '<div class="ae-photo">' + pc + sb + '</div>' +
         '<div class="ae-body"><div class="ae-head"><span class="ae-guide">' + (e.guide||'—') + '</span>' +
-        '<span class="status-badge ' + e.status + '" style="font-size:9px;">' + st + '</span></div>' +
+        '<span class="status-badge ' + stCls + '" style="font-size:9px;">' + stLbl + '</span></div>' +
         '<div class="ae-client">' + (e.client||'—') + '</div><div class="ae-addr">' + (e.address||'') + '</div>' +
         '<div class="ae-time">🕒 ' + formatTime(e.timestamp) + (e.recipient ? ' · ' + e.recipient : '') + '</div></div></div>';
     });
@@ -2483,7 +2614,8 @@
         r.client || '', r.guide || '', r.address || '',
         (r.event && r.event.recipient) || '',
         (r.event && r.event.note) || '',
-        (r.event && r.event.guide) || ''
+        (r.event && r.event.guide) || '',
+        (r.event && r.event.undoReason) || ''
       ].join(' '));
       return hay.indexOf(q) >= 0;
     });
@@ -2504,9 +2636,12 @@
         ? '<img class="ad-row-thumb" src="' + photoUrl + '" alt="foto" loading="lazy" />'
         : '<div class="ad-row-thumb-empty">' + (r.type === 'pickup' ? '📤' : '📦') + '</div>';
 
+      var evtStatus = r.event ? r.event.status : null;
       var statusLbl, statusCol;
-      if (r.status === 'delivered') { statusLbl = '✓ Entregado'; statusCol = 'var(--green-dark)'; }
+      if (evtStatus === 'undone') { statusLbl = '↺ Anulada'; statusCol = '#6b7280'; }
+      else if (r.status === 'delivered') { statusLbl = '✓ Entregado'; statusCol = 'var(--green-dark)'; }
       else if (r.status === 'issue') { statusLbl = '⚠ Novedad'; statusCol = '#b45309'; }
+      else if (r.retry) { statusLbl = '🔁 Reintentar'; statusCol = '#b45309'; }
       else { statusLbl = '○ Pendiente'; statusCol = 'var(--muted)'; }
 
       var sigBadge = hasEvt && r.event.signed ? ' <span style="font-size:11px;">✍️</span>' : '';
@@ -2797,7 +2932,6 @@
           state.messenger = info;
           if (data.role === 'admin') {
             hideSplash();
-            // v14 · auto-abrir panel escritorio si es PC
             if (isDesktopViewport()) openAdminDesktop();
             else openAdminPanel();
             return;
